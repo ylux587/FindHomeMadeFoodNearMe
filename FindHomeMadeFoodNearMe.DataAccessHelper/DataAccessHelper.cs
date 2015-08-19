@@ -57,17 +57,17 @@
         /// </summary>
         /// <typeparam name="T">The type of returned instance</typeparam>
         /// <param name="storedProcedureName">The stored procedure name</param>
-        /// <param name="processMethod">The process method</param>
+        /// <param name="entityBinder">The binder to build entity</param>
         /// <param name="transaction">The sql db transction object</param>
         /// <param name="timeout">The timeout value</param>
         /// <param name="commandParameters">The parameters for stored procedure</param>
         /// <returns>The<see><cref>IList</cref> of <typeparamref name="T" /> entities</see></returns>
         public IList<T> ExecuteReader<T>(
             string storedProcedureName,
-            Func<SqlDataReader, T> processMethod,
+            IEntityBinder<T> entityBinder,
             SqlTransaction transaction,
             int timeout,
-            params SqlParameter[] commandParameters)
+            params SqlParameter[] commandParameters) where T : class
         {
             if (string.IsNullOrWhiteSpace(storedProcedureName))
             {
@@ -100,9 +100,9 @@
                     {
                         while (reader.Read())
                         {
-                            if (processMethod != null)
+                            if (entityBinder != null)
                             {
-                                collection.Add(processMethod(reader));
+                                collection.Add(entityBinder.BindEntity(reader));
                             }
                         }
                     }

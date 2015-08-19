@@ -148,8 +148,12 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="DataAccess\Entities\OrderEntity.cs" />
-    <Compile Include="DataAccess\ITableBinder.cs" />
+    <Compile Include="DataAccess\Entities\OrderEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataAccess\Entities\OrderItemEntity.cs" />
+    <Compile Include="DataAccess\Entities\UserEntity.cs" />
+    <Compile Include="DataAccess\Entities\DishEntity.cs" />
     <Compile Include="DataAccess\TableBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

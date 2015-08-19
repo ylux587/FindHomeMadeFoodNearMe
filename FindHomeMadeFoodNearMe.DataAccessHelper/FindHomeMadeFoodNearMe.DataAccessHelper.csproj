@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="DataAccessHelper.cs" />
     <Compile Include="IDataAccessHelper.cs" />
+    <Compile Include="IEntityBinder.cs" />
+    <Compile Include="SqlColumnBinder.cs" />
     <Compile Include="SqlDataReaderExtensionMethods.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

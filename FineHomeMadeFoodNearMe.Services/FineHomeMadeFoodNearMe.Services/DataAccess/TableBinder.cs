@@ -1,27 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Data;
-using System.Data.SqlClient;
-using Microsoft.SqlServer.Server;
-
-namespace FineHomeMadeFoodNearMe.Services.DataAccess
+﻿namespace FineHomeMadeFoodNearMe.Services.DataAccess
 {
-    public class TableBinder
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Data;
+    using System.Data.SqlClient;
+    using Microsoft.SqlServer.Server;
+
+    public static class TableBinder
     {
-        public SqlParameter BindTable(
-            String parameterName,
-            String typeName,
-            IEnumerable<SqlDataRecord> rows,
-            bool convertEmptyToNull = true)
+        public static SqlParameter BindTable(string parameterName, string typeName, IEnumerable<SqlDataRecord> rows, bool convertEmptyToNull = true)
         {
-            if (convertEmptyToNull && !rows.Any())
+            if (string.IsNullOrWhiteSpace(parameterName))
             {
-                rows = null;
+                throw new ArgumentNullException("parameterName");
+            }
+            if (string.IsNullOrWhiteSpace(typeName))
+            {
+                throw new ArgumentNullException("typeName");
             }
 
-            SqlParameter param = m_sqlCommand.Parameters.AddWithValue(parameterName, rows);
+            var param = new SqlParameter(parameterName, convertEmptyToNull && !rows.Any() ? null : rows);
 
             param.TypeName = typeName;
             param.SqlDbType = SqlDbType.Structured;

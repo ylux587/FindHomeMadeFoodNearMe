@@ -12,9 +12,9 @@
 
         IList<T> ExecuteReader<T>(
             string storedProcedureName,
-            Func<SqlDataReader, T> processMethod,
+            IEntityBinder<T> entityBinder,
             SqlTransaction transaction,
             int timeout,
-            params SqlParameter[] commandParameters);
+            params SqlParameter[] commandParameters) where T : class;
     }
 }
