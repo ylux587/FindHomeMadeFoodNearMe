@@ -1,8 +1,14 @@
 ﻿namespace FineHomeMadeFoodNearMe.Services.Models
 {
     using Enums;
+    using DataAccess;
     using System;
     using System.Runtime.Serialization;
+    using System.Linq;
+    using System.Collections.Generic;
+    using Microsoft.SqlServer.Server;
+    using System.Data;
+    using System.Data.SqlClient;
 
     [DataContract]
     public sealed class Order
