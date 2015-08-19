@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FineHomeMadeFoodNearMe.Services", "FineHomeMadeFoodNearMe.Services\FineHomeMadeFoodNearMe.Services.csproj", "{6659D266-3FEF-4EA9-855E-4F65ED22BC61}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{151C0987-4C9B-41B3-ADBD-8ECEADD8A809}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\AzureWebsitePublishModule.psm1 = PublishScripts\AzureWebsitePublishModule.psm1
+		PublishScripts\Publish-WebApplicationWebsite.ps1 = PublishScripts\Publish-WebApplicationWebsite.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{E8FDB407-72D2-44FC-9181-72957D625279}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Configurations\FineHomeMadeFoodNearMeServices-WAWS-dev.json = PublishScripts\Configurations\FineHomeMadeFoodNearMeServices-WAWS-dev.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6659D266-3FEF-4EA9-855E-4F65ED22BC61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6659D266-3FEF-4EA9-855E-4F65ED22BC61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6659D266-3FEF-4EA9-855E-4F65ED22BC61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6659D266-3FEF-4EA9-855E-4F65ED22BC61}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E8FDB407-72D2-44FC-9181-72957D625279} = {151C0987-4C9B-41B3-ADBD-8ECEADD8A809}
+	EndGlobalSection
+EndGlobal

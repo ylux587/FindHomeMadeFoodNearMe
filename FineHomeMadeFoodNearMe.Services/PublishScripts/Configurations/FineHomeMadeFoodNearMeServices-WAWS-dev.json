@@ -1,0 +1,21 @@
+{
+    "environmentSettings": {
+        "webSite": {
+            "name": "FineHomeMadeFoodNearMeServices",
+            "location": "West US"
+        },
+        "databases": [
+            {
+                "connectionStringName": "DefaultConnection",
+                "databaseName": "FineHomeMadeFoodNearMeServices_db",
+                "serverName": "qud726jdqb",
+                "user": "FindHomeMadeFoodNearMe",
+                "password": "",
+                "edition": "",
+                "size": "",
+                "collation": "",
+                "location": "West US"
+            }
+        ]
+    }
+}
