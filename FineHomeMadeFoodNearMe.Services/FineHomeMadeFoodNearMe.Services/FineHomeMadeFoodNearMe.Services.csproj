@@ -216,7 +216,12 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\FindHomeMadeFoodNearMe.DataAccessHelper\FindHomeMadeFoodNearMe.DataAccessHelper.csproj">
+      <Project>{e3816380-986b-4464-8cc6-f253ae20662e}</Project>
+      <Name>FindHomeMadeFoodNearMe.DataAccessHelper</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
