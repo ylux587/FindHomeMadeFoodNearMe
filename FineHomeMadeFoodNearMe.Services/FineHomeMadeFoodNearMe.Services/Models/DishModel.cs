@@ -3,9 +3,10 @@
     using System;
     using Enums;
     using System.Runtime.Serialization;
+    using FineHomeMadeFoodNearMe.Services.DataAccess.Entities;
 
     [DataContract]
-    public sealed class Dish
+    public sealed class DishModel
     {
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public long DishId { get; set; }
@@ -36,5 +37,22 @@
 
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public bool Available { get; set; }
+
+        public DishEntity ToEntity()
+        {
+            return new DishEntity
+            {
+                DishId = this.DishId,
+                DishName = this.DishName,
+                Description = this.Description,
+                Ingredients = this.Ingredients,
+                Price = this.Price,
+                ThumbNailPictureKey = this.ThumbNailPictureKey,
+                ProviderId = this.ProviderId,
+                DishType = this.DishType,
+                WaitingTimeInMins = this.WaitingTimeInMins,
+                Available = true
+            };
+        }
     }
 }

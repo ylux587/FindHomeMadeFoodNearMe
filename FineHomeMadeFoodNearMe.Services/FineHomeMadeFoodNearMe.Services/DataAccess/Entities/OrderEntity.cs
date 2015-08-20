@@ -40,6 +40,17 @@
             private SqlColumnBinder notesColumn = new SqlColumnBinder("Notes");
             private SqlColumnBinder statusColumn = new SqlColumnBinder("Status");
 
+            private static IEntityBinder<OrderEntity> instance;
+
+            private OrderEntityColumns()
+            {
+            }
+
+            public static IEntityBinder<OrderEntity> Instance
+            {
+                get { return instance ?? (instance = new OrderEntityColumns()); }
+            }
+
             public OrderEntity BindEntity(SqlDataReader reader)
             {
                 if (reader == null)

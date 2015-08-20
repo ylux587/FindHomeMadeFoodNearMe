@@ -45,7 +45,7 @@
 
         public string Password { get; set; }
 
-        public class OrderItemEntityColumns : IEntityBinder<OrderItemEntity>
+        public class UserEntityColumns : IEntityBinder<UserEntity>
         {
             private SqlColumnBinder userIdColumn = new SqlColumnBinder("UserId");
             private SqlColumnBinder firstNameColumn = new SqlColumnBinder("FirstName");
@@ -64,6 +64,17 @@
             private SqlColumnBinder zipCodeColumn = new SqlColumnBinder("ZipCode");
             private SqlColumnBinder passwordColumn = new SqlColumnBinder("Password");
 
+            private static IEntityBinder<UserEntity> instance;
+
+            private UserEntityColumns()
+            {
+            }
+
+            public static IEntityBinder<UserEntity> Instance
+            {
+                get { return instance ?? (instance = new UserEntityColumns()); }
+            }
+
             public UserEntity BindEntity(SqlDataReader reader)
             {
                 if (reader == null)
@@ -74,7 +85,7 @@
                 {
                     UserId = userIdColumn.GetInt64(reader),
                     FirstName = firstNameColumn.GetString(reader, false),
-                    LastName = firstNameColumn.GetString(reader, false),
+                    LastName = lastNameColumn.GetString(reader, false),
                     Email = emailColumn.GetString(reader, false),
                     PhoneNumber = phoneNumberColumn.GetString(reader, false),
                     AddressLine1 = addressLine1Column.GetString(reader, false),
@@ -94,7 +105,7 @@
             }
         }
 
-        public static SqlParameter BindOrderTable(string parameterName, IEnumerable<UserEntity> usersToUpdate)
+        public static SqlParameter BindUserTable(string parameterName, IEnumerable<UserEntity> usersToUpdate)
         {
             usersToUpdate = usersToUpdate ?? Enumerable.Empty<UserEntity>();
 
@@ -131,23 +142,21 @@
         private static readonly SqlMetaData[] typ_UserTable = new SqlMetaData[]
         {
             new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-            new SqlMetaData("UserId", SqlDbType.BigInt),
-
-
+            new SqlMetaData("FirstName", SqlDbType.NVarChar, 200),
+            new SqlMetaData("LastName", SqlDbType.NVarChar, 200),
+            new SqlMetaData("Email", SqlDbType.NVarChar, 200),
+            new SqlMetaData("PhoneNumber", SqlDbType.NVarChar, 200),
+            new SqlMetaData("AddressLine1", SqlDbType.NVarChar, 200),
+            new SqlMetaData("AddressLine2", SqlDbType.NVarChar, 200),
+            new SqlMetaData("AddressLine3", SqlDbType.NVarChar, 200),
+            new SqlMetaData("City", SqlDbType.NVarChar, 50),
+            new SqlMetaData("StateOrProvince", SqlDbType.NVarChar, 50),
+            new SqlMetaData("Country", SqlDbType.NVarChar, 10),
+            new SqlMetaData("Status", SqlDbType.Int),
+            new SqlMetaData("GeoLatitude", SqlDbType.Float),
+            new SqlMetaData("GeoLongitude", SqlDbType.Float),
+            new SqlMetaData("ZipCode", SqlDbType.NVarChar, 10),
+            new SqlMetaData("Password", SqlDbType.NVarChar, 20),
         };
     }
 }

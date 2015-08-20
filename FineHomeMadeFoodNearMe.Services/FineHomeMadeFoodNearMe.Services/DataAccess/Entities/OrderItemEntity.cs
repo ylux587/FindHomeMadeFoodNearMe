@@ -25,6 +25,17 @@
             private SqlColumnBinder dishIdColumn = new SqlColumnBinder("DishId");
             private SqlColumnBinder itemStatusColumn = new SqlColumnBinder("ItemStatus");
 
+            private static IEntityBinder<OrderItemEntity> instance;
+
+            private OrderItemEntityColumns()
+            {
+            }
+
+            public static IEntityBinder<OrderItemEntity> Instance
+            {
+                get { return instance ?? (instance = new OrderItemEntityColumns()); }
+            }
+
             public OrderItemEntity BindEntity(SqlDataReader reader)
             {
                 if (reader == null)
@@ -42,7 +53,7 @@
             }
         }
 
-        public static SqlParameter BindOrderTable(string parameterName, IEnumerable<OrderItemEntity> orderItemsToUpdate)
+        public static SqlParameter BindOrderItemTable(string parameterName, IEnumerable<OrderItemEntity> orderItemsToUpdate)
         {
             orderItemsToUpdate = orderItemsToUpdate ?? Enumerable.Empty<OrderItemEntity>();
 

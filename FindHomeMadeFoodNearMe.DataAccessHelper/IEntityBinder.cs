@@ -2,7 +2,7 @@
 {
     using System.Data.SqlClient;
 
-    public interface IEntityBinder<T> where T : class
+    public interface IEntityBinder<out T> where T : class
     {
         T BindEntity(SqlDataReader reader);
     }

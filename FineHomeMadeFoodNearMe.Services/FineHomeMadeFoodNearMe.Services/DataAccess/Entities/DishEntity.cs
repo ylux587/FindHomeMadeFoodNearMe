@@ -46,6 +46,17 @@
             private SqlColumnBinder thumbNailPictureKeyColumn = new SqlColumnBinder("ThumbNailPictureKey");
             private SqlColumnBinder availableColumn = new SqlColumnBinder("Available");
 
+            private static IEntityBinder<DishEntity> instance;
+
+            private DishEntityColumns()
+            {
+            }
+
+            public static IEntityBinder<DishEntity> Instance
+            {
+                get { return instance ?? (instance = new DishEntityColumns()); }
+            }
+
             public DishEntity BindEntity(SqlDataReader reader)
             {
                 if (reader == null)

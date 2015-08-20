@@ -4,7 +4,7 @@
     using System.Runtime.Serialization;
 
     [DataContract]
-    public sealed class OrderItem
+    public sealed class OrderItemModel
     {
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public long OrderId { get; set; }

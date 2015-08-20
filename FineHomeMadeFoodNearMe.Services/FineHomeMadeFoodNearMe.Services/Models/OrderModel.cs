@@ -11,7 +11,7 @@
     using System.Data.SqlClient;
 
     [DataContract]
-    public sealed class Order
+    public sealed class OrderModel
     {
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public long OrderId { get; set; }
