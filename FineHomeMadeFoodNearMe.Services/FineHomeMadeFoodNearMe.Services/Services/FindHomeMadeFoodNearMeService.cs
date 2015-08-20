@@ -86,7 +86,7 @@
         {
             return DbContext.GetDishes()
                 .Where(d => d.ProviderId == providerId)
-                .Select(d => DishModel.CreateFromEntity())
+                .Select(d => DishModel.CreateFromEntity(d))
                 .ToList();
         }
 
@@ -114,7 +114,7 @@
         public UserModel GetUser(long userId)
         {
             var user = DbContext.GetUsers().SingleOrDefault(u => u.UserId == userId);
-            return user == null ? null : UserModel.CreateFromEntity(user, DbContext);
+            return user == null ? null : UserModel.CreateFromEntity(user);
         }
 
         public OrderModel PlaceOrder(List<long> dishIds, long userId)
@@ -145,13 +145,13 @@
 
         public List<UserModel> FindProvidersWithinRange(double latitude, double longitude, int range)
         {
-            return DbContext.GetProvidersInRange(latitude, longitude, range).Select(u => u.CreateFromEntity()).ToList();
+            return DbContext.GetProvidersInRange(latitude, longitude, range).Select(u => UserModel.CreateFromEntity(u)).ToList();
         }
 
 
         public List<UserModel> GetRegisteredUsers()
         {
-            return DbContext.GetUsers().Select(u => u.CreateFromEntity()).ToList();
+            return DbContext.GetUsers().Select(u => UserModel.CreateFromEntity(u)).ToList();
         }
     }
 }
