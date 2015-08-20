@@ -111,9 +111,9 @@
             
         }
 
-        public UserModel GetUserInfoById(long userId)
+        public UserModel GetUser(long userId)
         {
-            var user = DbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            var user = DbContext.GetUsers().SingleOrDefault(u => u.UserId == userId);
             return user == null ? null : UserModel.CreateFromEntity(user, DbContext);
         }
 
@@ -145,17 +145,13 @@
 
         public List<UserModel> FindProvidersWithinRange(double latitude, double longitude, int range)
         {
-            var userIds = DbContext.GetProvidersInRange(latitude, longitude, range).Where(id => id.HasValue).Select(id => id.Value).AsEnumerable();
-            return
-                DbContext.Users.Where(u => userIds.Contains(u.UserId))
-                    .AsEnumerable()
-                    .Select(u => UserModel.CreateFromEntity(u, DbContext)).ToList();
+            return DbContext.GetProvidersInRange(latitude, longitude, range).Select(u => u.CreateFromEntity()).ToList();
         }
 
 
         public List<UserModel> GetRegisteredUsers()
         {
-            return DbContext.Users.AsEnumerable().Select(u => UserModel.CreateFromEntity(u, DbContext)).ToList();
+            return DbContext.GetUsers().Select(u => u.CreateFromEntity()).ToList();
         }
     }
 }
