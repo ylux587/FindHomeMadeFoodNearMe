@@ -9,15 +9,15 @@
     using FineHomeMadeFoodNearMe.Services.Models;
     using FineHomeMadeFoodNearMe.Services.Models.Enums;
 
-    public class FindHomeMadeFoodNearMeService : IFindHomeMadeFoodNearMeService
+    public sealed class FindHomeMadeFoodNearMeService : IFindHomeMadeFoodNearMeService
     {
-        private static readonly DataComponent DbContext = new DataComponent();
+        private static readonly IDataComponent DbContext = new DataComponent();
 
         private static readonly IGeoSearchProvider GeoServiceProvider = new BingGeoSearchProvider();
 
         public ErrorModel RegisterUser(UserModel user)
         {
-            var errors = new ErrorModel { Messages = new List<string>() };
+            var errors = new ErrorModel();
             if (user == null)
             {
                 errors.Messages.Add("No user model found");
@@ -58,7 +58,7 @@
 
         public ErrorModel AddDishToMenu(DishModel dish, long userId)
         {
-            var errors = new ErrorModel { Messages = new List<string>() };
+            var errors = new ErrorModel();
             
             if (dish == null)
             {
@@ -82,7 +82,7 @@
             }
         }
 
-        public List<DishModel> GetDishListByProviderId(long providerId)
+        public List<DishModel> GetDishesByProviderId(long providerId)
         {
             return DbContext.GetDishes()
                 .Where(d => d.ProviderId == providerId)
@@ -92,21 +92,17 @@
 
         public ErrorModel RemoveDishFromMenu(long dishId, long providerId)
         {
-            var dishToRemove = DbContext.Dishes.FirstOrDefault(d => d.DishId == dishId);
-            if (dishToRemove == null || dishToRemove.ProviderId != providerId)
-            {
-                return new ErrorModel {Messages = new List<string>{"No qualified dish found"}};
-            }
+            var errors = new ErrorModel();
 
             try
             {
-                DbContext.Dishes.Remove(dishToRemove);
-                DbContext.SaveChanges();
-                return null;
+                DbContext.RemoveDish(dishId, providerId);
+                return errors;
             }
             catch (Exception ex)
             {
-               return new ErrorModel {Messages = new List<string> {ex.Message}};
+                errors.Messages.Add(ex.Message);
+                return errors;
             }
             
         }
@@ -117,30 +113,33 @@
             return user == null ? null : UserModel.CreateFromEntity(user);
         }
 
-        public OrderModel PlaceOrder(List<long> dishIds, long userId)
+        public ErrorModel PlaceOrder(List<long> dishIds, long userId)
         {
+            var errors = new ErrorModel();
             if (dishIds == null || dishIds.Count == 0)
             {
-                return null;
+                errors.Messages.Add("No items found to order");
+                return errors;
             }
-            var dishes = DbContext.Dishes.Where(d => dishIds.Contains(d.DishId)).ToList();
-            var newOrder = new Order {OrderDate = DateTime.Now, UserId = userId, SubTotal = dishes.Sum(d => d.Price)};
-            DbContext.Orders.Add(newOrder);
-            DbContext.SaveChanges();
-            var orderId = newOrder.OrderId;
-            var dishesToOrder = dishIds.Select(dishId => new OrderItem
+            var dishes = DbContext.GetDishes().Where(d => dishIds.Contains(d.DishId)).ToList();
+            var newOrder = new OrderEntity {OrderDate = DateTime.Now, UserId = userId, SubTotal = dishes.Sum(d => d.Price)};
+
+            var dishesToOrder = dishIds.Select(dishId => new OrderItemEntity
             {
                 DishId = dishId,
                 ItemStatus = ItemStatus.Confirmed,
-                OrderId = orderId
-            });
+            }).ToList();
 
-            foreach (var newOrderItem in dishesToOrder)
+            try
             {
-                DbContext.OrderItems.Add(newOrderItem);
+                DbContext.SaveOrder(newOrder, dishesToOrder);
+                return errors;
             }
-            DbContext.SaveChanges();
-            return OrderModel.CreateFromEntity(newOrder, DbContext);
+            catch(Exception ex)
+            {
+                errors.Messages.Add(ex.Message);
+                return errors;
+            }
         }
 
         public List<UserModel> FindProvidersWithinRange(double latitude, double longitude, int range)
@@ -152,6 +151,37 @@
         public List<UserModel> GetRegisteredUsers()
         {
             return DbContext.GetUsers().Select(u => UserModel.CreateFromEntity(u)).ToList();
+        }
+
+
+        public ErrorModel RemoveDish(long dishId, long providerId)
+        {
+            var errors = new ErrorModel();
+
+            try
+            {
+                DbContext.RemoveDish(dishId, providerId);
+            }
+            catch(Exception ex)
+            {
+                errors.Messages.Add(ex.Message);
+            }
+            return errors;
+        }
+
+        public ErrorModel UpdateOrderItemStatus(long orderId, long dishId, ItemStatus targetStatus)
+        {
+            var errors = new ErrorModel();
+
+            try
+            {
+                DbContext.UpdateOrderItemStatus(orderId, dishId, targetStatus);
+            }
+            catch (Exception ex)
+            {
+                errors.Messages.Add(ex.Message);
+            }
+            return errors;
         }
     }
 }

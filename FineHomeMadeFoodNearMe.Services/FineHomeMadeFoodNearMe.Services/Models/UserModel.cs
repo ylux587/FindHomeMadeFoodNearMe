@@ -77,4 +77,28 @@
                 GeoLongitude = this.GeoLongitude
             };
         }
+
+        public static UserModel CreateFromEntity(UserEntity u)
+        {
+            return new UserModel
+            {
+                UserId = u.UserId,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Email = u.Email,
+                PhoneNumber = u.PhoneNumber,
+                AddressLine1 = u.AddressLine1,
+                AddressLine2 = u.AddressLine2,
+                AddressLine3 = u.AddressLine3,
+                City = u.City,
+                StateOrProvince = u.StateOrProvince,
+                Country = u.Country,
+                ZipCode = u.ZipCode,
+                Status = u.Status,
+                Password = u.Password,
+                GeoLatitude = u.GeoLatitude,
+                GeoLongitude = u.GeoLongitude
+            };
+        }
+    }
 }

@@ -54,5 +54,26 @@
                 Available = true
             };
         }
+
+        public static DishModel CreateFromEntity(DishEntity d)
+        {
+            if (d == null)
+            {
+                return null;
+            }
+            return new DishModel
+            {
+                DishId = d.DishId,
+                DishName = d.DishName,
+                Description = d.Description,
+                Ingredients = d.Ingredients,
+                Price = d.Price,
+                ThumbNailPictureKey = d.ThumbNailPictureKey,
+                ProviderId = d.ProviderId,
+                DishType = d.DishType,
+                WaitingTimeInMins = d.WaitingTimeInMins,
+                Available = d.Available
+            };
+        }
     }
 }

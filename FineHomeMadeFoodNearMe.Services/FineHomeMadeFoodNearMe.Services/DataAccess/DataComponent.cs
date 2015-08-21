@@ -65,18 +65,25 @@
             dbContext.ExecuteNonQuery("SaveDishes", Timeout, sqlParam);
         }
 
-        public void SaveOrders(IList<OrderEntity> ordersToSave)
+        public void SaveOrder(OrderEntity orderToSave, IList<OrderItemEntity> itemsToSave)
         {
-            if (ordersToSave == null || !ordersToSave.Any())
+            if (orderToSave == null || !itemsToSave.Any())
             {
                 return;
             }
 
-            var sqlParam = OrderEntity.BindOrderTable("@orders", ordersToSave);
-            dbContext.ExecuteNonQuery("SaveOrders", Timeout, sqlParam);
+            var userIdParam = new SqlParameter("@userId", SqlDbType.BigInt) { Value = orderToSave.UserId };
+            var orderDateParam = new SqlParameter("@orderDate", SqlDbType.DateTime2) { Value = orderToSave.OrderDate };
+            var subTotalParam = new SqlParameter("@subTotal", SqlDbType.Decimal) { Value = orderToSave.SubTotal };
+            var taxParam = new SqlParameter("@tax", SqlDbType.Decimal) { Value = orderToSave.Tax };
+            var otherChargesParam = new SqlParameter("@otherCharges", SqlDbType.Decimal) { Value = orderToSave.OtherCharges };
+            var notesParam = new SqlParameter("@notes", SqlDbType.NVarChar) { Value = orderToSave.Notes };
+            var statusParam = new SqlParameter("@status", SqlDbType.Int) { Value = (int) orderToSave.Status };
+            var orderItemParam = OrderItemEntity.BindOrderItemTable("@orderItems", itemsToSave);
+            dbContext.ExecuteNonQuery("SaveOrders", Timeout, userIdParam, orderDateParam, subTotalParam, taxParam, otherChargesParam, notesParam, statusParam, orderItemParam);
         }
 
-        public void SaveOrderItem(long orderId, IList<OrderItemEntity> orderItemsToSave)
+        public void SaveOrderItems(long orderId, IList<OrderItemEntity> orderItemsToSave)
         {
             if (orderItemsToSave == null || !orderItemsToSave.Any())
             {
@@ -101,6 +108,26 @@
         public void CancelOrder(long orderId)
         {
             dbContext.ExecuteNonQuery("CancelOrder", Timeout, new SqlParameter("@orderId", SqlDbType.BigInt) { Value = orderId });
+        }
+
+
+        public void RemoveDish(long dishId, long providerId)
+        {
+            dbContext.ExecuteNonQuery("RemoveDish", Timeout, new[] 
+            {
+                new SqlParameter("@dishId", SqlDbType.BigInt){ Value = dishId},
+                new SqlParameter("@providerId", SqlDbType.BigInt){ Value = providerId},
+            });
+        }
+
+        public void UpdateOrderItemStatus(long orderId, long dishId, Models.Enums.ItemStatus targetStatus)
+        {
+            dbContext.ExecuteNonQuery("UpdateOrderItemStatus", Timeout, new[] 
+            {
+                new SqlParameter("@orderId", SqlDbType.BigInt){ Value = orderId},
+                new SqlParameter("@dishId", SqlDbType.BigInt){ Value = dishId},
+                new SqlParameter("@targetStatus", SqlDbType.Int){ Value = (int) targetStatus},
+            });
         }
     }
 }

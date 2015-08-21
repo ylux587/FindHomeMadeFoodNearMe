@@ -79,9 +79,11 @@
     <Build Include="StoredProcedures\GetOrderItems.sql" />
     <Build Include="StoredProcedures\SaveUsers.sql" />
     <Build Include="StoredProcedures\SaveDishes.sql" />
-    <Build Include="StoredProcedures\SaveOrders.sql" />
+    <Build Include="StoredProcedures\SaveOrder.sql" />
     <Build Include="StoredProcedures\SaveOrderItems.sql" />
     <Build Include="StoredProcedures\CancelOrder.sql" />
+    <Build Include="StoredProcedures\RemoveDish.sql" />
+    <Build Include="StoredProcedures\UpdateOrderItemStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="FindHomeMadeFoodNearMe.Database.refactorlog" />

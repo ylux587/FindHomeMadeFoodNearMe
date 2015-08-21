@@ -2,6 +2,7 @@
 {
     using FineHomeMadeFoodNearMe.Services.Models;
     using System.Collections.Generic;
+    using FineHomeMadeFoodNearMe.Services.Models.Enums;
 
     public interface IFindHomeMadeFoodNearMeService
     {
@@ -9,16 +10,20 @@
 
         ErrorModel AddDishToMenu(DishModel dish, long userId);
 
-        List<DishModel> GetDishListByProviderId(long providerId);
+        List<DishModel> GetDishesByProviderId(long providerId);
 
         ErrorModel RemoveDishFromMenu(long dishId, long providerId);
 
-        UserModel GetUserInfoById(long userId);
+        UserModel GetUser(long userId);
 
-        OrderModel PlaceOrder(List<long> dishIds, long userId);
+        ErrorModel PlaceOrder(List<long> dishIds, long userId);
 
         List<UserModel> FindProvidersWithinRange(double latitude, double longitude, int range);
 
         List<UserModel> GetRegisteredUsers();
+
+        ErrorModel RemoveDish(long dishId, long providerId);
+
+        ErrorModel UpdateOrderItemStatus(long orderId, long dishId, ItemStatus targetStatus);
     }
 }

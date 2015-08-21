@@ -1,6 +1,5 @@
 ﻿namespace FineHomeMadeFoodNearMe.Services.Controllers
 {
-
     using System.Collections.Generic;
     using System.Web.Http;
     using FineHomeMadeFoodNearMe.Services.DataAccess;
@@ -30,9 +29,9 @@
         }
 
         [HttpGet]
-        public List<DishModel> GetDishListByProviderId(long providerId)
+        public List<DishModel> GetDishesByProviderId(long providerId)
         {
-            return Service.GetDishListByProviderId(providerId);
+            return Service.GetDishesByProviderId(providerId);
         }
 
         [HttpPost]
@@ -42,13 +41,13 @@
         }
 
         [HttpGet]
-        public UserModel GetUserInfoById(long userId)
+        public UserModel GetUser(long userId)
         {
-            return Service.GetUserInfoById(userId);
+            return Service.GetUser(userId);
         }
 
         [HttpPost]
-        public OrderModel PlaceOrder(List<long> dishIds, long userId)
+        public ErrorModel PlaceOrder(List<long> dishIds, long userId)
         {
             return Service.PlaceOrder(dishIds, userId);
         }
