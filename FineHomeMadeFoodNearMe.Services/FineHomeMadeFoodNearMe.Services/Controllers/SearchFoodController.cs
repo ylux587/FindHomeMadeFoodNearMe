@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Web.Http;
-    using FineHomeMadeFoodNearMe.Services.DataAccess;
     using FineHomeMadeFoodNearMe.Services.Models;
     using FineHomeMadeFoodNearMe.Services.Services;
+    using FineHomeMadeFoodNearMe.Services.Models.Enums;
 
     public class SearchFoodController : ApiController
     {
@@ -14,6 +14,12 @@
         public ErrorModel RegisterUser(UserModel user)
         {
             return Service.RegisterUser(user);
+        }
+
+        [HttpPost]
+        public long LoginUser(string email, string password)
+        {
+            return Service.LoginUser(email, password);
         }
 
         [HttpGet]
@@ -56,6 +62,12 @@
         public List<UserModel> FindProvidersWithinRange(double latitude, double longitude, int range)
         {
             return Service.FindProvidersWithinRange(latitude, longitude, range);
+        }
+
+        [HttpPost]
+        public ErrorModel UpdateOrderItemStatus(long orderId, long dishId, ItemStatus targetStatus)
+        {
+            return Service.UpdateOrderItemStatus(orderId, dishId, targetStatus);
         }
     }
 }

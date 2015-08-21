@@ -24,6 +24,17 @@
                 return errors;
             }
 
+            if (
+                DbContext.GetUsers()
+                    .Any(
+                        u =>
+                            string.Equals(u.Email, user.Email, StringComparison.OrdinalIgnoreCase) ||
+                            string.Equals(u.PhoneNumber, user.PhoneNumber, StringComparison.OrdinalIgnoreCase)))
+            {
+                errors.Messages.Add("The email address or phone number you are registering is not available. Please choose another email and phone number.");
+                return errors;
+            }
+
             var userStatus = UserStatus.PendingVerification;
             var latitude = 0d;
             var longitude = 0d;
@@ -66,6 +77,13 @@
                 return errors;
             }
 
+            var user = DbContext.GetUsers().SingleOrDefault(u => u.UserId == userId);
+            if (user == null || user.Status == UserStatus.FailedOnVerifyAddress)
+            {
+                errors.Messages.Add("Cannot add dish for any address not verified user.");
+                return errors;
+            }
+
             var newDish = dish.ToEntity();
             newDish.ProviderId = userId;
             newDish.Available = true;
@@ -86,7 +104,7 @@
         {
             return DbContext.GetDishes()
                 .Where(d => d.ProviderId == providerId)
-                .Select(d => DishModel.CreateFromEntity(d))
+                .Select(DishModel.CreateFromEntity)
                 .ToList();
         }
 
@@ -144,30 +162,15 @@
 
         public List<UserModel> FindProvidersWithinRange(double latitude, double longitude, int range)
         {
-            return DbContext.GetProvidersInRange(latitude, longitude, range).Select(u => UserModel.CreateFromEntity(u)).ToList();
+            return DbContext.GetProvidersInRange(latitude, longitude, range).Select(UserModel.CreateFromEntity).ToList();
         }
 
 
         public List<UserModel> GetRegisteredUsers()
         {
-            return DbContext.GetUsers().Select(u => UserModel.CreateFromEntity(u)).ToList();
+            return DbContext.GetUsers().Select(UserModel.CreateFromEntity).ToList();
         }
 
-
-        public ErrorModel RemoveDish(long dishId, long providerId)
-        {
-            var errors = new ErrorModel();
-
-            try
-            {
-                DbContext.RemoveDish(dishId, providerId);
-            }
-            catch(Exception ex)
-            {
-                errors.Messages.Add(ex.Message);
-            }
-            return errors;
-        }
 
         public ErrorModel UpdateOrderItemStatus(long orderId, long dishId, ItemStatus targetStatus)
         {
@@ -182,6 +185,24 @@
                 errors.Messages.Add(ex.Message);
             }
             return errors;
+        }
+
+
+        public long LoginUser(string email, string password)
+        {
+            const long invalidUserId = -1L;
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                return invalidUserId;
+            }
+            var user =
+                DbContext.GetUsers()
+                    .SingleOrDefault(u => string.Equals(email, u.Email, StringComparison.OrdinalIgnoreCase));
+            if (user != null && string.Equals(user.Password, password, StringComparison.Ordinal))
+            {
+                return user.UserId;
+            }
+            return invalidUserId;
         }
     }
 }

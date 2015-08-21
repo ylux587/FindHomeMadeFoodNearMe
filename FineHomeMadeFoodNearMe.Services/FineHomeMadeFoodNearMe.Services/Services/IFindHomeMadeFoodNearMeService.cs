@@ -8,6 +8,8 @@
     {
         ErrorModel RegisterUser(UserModel user);
 
+        long LoginUser(string email, string password);
+
         ErrorModel AddDishToMenu(DishModel dish, long userId);
 
         List<DishModel> GetDishesByProviderId(long providerId);
@@ -21,8 +23,6 @@
         List<UserModel> FindProvidersWithinRange(double latitude, double longitude, int range);
 
         List<UserModel> GetRegisteredUsers();
-
-        ErrorModel RemoveDish(long dishId, long providerId);
 
         ErrorModel UpdateOrderItemStatus(long orderId, long dishId, ItemStatus targetStatus);
     }

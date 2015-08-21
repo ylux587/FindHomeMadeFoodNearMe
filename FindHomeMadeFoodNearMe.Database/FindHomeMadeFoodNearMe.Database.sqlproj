@@ -88,4 +88,8 @@
   <ItemGroup>
     <RefactorLog Include="FindHomeMadeFoodNearMe.Database.refactorlog" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="FindHomeMadeFoodNearMe.Database.publish.xml" />
+    <None Include="FindHomeMadeFoodNearMe.Local.publish.xml" />
+  </ItemGroup>
 </Project>
