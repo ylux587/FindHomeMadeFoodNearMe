@@ -154,6 +154,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataAccess\Entities\OrderItemEntity.cs" />
+    <Compile Include="DataAccess\Entities\ProviderEntity.cs" />
     <Compile Include="DataAccess\Entities\UserEntity.cs" />
     <Compile Include="DataAccess\Entities\DishEntity.cs" />
     <Compile Include="DataAccess\IDataComponent.cs" />
@@ -168,11 +169,13 @@
     <Compile Include="Models\DishModel.cs" />
     <Compile Include="Models\Enums\DishType.cs" />
     <Compile Include="Models\Enums\ItemStatus.cs" />
+    <Compile Include="Models\Enums\ProviderStatus.cs" />
     <Compile Include="Models\Enums\UserStatus.cs" />
     <Compile Include="Models\Enums\OrderStatus.cs" />
     <Compile Include="Models\ErrorModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\SearchFoodModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
@@ -181,6 +184,7 @@
     <Compile Include="Models\RemoveDishModel.cs" />
     <Compile Include="Models\UpdateOrderItemModel.cs" />
     <Compile Include="Models\UserErrorModel.cs" />
+    <Compile Include="Models\ProvidreModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IFindHomeMadeFoodNearMeService.cs" />

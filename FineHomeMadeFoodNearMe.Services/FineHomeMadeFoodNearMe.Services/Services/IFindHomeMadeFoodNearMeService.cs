@@ -6,13 +6,13 @@
 
     public interface IFindHomeMadeFoodNearMeService
     {
-        UserErrorModel RegisterUser(UserModel user);
+        UserErrorModel RegisterUser(RegisterModel model);
 
         UserErrorModel LoginUser(LoginModel login);
 
         ErrorModel AddDishToMenu(AddDishModel model);
 
-        List<DishModel> GetDishesByProviderId(long providerId);
+        List<DishModel> GetDishes(long providerId);
 
         ErrorModel RemoveDishFromMenu(RemoveDishModel removeModel);
 

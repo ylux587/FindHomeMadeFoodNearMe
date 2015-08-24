@@ -13,19 +13,21 @@ BEGIN
         u.[LastName], 
         u.[Email], 
         u.[PhoneNumber], 
-        u.[AddressLine1], 
-        u.[AddressLine2], 
-        u.[AddressLine3], 
-        u.[City], 
-        u.[StateOrProvince], 
-        u.[Country],
-        u.[ZipCode], 
-        u.[Status], 
-        u.[GeoLatitude], 
-        u.[GeoLongitude]
+        u.[UserStatus],
+        p.[AddressLine1], 
+        p.[AddressLine2], 
+        p.[AddressLine3], 
+        p.[City], 
+        p.[StateOrProvince], 
+        p.[Country],
+        p.[ZipCode], 
+        p.[ProviderStatus], 
+        p.[GeoLatitude], 
+        p.[GeoLongitude]
     FROM Users u
-    INNER JOIN Dishes d ON u.UserId = d.ProviderId
-    WHERE u.[Status] = 1 AND u.GeoLatitude IS NOT NULL AND u.GeoLongitude IS NOT NULL
-    AND [dbo].[CalculateDistance](@sourceLatitude, @sourceLongtitude, u.GeoLatitude, u.GeoLongitude) <= @range
+    INNER JOIN Providers p ON u.UserId = p.ProviderId
+    INNER JOIN Dishes d ON p.ProviderId = d.ProviderId
+    WHERE u.[UserStatus] = 1 AND p.[ProviderStatus] = 1 AND p.GeoLatitude <> 0 AND p.GeoLongitude <> 0
+    AND [dbo].[CalculateDistance](@sourceLatitude, @sourceLongtitude, p.GeoLatitude, p.GeoLongitude) <= @range
 
 END

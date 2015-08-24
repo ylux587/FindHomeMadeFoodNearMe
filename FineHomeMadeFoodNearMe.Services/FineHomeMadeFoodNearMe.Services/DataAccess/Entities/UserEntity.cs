@@ -23,27 +23,9 @@
 
         public string PhoneNumber { get; set; }
 
-        public string AddressLine1 { get; set; }
-
-        public string AddressLine2 { get; set; }
-
-        public string AddressLine3 { get; set; }
-
-        public string City { get; set; }
-
-        public string StateOrProvince { get; set; }
-
-        public string Country { get; set; }
-
-        public UserStatus Status { get; set; }
-
-        public double GeoLatitude { get; set; }
-
-        public double GeoLongitude { get; set; }
-
-        public string ZipCode { get; set; }
-
         public string Password { get; set; }
+
+        public UserStatus UserStatus { get; set; }
 
         public class UserEntityColumns : IEntityBinder<UserEntity>
         {
@@ -52,17 +34,8 @@
             private SqlColumnBinder lastNameColumn = new SqlColumnBinder("LastName");
             private SqlColumnBinder emailColumn = new SqlColumnBinder("Email");
             private SqlColumnBinder phoneNumberColumn = new SqlColumnBinder("PhoneNumber");
-            private SqlColumnBinder addressLine1Column = new SqlColumnBinder("AddressLine1");
-            private SqlColumnBinder addressLine2Column = new SqlColumnBinder("AddressLine2");
-            private SqlColumnBinder addressLine3Column = new SqlColumnBinder("AddressLine3");
-            private SqlColumnBinder cityColumn = new SqlColumnBinder("City");
-            private SqlColumnBinder stateOrProvinceColumn = new SqlColumnBinder("StateOrProvince");
-            private SqlColumnBinder countryColumn = new SqlColumnBinder("Country");
-            private SqlColumnBinder statusColumn = new SqlColumnBinder("Status");
-            private SqlColumnBinder geoLatitudeColumn = new SqlColumnBinder("GeoLatitude");
-            private SqlColumnBinder geoLongitudeColumn = new SqlColumnBinder("GeoLongitude");
-            private SqlColumnBinder zipCodeColumn = new SqlColumnBinder("ZipCode");
             private SqlColumnBinder passwordColumn = new SqlColumnBinder("Password");
+            private SqlColumnBinder userStatusColumn = new SqlColumnBinder("UserStatus");
 
             private static IEntityBinder<UserEntity> instance;
 
@@ -88,17 +61,8 @@
                     LastName = lastNameColumn.GetString(reader, false),
                     Email = emailColumn.GetString(reader, false),
                     PhoneNumber = phoneNumberColumn.GetString(reader, false),
-                    AddressLine1 = addressLine1Column.GetString(reader, false),
-                    AddressLine2 = addressLine2Column.GetString(reader, true),
-                    AddressLine3 = addressLine3Column.GetString(reader, true),
-                    City = cityColumn.GetString(reader, false),
-                    StateOrProvince = stateOrProvinceColumn.GetString(reader, true),
-                    Country = countryColumn.GetString(reader, false),
-                    Status = (UserStatus)statusColumn.GetInt32(reader),
-                    GeoLatitude = geoLatitudeColumn.GetDouble(reader),
-                    GeoLongitude = geoLongitudeColumn.GetDouble(reader),
-                    ZipCode = zipCodeColumn.GetString(reader, false),
-                    Password = passwordColumn.GetString(reader, false)
+                    Password = passwordColumn.GetString(reader, false),
+                    UserStatus = (UserStatus)userStatusColumn.GetInt32(reader),
                 };
 
                 return result;
@@ -118,22 +82,12 @@
             {
                 SqlDataRecord record = new SqlDataRecord(typ_UserTable);
 
-                record.SetInt64(0, user.UserId);
-                record.SetString(1, user.FirstName);
-                record.SetString(2, user.LastName);
-                record.SetString(3, user.Email);
+                record.SetString(0, user.Email);
+                record.SetString(1, user.Password);
+                record.SetString(2, user.FirstName);
+                record.SetString(3, user.LastName);
                 record.SetString(4, user.PhoneNumber);
-                record.SetString(5, user.AddressLine1);
-                record.SetString(6, user.AddressLine2);
-                record.SetString(7, user.AddressLine3);
-                record.SetString(8, user.City);
-                record.SetString(9, user.StateOrProvince);
-                record.SetString(10, user.Country);
-                record.SetInt32(11, (int) user.Status);
-                record.SetDouble(12, user.GeoLatitude);
-                record.SetDouble(13, user.GeoLongitude);
-                record.SetString(14, user.ZipCode);
-                record.SetString(15, user.Password);
+                record.SetInt32(5, (int) user.UserStatus);
 
                 yield return record;
             }
@@ -141,22 +95,12 @@
 
         private static readonly SqlMetaData[] typ_UserTable = new SqlMetaData[]
         {
-            new SqlMetaData("UserId", SqlDbType.BigInt),
+            new SqlMetaData("Email", SqlDbType.NVarChar, 200),
+            new SqlMetaData("Password", SqlDbType.NVarChar, 20),
             new SqlMetaData("FirstName", SqlDbType.NVarChar, 200),
             new SqlMetaData("LastName", SqlDbType.NVarChar, 200),
-            new SqlMetaData("Email", SqlDbType.NVarChar, 200),
             new SqlMetaData("PhoneNumber", SqlDbType.NVarChar, 200),
-            new SqlMetaData("AddressLine1", SqlDbType.NVarChar, 200),
-            new SqlMetaData("AddressLine2", SqlDbType.NVarChar, 200),
-            new SqlMetaData("AddressLine3", SqlDbType.NVarChar, 200),
-            new SqlMetaData("City", SqlDbType.NVarChar, 50),
-            new SqlMetaData("StateOrProvince", SqlDbType.NVarChar, 50),
-            new SqlMetaData("Country", SqlDbType.NVarChar, 10),
-            new SqlMetaData("Status", SqlDbType.Int),
-            new SqlMetaData("GeoLatitude", SqlDbType.Float),
-            new SqlMetaData("GeoLongitude", SqlDbType.Float),
-            new SqlMetaData("ZipCode", SqlDbType.NVarChar, 10),
-            new SqlMetaData("Password", SqlDbType.NVarChar, 20),
+            new SqlMetaData("UserStatus", SqlDbType.Int),
         };
     }
 }

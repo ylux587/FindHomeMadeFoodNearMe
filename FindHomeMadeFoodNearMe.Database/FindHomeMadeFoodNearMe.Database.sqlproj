@@ -64,26 +64,30 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Dishes.sql" />
-    <Build Include="Tables\Users.sql" />
+    <Build Include="Tables\Providers.sql" />
     <Build Include="Tables\Orders.sql" />
     <Build Include="Tables\OrderItems.sql" />
     <Build Include="StoredProcedures\GetProvidersInRange.sql" />
     <Build Include="Functions\CalculateDistance.sql" />
     <Build Include="Types\typ_Dishes_v1.sql" />
-    <Build Include="Types\typ_Users_v1.sql" />
+    <Build Include="Types\typ_Providers_v1.sql" />
     <Build Include="Types\typ_Orders_v1.sql" />
     <Build Include="Types\typ_OrderItems_v1.sql" />
     <Build Include="StoredProcedures\GetUsers.sql" />
     <Build Include="StoredProcedures\GetOrders.sql" />
     <Build Include="StoredProcedures\GetDishes.sql" />
     <Build Include="StoredProcedures\GetOrderItems.sql" />
-    <Build Include="StoredProcedures\SaveUsers.sql" />
     <Build Include="StoredProcedures\SaveDishes.sql" />
     <Build Include="StoredProcedures\SaveOrderItems.sql" />
     <Build Include="StoredProcedures\CancelOrder.sql" />
     <Build Include="StoredProcedures\RemoveDish.sql" />
     <Build Include="StoredProcedures\UpdateOrderItemStatus.sql" />
     <Build Include="StoredProcedures\SaveOrder.sql" />
+    <Build Include="Tables\Users.sql" />
+    <Build Include="Types\typ_Users_v1.sql" />
+    <Build Include="StoredProcedures\SaveProviders.sql" />
+    <Build Include="StoredProcedures\SaveUsers.sql" />
+    <Build Include="StoredProcedures\GetProviders.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="FindHomeMadeFoodNearMe.Database.refactorlog" />

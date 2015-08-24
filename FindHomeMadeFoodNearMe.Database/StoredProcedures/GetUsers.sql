@@ -9,16 +9,7 @@ BEGIN
         [FirstName], 
         [LastName], 
         [Email], 
-        [PhoneNumber], 
-        [AddressLine1], 
-        [AddressLine2], 
-        [AddressLine3], 
-        [City], 
-        [StateOrProvince], 
-        [Country],
-        [ZipCode], 
-        [Status], 
-        [GeoLatitude], 
-        [GeoLongitude]
+        [PhoneNumber],
+        [UserStatus]
     FROM [dbo].[Users]
 END

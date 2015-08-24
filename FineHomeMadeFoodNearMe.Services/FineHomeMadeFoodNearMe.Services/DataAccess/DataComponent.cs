@@ -28,6 +28,11 @@
             return dbContext.ExecuteReader("GetUsers", UserEntity.UserEntityColumns.Instance, null, Timeout);
         }
 
+        public IList<ProviderEntity> GetProviders()
+        {
+            return dbContext.ExecuteReader("GetProviders", ProviderEntity.ProviderEntityColumns.Instance, null, Timeout);
+        }
+
         public IList<DishEntity> GetDishes()
         {
             return dbContext.ExecuteReader("GetDishes", DishEntity.DishEntityColumns.Instance, null, Timeout);
@@ -52,6 +57,17 @@
 
             var sqlParam = UserEntity.BindUserTable("@users", usersToSave);
             dbContext.ExecuteNonQuery("SaveUsers", Timeout, sqlParam);
+        }
+
+        public void SaveProviders(IList<ProviderEntity> providersToSave)
+        {
+            if (providersToSave == null || !providersToSave.Any())
+            {
+                return;
+            }
+
+            var sqlParam = ProviderEntity.BindProviderTable("@providers", providersToSave);
+            dbContext.ExecuteNonQuery("SaveProviders", Timeout, sqlParam);
         }
 
         public void SaveDishes(IList<DishEntity> dishesToSave)

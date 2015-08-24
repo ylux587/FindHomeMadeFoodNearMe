@@ -1,8 +1,9 @@
 ﻿namespace FineHomeMadeFoodNearMe.Services.Models.Enums
 {
-    public enum UserStatus : int
+    public enum ProviderStatus : int
     {
         PendingVerification = 0,
-        Verified = 1
+        Verified = 1,
+        FailedOnVerifyAddress = 2,
     }
 }

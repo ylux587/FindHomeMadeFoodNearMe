@@ -8,6 +8,8 @@
     {
         IList<UserEntity> GetUsers();
 
+        IList<ProviderEntity> GetProviders();
+
         IList<DishEntity> GetDishes();
 
         IList<OrderEntity> GetOrders();
@@ -15,6 +17,8 @@
         IList<OrderItemEntity> GetOrderItems();
 
         void SaveUsers(IList<UserEntity> usersToSave);
+
+        void SaveProviders(IList<ProviderEntity> providersToSave);
 
         void SaveDishes(IList<DishEntity> dishesToSave);
 

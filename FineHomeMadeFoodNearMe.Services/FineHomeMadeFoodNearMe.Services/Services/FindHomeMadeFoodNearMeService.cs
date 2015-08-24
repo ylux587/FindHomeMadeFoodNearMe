@@ -15,12 +15,18 @@
 
         private static readonly IGeoSearchProvider GeoServiceProvider = new BingGeoSearchProvider();
 
-        public UserErrorModel RegisterUser(UserModel user)
+        public UserErrorModel RegisterUser(RegisterModel model)
         {
             var errors = new UserErrorModel();
-            if (user == null)
+            if (model == null)
             {
-                errors.Messages.Add("No user model found");
+                errors.Messages.Add("Invalid data.");
+                return errors;
+            }
+
+            if (model.UserInfo == null)
+            {
+                errors.Messages.Add("Invalid user data.");
                 return errors;
             }
 
@@ -28,43 +34,50 @@
                 DbContext.GetUsers()
                     .Any(
                         u =>
-                            string.Equals(u.Email, user.Email, StringComparison.OrdinalIgnoreCase) ||
-                            string.Equals(u.PhoneNumber, user.PhoneNumber, StringComparison.OrdinalIgnoreCase)))
+                            string.Equals(u.Email, model.UserInfo.Email, StringComparison.OrdinalIgnoreCase) ||
+                            string.Equals(u.PhoneNumber, model.UserInfo.PhoneNumber, StringComparison.OrdinalIgnoreCase)))
             {
                 errors.Messages.Add("The email address or phone number you are registering is not available. Please choose another email and phone number.");
                 return errors;
             }
 
-            var userStatus = UserStatus.PendingVerification;
-            var latitude = 0d;
-            var longitude = 0d;
-            var coordinates = GeoServiceProvider.FindGeoLocationByAddress(user.StateOrProvince, user.ZipCode, user.City,
-                user.AddressLine1);
+            var newUser = model.UserInfo.ToEntity();
+            newUser.UserStatus = UserStatus.PendingVerification;
 
-            if (coordinates == null || coordinates.Length != 2)
+            var newProvider = default(ProviderEntity);
+            if (model.ProviderInfo != null)
             {
-                errors.Messages.Add("Cannot verify the users address");
-                userStatus = UserStatus.FailedOnVerifyAddress;
+                newProvider = model.ProviderInfo.ToEntity();
+                var coordinates = GeoServiceProvider.FindGeoLocationByAddress(model.ProviderInfo.StateOrProvince, model.ProviderInfo.ZipCode, model.ProviderInfo.City,
+                    model.ProviderInfo.AddressLine1);
+
+                if (coordinates == null || coordinates.Length != 2)
+                {
+                    errors.Messages.Add("Cannot verify the provider address");
+                    newProvider.ProviderStatus = ProviderStatus.FailedOnVerifyAddress;
+                }
+                else
+                {
+                    newProvider.GeoLatitude = coordinates[0];
+                    newProvider.GeoLongitude = coordinates[1];
+                }
             }
-            else
-            {
-                latitude = coordinates[0];
-                longitude = coordinates[1];
-            }
-            var newUser = user.ToEntity();
-            newUser.Status = userStatus;
-            newUser.GeoLatitude = latitude;
-            newUser.GeoLongitude = longitude;
 
             try
             {
-                DbContext.SaveUsers(new List<UserEntity>{newUser});
+                DbContext.SaveUsers(new List<UserEntity> { newUser });
                 errors.UserId = DbContext.GetUsers().Single(u => string.Equals(u.Email, newUser.Email, StringComparison.OrdinalIgnoreCase)).UserId;
+                if (newProvider != null)
+                {
+                    newProvider.ProviderId = errors.UserId;
+                    DbContext.SaveProviders(new List<ProviderEntity> { newProvider });
+                }
+
                 return errors;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return new UserErrorModel {Messages = new List<string> {ex.Message}};
+                return new UserErrorModel { Messages = new List<string> { ex.Message } };
             }
         }
 
@@ -84,8 +97,8 @@
                 return errors;
             }
 
-            var user = DbContext.GetUsers().SingleOrDefault(u => u.UserId == model.ProviderId);
-            if (user == null || user.Status == UserStatus.FailedOnVerifyAddress)
+            var provider = DbContext.GetProviders().SingleOrDefault(p => p.ProviderId == model.ProviderId);
+            if (provider == null || provider.ProviderStatus == ProviderStatus.FailedOnVerifyAddress)
             {
                 errors.Messages.Add("Cannot add dish for any address not verified user.");
                 return errors;
@@ -107,7 +120,7 @@
             }
         }
 
-        public List<DishModel> GetDishesByProviderId(long providerId)
+        public List<DishModel> GetDishes(long providerId)
         {
             return DbContext.GetDishes()
                 .Where(d => d.ProviderId == providerId)

@@ -11,9 +11,9 @@
         private static readonly IFindHomeMadeFoodNearMeService Service = new FindHomeMadeFoodNearMeService();
 
         [HttpPost]
-        public UserErrorModel RegisterUser(UserModel user)
+        public UserErrorModel RegisterUser(RegisterModel model)
         {
-            return Service.RegisterUser(user);
+            return Service.RegisterUser(model);
         }
 
         [HttpPost]
@@ -37,7 +37,7 @@
         [HttpGet]
         public List<DishModel> GetDishesByProviderId(long providerId)
         {
-            return Service.GetDishesByProviderId(providerId);
+            return Service.GetDishes(providerId);
         }
 
         [HttpPost]
