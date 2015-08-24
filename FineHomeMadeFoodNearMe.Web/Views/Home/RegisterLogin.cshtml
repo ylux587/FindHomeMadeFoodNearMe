@@ -13,10 +13,8 @@
 
 <style type="text/css">
     #userNameInput, #passwordInput, #loginButton {
-        width: 300px;
-    }
-    div#passwordInput, #loginButton {
-        margin-top: 10px;
+        width: 350px;
+        margin-top: 15px;
     }
     span.required {
         color: red;
@@ -38,20 +36,19 @@
 
 </div>
 <div id="loginSection" style="display: none;">
-    <div id="userNameInput">
-        <lable id="usernameLable" for="username" class="required">Email*</lable>
+    <div id="userNameInput" class="row">
+        <label id="usernameLable" for="username" class="required">Email*</label>
         <span id="usernameError" class="required">required</span>
         <input id="username" type="text" maxlength="20" />
     </div>
-    <div id="passwordInput">
-        <lable id="passwordLable" for="password" class="required">Password*</lable>
+    <div id="passwordInput" class="row">
+        <label id="passwordLable" for="password" class="required">Password*</label>
         <span id="passwordError" class="required">required</span>
         <input id="password" type="password" maxlength="20" />
     </div>
-    <div id="loginButton">
+    <div id="loginButton" class="row">
         <button id="loginbtn" class="btn-primary" onclick="javascript:loginClicked();">Login</button>
     </div>
-    <div class="clear" />
 </div>
 <script type="text/javascript">
     var model = @Html.Raw(Json.Encode(Model));
@@ -75,9 +72,9 @@
         if (!isValid) {
             return false;
         }
-        var data = { "email": usernameValue, "password": passwordValue };
+        var postData = { "Username": usernameValue, "Password": passwordValue };
         $.ajax({ url: baseAddress + "/SearchFood/LoginUser",
-            data: JSON.stringify(data),
+            data: JSON.stringify(postData),
             type: 'POST',
             success: function(data){
                 console.log(data);

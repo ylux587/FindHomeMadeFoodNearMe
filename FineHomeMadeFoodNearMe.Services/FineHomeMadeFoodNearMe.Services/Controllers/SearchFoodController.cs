@@ -17,9 +17,9 @@
         }
 
         [HttpPost]
-        public long LoginUser(string email, string password)
+        public long LoginUser(LoginModel login)
         {
-            return Service.LoginUser(email, password);
+            return Service.LoginUser(login);
         }
 
         [HttpGet]

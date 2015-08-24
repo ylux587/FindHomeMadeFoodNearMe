@@ -172,6 +172,7 @@
     <Compile Include="Models\ErrorModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\OrderItemModel.cs" />
     <Compile Include="Models\UserErrorModel.cs" />

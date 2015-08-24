@@ -189,9 +189,15 @@
         }
 
 
-        public long LoginUser(string email, string password)
+        public long LoginUser(LoginModel login)
         {
             const long invalidUserId = -1L;
+            if (login == null)
+            {
+                return invalidUserId;
+            }
+            var email = login.Username;
+            var password = login.Password;
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
                 return invalidUserId;

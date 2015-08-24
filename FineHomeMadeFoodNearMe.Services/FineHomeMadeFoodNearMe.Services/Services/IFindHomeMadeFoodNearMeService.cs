@@ -8,7 +8,7 @@
     {
         UserErrorModel RegisterUser(UserModel user);
 
-        long LoginUser(string email, string password);
+        long LoginUser(LoginModel login);
 
         ErrorModel AddDishToMenu(DishModel dish, long userId);
 

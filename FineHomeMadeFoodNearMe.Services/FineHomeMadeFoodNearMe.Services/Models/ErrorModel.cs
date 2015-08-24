@@ -3,7 +3,7 @@
     using System.Runtime.Serialization;
     using System.Collections.Generic;
 
-     [DataContract]
+    [DataContract]
     public class ErrorModel
     {
         public ErrorModel()
