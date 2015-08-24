@@ -11,7 +11,7 @@
         private static readonly IFindHomeMadeFoodNearMeService Service = new FindHomeMadeFoodNearMeService();
 
         [HttpPost]
-        public ErrorModel RegisterUser(UserModel user)
+        public UserErrorModel RegisterUser(UserModel user)
         {
             return Service.RegisterUser(user);
         }

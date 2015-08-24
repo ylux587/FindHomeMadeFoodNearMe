@@ -9,7 +9,7 @@ namespace FineHomeMadeFoodNearMe.Services.GeoLocationService
 
     public sealed class BingGeoSearchProvider : IGeoSearchProvider
     {
-        private const string BingMapKey = "AlXmunxcL98vZy4vRQoDgJLHwIuPGDMuDZhqFw1QyJHw18ko0dtBwaVhBpNfi-CN";
+        private const string BingMapKey = "AiEDanDjO45pfFBiTUD7_bAhjTnvXr-3-OoM0hmzx8_wNMe-Qt6AW-BLwxDIJuFR";
 
         private const string BingAddressSearchUrlTemplate =
             "http://dev.virtualearth.net/REST/v1/Locations/US/{0}/{1}/{2}/{3}?includeNeighborhood=0&maxResults=10&key={4}";

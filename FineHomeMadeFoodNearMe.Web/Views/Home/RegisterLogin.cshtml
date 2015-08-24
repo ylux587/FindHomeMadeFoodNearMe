@@ -1,0 +1,108 @@
+﻿@model FineHomeMadeFoodNearMe.Web.Models.RegisterLoginModel
+
+@{
+    if (@Model.InRegister)
+    {
+        ViewBag.Title = "Register";
+    }
+    else
+    {
+        ViewBag.Title = "Login";
+    }
+}
+
+<style type="text/css">
+    #userNameInput, #passwordInput, #loginButton {
+        width: 300px;
+    }
+    div#passwordInput, #loginButton {
+        margin-top: 10px;
+    }
+    span.required {
+        color: red;
+        display: none;
+    }
+    input {
+        float: right;
+    }
+    #loginbtn {
+        float: right;
+    }
+    .clear {
+        clear: both;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
+<div id="registerSection" style="display: none;">
+
+</div>
+<div id="loginSection" style="display: none;">
+    <div id="userNameInput">
+        <lable id="usernameLable" for="username" class="required">Email*</lable>
+        <span id="usernameError" class="required">required</span>
+        <input id="username" type="text" maxlength="20" />
+    </div>
+    <div id="passwordInput">
+        <lable id="passwordLable" for="password" class="required">Password*</lable>
+        <span id="passwordError" class="required">required</span>
+        <input id="password" type="password" maxlength="20" />
+    </div>
+    <div id="loginButton">
+        <button id="loginbtn" class="btn-primary" onclick="javascript:loginClicked();">Login</button>
+    </div>
+    <div class="clear" />
+</div>
+<script type="text/javascript">
+    var model = @Html.Raw(Json.Encode(Model));
+    var inRegister = model.InRegister;
+    var baseAddress = "http://finehomemadefoodnearmeservices.azurewebsites.net"
+
+    function loginClicked() {
+        $('span.required').hide();
+
+        var usernameValue = $('#username').val();
+        var passwordValue = $('#password').val();
+        var isValid = true;
+        console.log(usernameValue);
+        console.log(passwordValue);
+        if (usernameValue == "") {
+            $('#usernameError').show();
+            isValid = false;
+        }
+        if (passwordValue =="") {
+            $('#passwordError').show();
+            isValid = false;
+        }
+        if (!isValid) {
+            return false;
+        }
+        var data = { "email": usernameValue, "password": passwordValue };
+        $.ajax({ url: baseAddress + "/SearchFood/LoginUser",
+            data: JSON.stringify(data),
+            type: 'POST',
+            success: function(data){
+                console.log(data);
+            },
+            error: function(data) {
+                alert('Error');
+                console.log(data);
+            }
+        });
+    }
+
+    function registerClicked(){
+
+    }
+
+    $(document).ready(function () {
+        if (inRegister) {
+            $('div#registerSection').show();
+            $('div#loginSection').hide();
+        }
+        else {
+            $('div#registerSection').hide();
+            $('div#loginSection').show();
+        }
+    });
+</script>

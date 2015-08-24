@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Find home made food near you";
+}
+<h2>@ViewBag.Title.</h2>
+<section class="featured">
+    <div class="content-wrapper">
+        <img src="/Content/Images/home_soul.jpg">
+    </div>
+</section>
+<div>
+    @Html.ActionLink("Register", "Register", "Home", new { area = "" }, new { @class = "", style="margin-right: 10px;" })
+    @Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "", style = "margin-right: 10px;" })
+</div>

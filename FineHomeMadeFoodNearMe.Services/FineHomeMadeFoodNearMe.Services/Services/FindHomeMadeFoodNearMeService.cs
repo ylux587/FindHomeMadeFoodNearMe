@@ -15,9 +15,9 @@
 
         private static readonly IGeoSearchProvider GeoServiceProvider = new BingGeoSearchProvider();
 
-        public ErrorModel RegisterUser(UserModel user)
+        public UserErrorModel RegisterUser(UserModel user)
         {
-            var errors = new ErrorModel();
+            var errors = new UserErrorModel();
             if (user == null)
             {
                 errors.Messages.Add("No user model found");
@@ -59,6 +59,7 @@
             try
             {
                 DbContext.SaveUsers(new List<UserEntity>{newUser});
+                errorModel.UserId = DbContext.GetUsers().Single(user => string.Equals(user.Email, newUser.Email, StringComparison.OrdinalIgnoreCase)).UserId;
                 return errors;
             }
             catch(Exception ex)

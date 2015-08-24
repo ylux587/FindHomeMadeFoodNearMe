@@ -6,7 +6,7 @@
 
     public interface IFindHomeMadeFoodNearMeService
     {
-        ErrorModel RegisterUser(UserModel user);
+        UserErrorModel RegisterUser(UserModel user);
 
         long LoginUser(string email, string password);
 

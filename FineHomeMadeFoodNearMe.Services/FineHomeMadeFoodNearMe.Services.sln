@@ -14,11 +14,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{E8FDB407-72D2-44FC-9181-72957D625279}"
 	ProjectSection(SolutionItems) = preProject
 		PublishScripts\Configurations\FineHomeMadeFoodNearMeServices-WAWS-dev.json = PublishScripts\Configurations\FineHomeMadeFoodNearMeServices-WAWS-dev.json
+		PublishScripts\Configurations\FineHomeMadeFoodNearMeWeb-WAWS-dev.json = PublishScripts\Configurations\FineHomeMadeFoodNearMeWeb-WAWS-dev.json
 	EndProjectSection
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "FindHomeMadeFoodNearMe.Database", "..\FindHomeMadeFoodNearMe.Database\FindHomeMadeFoodNearMe.Database.sqlproj", "{CAA44BC1-D154-4CD9-B4EF-A4F353BCB46B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindHomeMadeFoodNearMe.DataAccessHelper", "..\FindHomeMadeFoodNearMe.DataAccessHelper\FindHomeMadeFoodNearMe.DataAccessHelper.csproj", "{E3816380-986B-4464-8CC6-F253AE20662E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FineHomeMadeFoodNearMe.Web", "..\FineHomeMadeFoodNearMe.Web\FineHomeMadeFoodNearMe.Web.csproj", "{8C72F6F9-EFE9-4C7A-AAF8-FE0D2EA79D3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +43,10 @@ Global
 		{E3816380-986B-4464-8CC6-F253AE20662E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3816380-986B-4464-8CC6-F253AE20662E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3816380-986B-4464-8CC6-F253AE20662E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C72F6F9-EFE9-4C7A-AAF8-FE0D2EA79D3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C72F6F9-EFE9-4C7A-AAF8-FE0D2EA79D3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C72F6F9-EFE9-4C7A-AAF8-FE0D2EA79D3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C72F6F9-EFE9-4C7A-AAF8-FE0D2EA79D3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
