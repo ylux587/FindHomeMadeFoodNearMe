@@ -68,17 +68,23 @@
             }
         }
 
-        public ErrorModel AddDishToMenu(DishModel dish, long userId)
+        public ErrorModel AddDishToMenu(AddDishModel model)
         {
             var errors = new ErrorModel();
-            
+            if (model == null)
+            {
+                errors.Messages.Add("Invalid data.");
+                return errors;
+            }
+
+            var dish = model.DishToAdd;
             if (dish == null)
             {
                 errors.Messages.Add("No dish found to add");
                 return errors;
             }
 
-            var user = DbContext.GetUsers().SingleOrDefault(u => u.UserId == userId);
+            var user = DbContext.GetUsers().SingleOrDefault(u => u.UserId == model.ProviderId);
             if (user == null || user.Status == UserStatus.FailedOnVerifyAddress)
             {
                 errors.Messages.Add("Cannot add dish for any address not verified user.");
@@ -86,7 +92,7 @@
             }
 
             var newDish = dish.ToEntity();
-            newDish.ProviderId = userId;
+            newDish.ProviderId = model.ProviderId;
             newDish.Available = true;
 
             try 
@@ -109,9 +115,17 @@
                 .ToList();
         }
 
-        public ErrorModel RemoveDishFromMenu(long dishId, long providerId)
+        public ErrorModel RemoveDishFromMenu(RemoveDishModel removeModel)
         {
             var errors = new ErrorModel();
+
+            if (removeModel == null)
+            {
+                errors.Messages.Add("Invalid data.");
+                return errors;
+            }
+            var dishId = removeModel.DishId;
+            var providerId = removeModel.ProviderId;
 
             try
             {
@@ -132,9 +146,17 @@
             return user == null ? null : UserModel.CreateFromEntity(user);
         }
 
-        public ErrorModel PlaceOrder(List<long> dishIds, long userId)
+        public ErrorModel PlaceOrder(PlaceOrderModel orderPlaceModel)
         {
             var errors = new ErrorModel();
+            if (orderPlaceModel == null)
+            {
+                errors.Messages.Add("Invalid data.");
+                return errors;
+            }
+            var dishIds = orderPlaceModel.DishIds;
+            var userId = orderPlaceModel.UserId;
+
             if (dishIds == null || dishIds.Count == 0)
             {
                 errors.Messages.Add("No items found to order");
@@ -161,9 +183,13 @@
             }
         }
 
-        public List<UserModel> FindProvidersWithinRange(double latitude, double longitude, int range)
+        public List<UserModel> FindProvidersWithinRange(SearchFoodModel searchModel)
         {
-            return DbContext.GetProvidersInRange(latitude, longitude, range).Select(UserModel.CreateFromEntity).ToList();
+            if (searchModel == null)
+            {
+                return null;
+            }
+            return DbContext.GetProvidersInRange(searchModel.Latitude, searchModel.Longitude, searchModel.Range).Select(UserModel.CreateFromEntity).ToList();
         }
 
 
@@ -173,13 +199,18 @@
         }
 
 
-        public ErrorModel UpdateOrderItemStatus(long orderId, long dishId, ItemStatus targetStatus)
+        public ErrorModel UpdateOrderItemStatus(UpdateOrderItemModel updateModel)
         {
             var errors = new ErrorModel();
+            if (updateModel == null)
+            {
+                errors.Messages.Add("Invalid data. Please try again!");
+                return errors;
+            }
 
             try
             {
-                DbContext.UpdateOrderItemStatus(orderId, dishId, targetStatus);
+                DbContext.UpdateOrderItemStatus(updateModel.OrderId, updateModel.DishId, updateModel.ProviderId, updateModel.TargetStatus);
             }
             catch (Exception ex)
             {
@@ -189,27 +220,33 @@
         }
 
 
-        public long LoginUser(LoginModel login)
+        public UserErrorModel LoginUser(LoginModel login)
         {
-            const long invalidUserId = -1L;
+            var errors = new UserErrorModel();
             if (login == null)
             {
-                return invalidUserId;
+                errors.Messages.Add("Invalid data.");
+                return errors;
             }
             var email = login.Username;
             var password = login.Password;
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
-                return invalidUserId;
+                errors.Messages.Add("Invalid username/password.");
+                return errors;
             }
             var user =
                 DbContext.GetUsers()
                     .SingleOrDefault(u => string.Equals(email, u.Email, StringComparison.OrdinalIgnoreCase));
             if (user != null && string.Equals(user.Password, password, StringComparison.Ordinal))
             {
-                return user.UserId;
+                errors.UserId = user.UserId;
             }
-            return invalidUserId;
+            else
+            {
+                errors.Messages.Add("Invalid username/password.");
+            }
+            return errors;
         }
     }
 }

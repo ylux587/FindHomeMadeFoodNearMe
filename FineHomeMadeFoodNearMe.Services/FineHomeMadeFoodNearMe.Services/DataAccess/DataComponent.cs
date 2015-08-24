@@ -7,7 +7,7 @@
     using System.Data.SqlClient;
     using System.Linq;
     using FindHomeMadeFoodNearMe.DataAccessHelper;
-
+    using FineHomeMadeFoodNearMe.Services.Models.Enums;
 
     public sealed class DataComponent : IDataComponent
     {
@@ -120,12 +120,13 @@
             });
         }
 
-        public void UpdateOrderItemStatus(long orderId, long dishId, Models.Enums.ItemStatus targetStatus)
+        public void UpdateOrderItemStatus(long orderId, long dishId, long providerId, ItemStatus targetStatus)
         {
             dbContext.ExecuteNonQuery("UpdateOrderItemStatus", Timeout, new[] 
             {
                 new SqlParameter("@orderId", SqlDbType.BigInt){ Value = orderId},
                 new SqlParameter("@dishId", SqlDbType.BigInt){ Value = dishId},
+                new SqlParameter("@providerId", SqlDbType.BigInt){ Value = providerId},
                 new SqlParameter("@targetStatus", SqlDbType.Int){ Value = (int) targetStatus},
             });
         }

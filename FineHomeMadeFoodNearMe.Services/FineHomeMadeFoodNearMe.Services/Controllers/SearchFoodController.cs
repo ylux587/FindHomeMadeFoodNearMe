@@ -17,7 +17,7 @@
         }
 
         [HttpPost]
-        public long LoginUser(LoginModel login)
+        public UserErrorModel LoginUser(LoginModel login)
         {
             return Service.LoginUser(login);
         }
@@ -29,9 +29,9 @@
         }
 
         [HttpPost]
-        public ErrorModel AddDishToMenu(DishModel dish, long userId)
+        public ErrorModel AddDishToMenu(AddDishModel addModel)
         {
-            return Service.AddDishToMenu(dish, userId);
+            return Service.AddDishToMenu(addModel);
         }
 
         [HttpGet]
@@ -41,9 +41,9 @@
         }
 
         [HttpPost]
-        public ErrorModel RemoveDishFromMenu(long dishId, long providerId)
+        public ErrorModel RemoveDishFromMenu(RemoveDishModel removeModel)
         {
-            return Service.RemoveDishFromMenu(dishId, providerId);
+            return Service.RemoveDishFromMenu(removeModel);
         }
 
         [HttpGet]
@@ -53,21 +53,21 @@
         }
 
         [HttpPost]
-        public ErrorModel PlaceOrder(List<long> dishIds, long userId)
+        public ErrorModel PlaceOrder(PlaceOrderModel orderPlaceModel)
         {
-            return Service.PlaceOrder(dishIds, userId);
+            return Service.PlaceOrder(orderPlaceModel);
         }
 
         [HttpGet]
-        public List<UserModel> FindProvidersWithinRange(double latitude, double longitude, int range)
+        public List<UserModel> FindProvidersWithinRange(SearchFoodModel searchModel)
         {
-            return Service.FindProvidersWithinRange(latitude, longitude, range);
+            return Service.FindProvidersWithinRange(searchModel);
         }
 
         [HttpPost]
-        public ErrorModel UpdateOrderItemStatus(long orderId, long dishId, ItemStatus targetStatus)
+        public ErrorModel UpdateOrderItemStatus(UpdateOrderItemModel updateModel)
         {
-            return Service.UpdateOrderItemStatus(orderId, dishId, targetStatus);
+            return Service.UpdateOrderItemStatus(updateModel);
         }
     }
 }

@@ -8,22 +8,22 @@
     {
         UserErrorModel RegisterUser(UserModel user);
 
-        long LoginUser(LoginModel login);
+        UserErrorModel LoginUser(LoginModel login);
 
-        ErrorModel AddDishToMenu(DishModel dish, long userId);
+        ErrorModel AddDishToMenu(AddDishModel model);
 
         List<DishModel> GetDishesByProviderId(long providerId);
 
-        ErrorModel RemoveDishFromMenu(long dishId, long providerId);
+        ErrorModel RemoveDishFromMenu(RemoveDishModel removeModel);
 
         UserModel GetUser(long userId);
 
-        ErrorModel PlaceOrder(List<long> dishIds, long userId);
+        ErrorModel PlaceOrder(PlaceOrderModel orderPlaceModel);
 
-        List<UserModel> FindProvidersWithinRange(double latitude, double longitude, int range);
+        List<UserModel> FindProvidersWithinRange(SearchFoodModel searchModel);
 
         List<UserModel> GetRegisteredUsers();
 
-        ErrorModel UpdateOrderItemStatus(long orderId, long dishId, ItemStatus targetStatus);
+        ErrorModel UpdateOrderItemStatus(UpdateOrderItemModel updateModel);
     }
 }

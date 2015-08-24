@@ -28,6 +28,6 @@
 
         void RemoveDish(long dishId, long providerId);
 
-        void UpdateOrderItemStatus(long orderId, long dishId, ItemStatus targetStatus);
+        void UpdateOrderItemStatus(long orderId, long dishId, long providerId, ItemStatus targetStatus);
     }
 }

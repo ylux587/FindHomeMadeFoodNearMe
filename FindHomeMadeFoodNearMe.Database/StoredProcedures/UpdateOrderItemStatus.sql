@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[UpdateOrderItemStatus]
     @orderId BIGINT,
-    @dishId INT,
+    @dishId BIGINT,
+    @providerId BIGINT,
     @targetStatus INT
 AS
 BEGIN
@@ -8,9 +9,11 @@ BEGIN
 
     BEGIN TRAN
 
-    UPDATE [dbo].[OrderItems]
-    SET [ItemStatus] = @targetStatus
-    WHERE [DishId] = @dishId AND [OrderId] = @orderId
+    UPDATE oi
+    SET oi.[ItemStatus] = @targetStatus
+    FROM [dbo].[OrderItems] oi
+        INNER JOIN [dbo].[Dishes] d ON oi.[DishId] = d.[DishId]
+    WHERE oi.[DishId] = @dishId AND oi.[OrderId] = @orderId AND d.[ProviderId] = @providerId
 
     IF NOT EXISTS(SELECT 1 FROM [OrderItems] WHERE [OrderId] = @orderId AND [ItemStatus] <> 5) -- 5 means item delivered
     BEGIN

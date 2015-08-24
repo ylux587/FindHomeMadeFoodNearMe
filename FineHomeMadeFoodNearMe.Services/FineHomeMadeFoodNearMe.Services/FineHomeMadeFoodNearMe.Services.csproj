@@ -164,6 +164,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AddDishModel.cs" />
     <Compile Include="Models\DishModel.cs" />
     <Compile Include="Models\Enums\DishType.cs" />
     <Compile Include="Models\Enums\ItemStatus.cs" />
@@ -172,9 +173,13 @@
     <Compile Include="Models\ErrorModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\SearchFoodModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\OrderItemModel.cs" />
+    <Compile Include="Models\PlaceOrderModel.cs" />
+    <Compile Include="Models\RemoveDishModel.cs" />
+    <Compile Include="Models\UpdateOrderItemModel.cs" />
     <Compile Include="Models\UserErrorModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -209,6 +214,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <None Include="Properties\PublishProfiles\FindHomeMadeFoodNearMeServices.pubxml" />
     <None Include="Properties\PublishProfiles\FineHomeMadeFoodNearMeServices.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
