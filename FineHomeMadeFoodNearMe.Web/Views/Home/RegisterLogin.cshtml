@@ -56,7 +56,7 @@
 <script type="text/javascript">
     var model = @Html.Raw(Json.Encode(Model));
     var inRegister = model.InRegister;
-    var baseAddress = "http://finehomemadefoodnearmeservices.azurewebsites.net"
+    var baseAddress = "http://finehomemadefoodnearmeservices.azurewebsites.net/api"
 
     function loginClicked() {
         $('span.required').hide();
@@ -64,8 +64,6 @@
         var usernameValue = $('#username').val();
         var passwordValue = $('#password').val();
         var isValid = true;
-        console.log(usernameValue);
-        console.log(passwordValue);
         if (usernameValue == "") {
             $('#usernameError').show();
             isValid = false;

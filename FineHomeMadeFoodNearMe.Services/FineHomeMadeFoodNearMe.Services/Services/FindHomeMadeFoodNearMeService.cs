@@ -59,12 +59,12 @@
             try
             {
                 DbContext.SaveUsers(new List<UserEntity>{newUser});
-                errorModel.UserId = DbContext.GetUsers().Single(user => string.Equals(user.Email, newUser.Email, StringComparison.OrdinalIgnoreCase)).UserId;
+                errors.UserId = DbContext.GetUsers().Single(u => string.Equals(u.Email, newUser.Email, StringComparison.OrdinalIgnoreCase)).UserId;
                 return errors;
             }
             catch(Exception ex)
             {
-                return new ErrorModel {Messages = new List<string> {ex.Message}};
+                return new UserErrorModel {Messages = new List<string> {ex.Message}};
             }
         }
 

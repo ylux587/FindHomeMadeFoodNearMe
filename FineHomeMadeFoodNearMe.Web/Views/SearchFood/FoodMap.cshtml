@@ -1,0 +1,170 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>Food Map</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+    <script type="text/javascript">
+        var map = null;
+        var dataLayer = null;
+        var infoboxLayer = null;
+
+        function loadMap() {
+
+            //Prep default location
+            var defaultLocation = new Microsoft.Maps.Location(47.669444, -122.123889);
+
+            //Prep Map Options
+            var mapOptions = {
+                credentials: 'AiEDanDjO45pfFBiTUD7_bAhjTnvXr-3-OoM0hmzx8_wNMe-Qt6AW-BLwxDIJuFR',
+                center: defaultLocation,
+                mapTypeId: Microsoft.Maps.MapTypeId.road,
+                zoom: 11,
+                enableClickableLogo: false,
+                enableSearchLogo: false
+            }
+
+            //Initialise the primary map control
+            map = new Microsoft.Maps.Map(document.getElementById('myMap'), mapOptions);
+
+            //Add data layer
+            dataLayer = new Microsoft.Maps.EntityCollection();
+            map.entities.push(dataLayer);
+
+            // Add infobox layer
+            infoboxLayer = new Microsoft.Maps.EntityCollection();
+            map.entities.push(infoboxLayer);
+
+            //Prep InfoBox & add to infobox layer
+            var infoboxOptions = {
+                width: 300,
+                height: 200,
+                visible: false,
+                offset: new Microsoft.Maps.Point(0, 20)
+            };
+
+            infobox = new Microsoft.Maps.Infobox(new Microsoft.Maps.Location(0, 0), infoboxOptions);
+
+            infoboxLayer.push(infobox);
+
+            //Add Data to the map
+            DrawPins();
+
+
+            //setTimeout(function () {
+            //    //Initial zoom for testing zoomMap function
+            //    var pushpin = dataLayer.get(0);
+            //    var indx = dataLayer.indexOf(pushpin);
+            //    zoomMap(indx, pushpin.getLocation().latitude, pushpin.getLocation().longitude);
+            //}, 500);
+
+        }
+
+
+        function displayInfobox(e) {
+
+            if (this.target.id && this.target.id.indexOf("pin") != -1) {
+                //alert("click event fired on pushpin");
+
+                infobox.setOptions({
+                    title: this.target.Title,
+                    description: this.target.Description,
+                    visible: true,
+                    offset: new Microsoft.Maps.Point(0, 25)
+                });
+
+                infobox.setLocation(this.target.getLocation());
+
+                //A buffer limit to use to specify the infobox must be away from the edges of the map.
+
+                var buffer = 30;
+                var infoboxOffset = infobox.getOffset();
+                var infoboxAnchor = infobox.getAnchor();
+                var infoboxLocation = map.tryLocationToPixel(this.target.getLocation(), Microsoft.Maps.PixelReference.control);
+                var dx = infoboxLocation.x + infoboxOffset.x - infoboxAnchor.x;
+                var dy = infoboxLocation.y - 25 - infoboxAnchor.y;
+
+                if (dy < buffer) { //Infobox overlaps with top of map.
+                    //#### Offset in opposite direction.
+                    dy *= -1;
+                    //#### add buffer from the top edge of the map.
+                    dy += buffer;
+                } else {
+                    //#### If dy is greater than zero than it does not overlap.
+                    dy = 0;
+                }
+
+                if (dx < buffer) { //Check to see if overlapping with left side of map.
+                    //#### Offset in opposite direction.
+                    dx *= -1;
+                    //#### add a buffer from the left edge of the map.
+                    dx += buffer;
+                } else { //Check to see if overlapping with right side of map.
+                    dx = map.getWidth() - infoboxLocation.x + infoboxAnchor.x - infobox.getWidth();
+                    //#### If dx is greater than zero then it does not overlap.
+                    if (dx > buffer) {
+                        dx = 0;
+                    } else {
+                        //#### add a buffer from the right edge of the map.
+                        dx -= buffer;
+                    }
+                }
+
+                //#### Adjust the map so infobox is in view
+                if (dx != 0 || dy != 0) {
+                    map.setView({
+                        centerOffset: new Microsoft.Maps.Point(dx, dy),
+                        center: map.getCenter()
+                    });
+                }
+            }
+        }
+
+
+        function DrawPins() {
+
+            var pin0 = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(47.669444, -122.123889));
+            pin0.id = "pin_0";
+            pin0.Title = "Michael's home made";
+            pin0.Description = "22420 NE 19th ST<br />Sammamish, WA,98074<br /><b>Tel:</b> 425.206.2000 <br/> <br/> Menu will be added soon!";
+            Microsoft.Maps.Events.addHandler(pin0, 'click', displayInfobox);
+            dataLayer.push(pin0);
+
+            var pin1 = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(47.6395831, -122.1283810));
+            pin1.id = "pin_1";
+            pin1.Title = "GregLu's Menu";
+            pin1.Description = "1 Microsft way, Redmond, 98074<br /><br /><b>Tel:</b>+1 (425) 4213175<br /> <br/> Mongolian Tofu <br/> Kung Pao Chicken <br/>";        
+            Microsoft.Maps.Events.addHandler(pin1, 'click', displayInfobox);
+            dataLayer.push(pin1);
+
+            var pin1 = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(47.6162730, -122.2009811));
+            pin1.id = "pin_2";
+            pin1.Title = "Ying's Kitchen";
+            pin1.Description = "575 Bellevue Sq, Bellevue, WA 98074<br /><br /><b>Tel:</b>425) 454-8096<br/> <br/> Tofu Pudding (Salty) <br/> Steamed Dumplings <br/>";
+            Microsoft.Maps.Events.addHandler(pin1, 'click', displayInfobox);
+            dataLayer.push(pin1);
+        }
+
+
+        function zoomMap(indx, Lat, Long) {
+
+            var ZoomLocation = new Microsoft.Maps.Location(Lat, Long);
+
+            map.setView({
+                zoom: 13,
+                center: ZoomLocation
+            });
+
+            //#### These are the lines that dont work, selectedPin remains undefined
+            //var selectedPin = dataLayer.entities.get(PinID);
+            //Microsoft.Maps.Events.invoke(selectedPin, 'click', '');
+
+            var selectedPin = dataLayer.get(indx);
+            Microsoft.Maps.Events.invoke(selectedPin, 'click');
+        }
+    </script>
+</head>
+<body onload="loadMap();">
+    <div id='myMap' style="position:relative; width:400px; height:400px;"></div>
+</body>
+</html>
