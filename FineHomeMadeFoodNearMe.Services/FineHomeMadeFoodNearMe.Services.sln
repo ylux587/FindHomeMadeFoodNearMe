@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FineHomeMadeFoodNearMe.Services", "FineHomeMadeFoodNearMe.Services\FineHomeMadeFoodNearMe.Services.csproj", "{6659D266-3FEF-4EA9-855E-4F65ED22BC61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindHomeMadeFoodNearMe.Services", "FineHomeMadeFoodNearMe.Services\FindHomeMadeFoodNearMe.Services.csproj", "{6659D266-3FEF-4EA9-855E-4F65ED22BC61}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{151C0987-4C9B-41B3-ADBD-8ECEADD8A809}"
 	ProjectSection(SolutionItems) = preProject
@@ -21,7 +21,7 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "FindHomeMadeFoodNearMe.Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindHomeMadeFoodNearMe.DataAccessHelper", "..\FindHomeMadeFoodNearMe.DataAccessHelper\FindHomeMadeFoodNearMe.DataAccessHelper.csproj", "{E3816380-986B-4464-8CC6-F253AE20662E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FineHomeMadeFoodNearMe.Web", "..\FineHomeMadeFoodNearMe.Web\FineHomeMadeFoodNearMe.Web.csproj", "{8C72F6F9-EFE9-4C7A-AAF8-FE0D2EA79D3A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindHomeMadeFoodNearMe.Web", "..\FineHomeMadeFoodNearMe.Web\FindHomeMadeFoodNearMe.Web.csproj", "{8C72F6F9-EFE9-4C7A-AAF8-FE0D2EA79D3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
