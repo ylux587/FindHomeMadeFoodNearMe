@@ -5,10 +5,14 @@
 }
 
 <style type="text/css">
-    input {
+    input[type="text"], input[type="password"], select {
         float: right;
     }
-    #loginbtn {
+    select {
+        width: 174px;
+        height: 26px;
+    }
+    #loginbtn, #registerbtn {
         float: right;
     }
 </style>
@@ -36,7 +40,7 @@
         <input id="lastname" type="text" maxlength="200" />
     </div>
     <div class="row userinput">
-        <label id="phoneNumberLabel" for="phoneNumber" class="required">Last Name*</label>
+        <label id="phoneNumberLabel" for="phoneNumber" class="required">Phone number*</label>
         <span id="phoneNumberError" class="required">required</span>
         <input id="phoneNumber" type="text" maxlength="200" />
     </div>
@@ -70,7 +74,7 @@
             <label id="countryLabel" for="countryDropDown" class="required">Country*</label>
             <span id="countryError" class="required">required</span>
             <select id="countryDropDown">
-                <option value="US">United States</option>
+                <option value="US" selected="selected">United States</option>
             </select>
         </div>
         <div class="row userinput">
@@ -78,6 +82,9 @@
             <span id="zipCodeError" class="required">required</span>
             <input id="zipCode" type="text" maxlength="10" />
         </div>
+    </div>
+    <div id="registerButton" class="row userinput">
+        <button id="registerbtn" class="btn-primary" onclick="javascript:registerClicked();">Register</button>
     </div>
 </div>
 <div id="loginSection" style="display: none;">
@@ -98,7 +105,8 @@
 <script type="text/javascript">
     var model = @Html.Raw(Json.Encode(Model));
     var inRegister = model.InRegister;
-    var baseAddress = "http://finehomemadefoodnearmeservices.azurewebsites.net/api"
+    //var baseAddress = "http://finehomemadefoodnearmeservices.azurewebsites.net/api";
+    var baseAddress = "http://localhost:53772/api";
 
     function loginClicked() {
         $('#loginSection span.required').hide();
@@ -112,7 +120,7 @@
         }
         var postData = { "Username": usernameValue, "Password": passwordValue };
         $.ajax({ url: baseAddress + "/SearchFood/LoginUser",
-            data: JSON.stringify(postData),
+            data: postData,
             type: 'POST',
             success: function(data){
                 console.log(data);
@@ -170,15 +178,17 @@
         }
 
         var postData = {
-            "Email": emailValue, 
-            "Password": passwordValue,
-            "FirstName": firstNameValue,
-            "LastName": lastNameValue,
-            "PhoneNumber": phoneNumberValue,
+            "UserInfo": {
+                "Email": emailValue, 
+                "Password": passwordValue,
+                "FirstName": firstNameValue,
+                "LastName": lastNameValue,
+                "PhoneNumber": phoneNumberValue
+            },
             "ProviderInfo": providerData
         };
         $.ajax({ url: baseAddress + "/SearchFood/RegisterUser",
-            data: JSON.stringify(postData),
+            data: postData,
             type: 'POST',
             success: function(data){
                 console.log(data);
@@ -192,7 +202,7 @@
     }
 
     function ValidateField(value, errorLabelId){
-        if (value || value == "") {
+        if (!value || value == "") {
             $(errorLabelId).show();
             return false;
         }
