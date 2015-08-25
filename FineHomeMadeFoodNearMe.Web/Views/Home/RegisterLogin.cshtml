@@ -118,17 +118,14 @@
             return false;
         }
         var postData = { "Username": usernameValue, "Password": passwordValue };
-        $.ajax({ url: baseAddress + "/SearchFood/LoginUser",
-            data: postData,
-            type: 'POST',
-            success: function(data){
+        PostData(baseAddress + "/SearchFood/LoginUser", postData,
+            function(data) {
                 console.log(data);
             },
-            error: function(data) {
+            function(data) {
                 alert('Error');
                 console.log(data);
-            }
-        });
+            });
         return false;
     }
 
@@ -186,17 +183,14 @@
             },
             "ProviderInfo": providerData
         };
-        $.ajax({ url: baseAddress + "/SearchFood/RegisterUser",
-            data: postData,
-            type: 'POST',
-            success: function(data){
+        PostData(baseAddress + "/SearchFood/RegisterUser", postData,
+            function(data){
                 console.log(data);
             },
-            error: function(data) {
+            function(data) {
                 alert('Error');
                 console.log(data);
-            }
-        });
+            });
         return false;
     }
 

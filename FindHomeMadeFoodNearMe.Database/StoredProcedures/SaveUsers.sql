@@ -8,7 +8,7 @@ BEGIN
     USING
     (
         SELECT
-            [Email]
+            [Email],
             [Password],
             [FirstName], 
             [LastName], 
