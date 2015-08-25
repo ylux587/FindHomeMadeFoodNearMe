@@ -29,9 +29,9 @@
 
         public ProviderStatus ProviderStatus { get; set; }
 
-        public double GeoLatitude { get; set; }
+        public double? GeoLatitude { get; set; }
 
-        public double GeoLongitude { get; set; }
+        public double? GeoLongitude { get; set; }
 
         public string ZipCode { get; set; }
 
@@ -76,8 +76,8 @@
                     StateOrProvince = stateOrProvinceColumn.GetString(reader, true),
                     Country = countryColumn.GetString(reader, false),
                     ProviderStatus = (ProviderStatus)providerStatusColumn.GetInt32(reader),
-                    GeoLatitude = geoLatitudeColumn.GetDouble(reader),
-                    GeoLongitude = geoLongitudeColumn.GetDouble(reader),
+                    GeoLatitude = geoLatitudeColumn.IsNull(reader) ? null : (double?) geoLatitudeColumn.GetDouble(reader),
+                    GeoLongitude = geoLongitudeColumn.IsNull(reader) ? null : (double?) geoLongitudeColumn.GetDouble(reader),
                     ZipCode = zipCodeColumn.GetString(reader, false)
                 };
 
@@ -100,14 +100,49 @@
 
                 record.SetInt64(0, provider.ProviderId);
                 record.SetString(1, provider.AddressLine1);
-                record.SetString(2, provider.AddressLine2);
-                record.SetString(3, provider.AddressLine3);
+                if (string.IsNullOrWhiteSpace(provider.AddressLine2))
+                {
+                    record.SetDBNull(2);
+                }
+                else
+                {
+                    record.SetString(2, provider.AddressLine2);
+                }
+                if (string.IsNullOrWhiteSpace(provider.AddressLine3))
+                {
+                    record.SetDBNull(3);
+                }
+                else
+                {
+                    record.SetString(3, provider.AddressLine3);
+                }
                 record.SetString(4, provider.City);
-                record.SetString(5, provider.StateOrProvince);
+                if (string.IsNullOrWhiteSpace(provider.StateOrProvince))
+                {
+                    record.SetDBNull(5);
+                }
+                else
+                {
+                    record.SetString(5, provider.StateOrProvince);
+                }
                 record.SetString(6, provider.Country);
                 record.SetInt32(7, (int)provider.ProviderStatus);
-                record.SetDouble(8, provider.GeoLatitude);
-                record.SetDouble(9, provider.GeoLongitude);
+                if (provider.GeoLatitude.HasValue)
+                {
+                    record.SetDouble(8, provider.GeoLatitude.Value);
+                }
+                else
+                {
+                    record.SetDBNull(8);
+                }
+                if (provider.GeoLongitude.HasValue)
+                {
+                    record.SetDouble(9, provider.GeoLongitude.Value);
+                }
+                else
+                {
+                    record.SetDBNull(9);
+                }
                 record.SetString(10, provider.ZipCode);
 
                 yield return record;

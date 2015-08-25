@@ -32,10 +32,10 @@
         public ProviderStatus ProviderStatus { get; set; }
 
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public double GeoLatitude { get; set; }
+        public double? GeoLatitude { get; set; }
 
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public double GeoLongitude { get; set; }
+        public double? GeoLongitude { get; set; }
 
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string ZipCode { get; set; }

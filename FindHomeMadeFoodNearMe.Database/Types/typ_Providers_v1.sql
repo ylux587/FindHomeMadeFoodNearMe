@@ -9,6 +9,6 @@
     [Country] NVARCHAR(10) NOT NULL,
     [ZipCode] NVARCHAR(10) NULL, 
     [ProviderStatus] INT NOT NULL, 
-    [GeoLatitude] FLOAT NOT NULL, 
-    [GeoLongitude] FLOAT NOT NULL
+    [GeoLatitude] FLOAT NULL, 
+    [GeoLongitude] FLOAT NULL
 )

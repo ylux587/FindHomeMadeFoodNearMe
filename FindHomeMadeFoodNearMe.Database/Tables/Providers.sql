@@ -9,7 +9,7 @@
     [Country] NVARCHAR(10) NOT NULL,
     [ZipCode] NVARCHAR(10) NOT NULL, 
     [ProviderStatus] INT NOT NULL, 
-    [GeoLatitude] FLOAT NOT NULL, 
-    [GeoLongitude] FLOAT NOT NULL, 
+    [GeoLatitude] FLOAT NULL, 
+    [GeoLongitude] FLOAT NULL, 
     CONSTRAINT [PK_Providers] PRIMARY KEY ([ProviderId]) 
 )

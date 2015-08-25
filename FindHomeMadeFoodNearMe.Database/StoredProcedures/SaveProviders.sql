@@ -36,6 +36,7 @@ BEGIN
     WHEN NOT MATCHED THEN
         INSERT
         (
+            [ProviderId],
             [AddressLine1], 
             [AddressLine2], 
             [AddressLine3], 
@@ -49,6 +50,7 @@ BEGIN
         )
         VALUES
         (
+            SOURCE.[ProviderId],
             SOURCE.[AddressLine1], 
             SOURCE.[AddressLine2], 
             SOURCE.[AddressLine3], 
