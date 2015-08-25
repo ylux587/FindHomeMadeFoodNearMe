@@ -35,7 +35,7 @@
         }
 
         [HttpGet]
-        public List<DishModel> GetDishesByProviderId(long providerId)
+        public List<DishModel> GetDishes(long providerId)
         {
             return Service.GetDishes(providerId);
         }

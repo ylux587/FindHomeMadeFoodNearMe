@@ -1,52 +1,97 @@
 ﻿@model FineHomeMadeFoodNearMe.Web.Models.RegisterLoginModel
 
 @{
-    if (@Model.InRegister)
-    {
-        ViewBag.Title = "Register";
-    }
-    else
-    {
-        ViewBag.Title = "Login";
-    }
+    ViewBag.Title = @Model.InRegister ? "Register" : "Login";
 }
 
 <style type="text/css">
-    #userNameInput, #passwordInput, #loginButton {
-        width: 350px;
-        margin-top: 15px;
-    }
-    span.required {
-        color: red;
-        display: none;
-    }
     input {
         float: right;
     }
     #loginbtn {
         float: right;
     }
-    .clear {
-        clear: both;
-    }
 </style>
 
 <h2>@ViewBag.Title</h2>
 <div id="registerSection" style="display: none;">
-
-</div>
-<div id="loginSection" style="display: none;">
-    <div id="userNameInput" class="row">
-        <label id="usernameLable" for="username" class="required">Email*</label>
-        <span id="usernameError" class="required">required</span>
-        <input id="username" type="text" maxlength="20" />
+    <div class="row userinput">
+        <label id="emailLabel" for="email" class="required">Email*</label>
+        <span id="emailError" class="required">required</span>
+        <input id="email" type="text" maxlength="200" />
     </div>
-    <div id="passwordInput" class="row">
-        <label id="passwordLable" for="password" class="required">Password*</label>
+    <div class="row userinput">
+        <label id="passwordLabel" for="password" class="required">Password*</label>
         <span id="passwordError" class="required">required</span>
         <input id="password" type="password" maxlength="20" />
     </div>
-    <div id="loginButton" class="row">
+    <div class="row userinput">
+        <label id="firstNameLabel" for="firstname" class="required">First Name*</label>
+        <span id="firstnameError" class="required">required</span>
+        <input id="firstname" type="text" maxlength="200" />
+    </div>
+    <div class="row userinput">
+        <label id="lastNameLabel" for="lastname" class="required">Last Name*</label>
+        <span id="lastnameError" class="required">required</span>
+        <input id="lastname" type="text" maxlength="200" />
+    </div>
+    <div class="row userinput">
+        <label id="phoneNumberLabel" for="phoneNumber" class="required">Last Name*</label>
+        <span id="phoneNumberError" class="required">required</span>
+        <input id="phoneNumber" type="text" maxlength="200" />
+    </div>
+    <div class="row">
+        <input id="regsiterProviderChk" type="checkbox"/><span style="margin-left: 5px;">Register as provider</span>
+    </div>
+    <div id="providerInfoSection" style="display:none;">
+        <div class="row userinput">
+            <label id="addressLine1Label" for="addressLine1" class="required">Address Line 1*</label>
+            <span id="addressLine1Error" class="required">required</span>
+            <input id="addressLine1" type="text" maxlength="200" />
+        </div>
+        <div class="row userinput">
+            <label id="addressLine2Label" for="addressLine2">Address Line 2</label>
+            <input id="addressLine2" type="text" maxlength="200" />
+        </div>
+        <div class="row userinput">
+            <label id="addressLine3Label" for="addressLine3">Address Line 3</label>
+            <input id="addressLine3" type="text" maxlength="200" />
+        </div>
+        <div class="row userinput">
+            <label id="cityLabel" for="city" class="required">City*</label>
+            <span id="cityError" class="required">required</span>
+            <input id="city" type="text" maxlength="200" />
+        </div>
+        <div class="row userinput">
+            <label id="stateLabel" for="state">State/Province</label>
+            <input id="state" type="text" maxlength="50" />
+        </div>
+        <div class="row userinput">
+            <label id="countryLabel" for="countryDropDown" class="required">Country*</label>
+            <span id="countryError" class="required">required</span>
+            <select id="countryDropDown">
+                <option value="US">United States</option>
+            </select>
+        </div>
+        <div class="row userinput">
+            <label id="zipCodeLabel" for="zipCode" class="required">ZipCode*</label>
+            <span id="zipCodeError" class="required">required</span>
+            <input id="zipCode" type="text" maxlength="10" />
+        </div>
+    </div>
+</div>
+<div id="loginSection" style="display: none;">
+    <div id="userNameInput" class="row userinput">
+        <label id="usernameLabel" for="username" class="required">Email*</label>
+        <span id="usernameError" class="required">required</span>
+        <input id="username" type="text" maxlength="200" />
+    </div>
+    <div id="passwordInput" class="row userinput">
+        <label id="passwordLabel" for="password" class="required">Password*</label>
+        <span id="passwordError" class="required">required</span>
+        <input id="password" type="password" maxlength="20" />
+    </div>
+    <div id="loginButton" class="row userinput">
         <button id="loginbtn" class="btn-primary" onclick="javascript:loginClicked();">Login</button>
     </div>
 </div>
@@ -56,19 +101,12 @@
     var baseAddress = "http://finehomemadefoodnearmeservices.azurewebsites.net/api"
 
     function loginClicked() {
-        $('span.required').hide();
+        $('#loginSection span.required').hide();
 
         var usernameValue = $('#username').val();
         var passwordValue = $('#password').val();
-        var isValid = true;
-        if (usernameValue == "") {
-            $('#usernameError').show();
-            isValid = false;
-        }
-        if (passwordValue =="") {
-            $('#passwordError').show();
-            isValid = false;
-        }
+        var isValid = ValidateField(usernameValue, '#usernameError');
+        isValid &= ValidateField(usernameValue, '#passwordError');
         if (!isValid) {
             return false;
         }
@@ -84,10 +122,81 @@
                 console.log(data);
             }
         });
+        return false;
     }
 
     function registerClicked(){
+        $('#registerSection span.required').hide();
 
+        var emailValue = $('#email').val();
+        var passwordValue = $('#password').val();
+        var firstNameValue = $('#firstname').val();
+        var lastNameValue = $('#lastname').val();
+        var phoneNumberValue = $('#phoneNumber').val();
+
+        var registerAsProvider = $('#regsiterProviderChk').is(':checked');
+        var isValid = ValidateField(emailValue, '#emailError');
+        isValid &= ValidateField(passwordValue, '#passwordError');
+        isValid &= ValidateField(firstNameValue, '#firstnameError');
+        isValid &= ValidateField(lastNameValue, '#lastnameError');
+        isValid &= ValidateField(phoneNumberValue, '#phoneNumberError');
+        var validProvider = true;
+        var providerData = null;
+        if (registerAsProvider) {
+            var addressLine1Value = $('#addressLine1').val();
+            var cityValue = $('#city').val();
+            var countryValue = $('#countryDropDown').val();
+            var zipCodeValue = $('#zipCode').val();
+
+            validProvider = ValidateField(addressLine1Value, '#addressLine1Error');
+            validProvider &= ValidateField(cityValue, '#cityError');
+            validProvider &= ValidateField(countryValue, '#countryError');
+            validProvider &= ValidateField(zipCodeValue, '#zipCodeError');
+
+            providerData =
+            {
+                "AddressLine1": addressLine1Value,
+                "AddressLine2": $('#addressLine2').val(),
+                "AddressLine3": $('#addressLine3').val(),
+                "City": cityValue,
+                "StateOrProvince": $('#state').val(),
+                "Country": countryValue,
+                "ZipCode": zipCodeValue
+            };
+        }
+
+        if (!isValid || (registerAsProvider && !validProvider)) {
+            return false;
+        }
+
+        var postData = {
+            "Email": emailValue, 
+            "Password": passwordValue,
+            "FirstName": firstNameValue,
+            "LastName": lastNameValue,
+            "PhoneNumber": phoneNumberValue,
+            "ProviderInfo": providerData
+        };
+        $.ajax({ url: baseAddress + "/SearchFood/RegisterUser",
+            data: JSON.stringify(postData),
+            type: 'POST',
+            success: function(data){
+                console.log(data);
+            },
+            error: function(data) {
+                alert('Error');
+                console.log(data);
+            }
+        });
+        return false;
+    }
+
+    function ValidateField(value, errorLabelId){
+        if (value || value == "") {
+            $(errorLabelId).show();
+            return false;
+        }
+        return true;
     }
 
     $(document).ready(function () {
@@ -99,5 +208,12 @@
             $('div#registerSection').hide();
             $('div#loginSection').show();
         }
+        $('#regsiterProviderChk').change(function() {
+            if ($(this).is(":checked")) {
+                $('#providerInfoSection').show();
+            } else {
+                $('#providerInfoSection').hide();
+            }
+        });
     });
 </script>

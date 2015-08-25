@@ -1,8 +1,6 @@
 ﻿CREATE TABLE [dbo].[Providers]
 (
     [ProviderId] BIGINT NOT NULL, 
-    [FirstName] NVARCHAR(200) NOT NULL, 
-    [LastName] NVARCHAR(200) NOT NULL, 
     [AddressLine1] NVARCHAR(200) NOT NULL, 
     [AddressLine2] NVARCHAR(200) NULL, 
     [AddressLine3] NVARCHAR(200) NULL, 

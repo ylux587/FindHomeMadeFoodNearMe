@@ -22,3 +22,15 @@ select,
 textarea {
     max-width: 280px;
 }
+
+div.userinput {
+    width: 350px;
+    margin-top: 15px;
+}
+span.required {
+    color: red;
+    display: none;
+}
+.clear {
+    clear: both;
+}
