@@ -11,6 +11,8 @@
         private const int UnknowColumnOrdinal = -2;
         private const int ColumnNotFound = -1;
 
+        private int ordinal = UnknowColumnOrdinal;
+
         public SqlColumnBinder(string columnName)
         {
             if (string.IsNullOrWhiteSpace(columnName))
@@ -22,7 +24,17 @@
 
         public string ColumnName { get; private set;}
 
-        public int Ordinal { get; private set; }
+        public int Ordinal
+        {
+            get
+            {
+                return ordinal;
+            }
+            private set
+            {
+                this.ordinal = value;
+            }
+        }
 
         public string GetString(IDataReader reader, bool allowNulls)
         {
