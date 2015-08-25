@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Orders]
 (
-    [OrderId] BIGINT NOT NULL IDENTITY, 
+    [OrderId] BIGINT NOT NULL IDENTITY(1,1), 
     [UserId] BIGINT NOT NULL, 
     [OrderDate] DATETIME2 NOT NULL, 
     [SubTotal] DECIMAL(7, 2) NOT NULL, 

@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Dishes]
 (
-    [DishId] BIGINT NOT NULL IDENTITY, 
+    [DishId] BIGINT NOT NULL IDENTITY(1,1), 
     [ProviderId] BIGINT NOT NULL, 
     [DishType] INT NOT NULL, 
     [DishName] NVARCHAR(200) NOT NULL, 
