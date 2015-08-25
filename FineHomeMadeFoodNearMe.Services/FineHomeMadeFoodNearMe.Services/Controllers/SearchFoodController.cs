@@ -58,7 +58,7 @@
             return Service.PlaceOrder(orderPlaceModel);
         }
 
-        [HttpGet]
+        [HttpPost]
         public List<UserModel> FindProvidersWithinRange(SearchFoodModel searchModel)
         {
             return Service.FindProvidersWithinRange(searchModel);
