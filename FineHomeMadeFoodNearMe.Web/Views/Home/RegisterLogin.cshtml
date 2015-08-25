@@ -105,8 +105,7 @@
 <script type="text/javascript">
     var model = @Html.Raw(Json.Encode(Model));
     var inRegister = model.InRegister;
-    //var baseAddress = "http://finehomemadefoodnearmeservices.azurewebsites.net/api";
-    var baseAddress = "http://localhost:53772/api";
+    var baseAddress = "http://finehomemadefoodnearmeservices.azurewebsites.net/api";
 
     function loginClicked() {
         $('#loginSection span.required').hide();
