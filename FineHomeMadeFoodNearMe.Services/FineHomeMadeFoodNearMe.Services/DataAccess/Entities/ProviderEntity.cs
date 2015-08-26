@@ -126,24 +126,24 @@
                     record.SetString(5, provider.StateOrProvince);
                 }
                 record.SetString(6, provider.Country);
-                record.SetInt32(7, (int)provider.ProviderStatus);
+                record.SetString(7, provider.ZipCode);
+                record.SetInt32(8, (int)provider.ProviderStatus);
                 if (provider.GeoLatitude.HasValue)
                 {
-                    record.SetDouble(8, provider.GeoLatitude.Value);
-                }
-                else
-                {
-                    record.SetDBNull(8);
-                }
-                if (provider.GeoLongitude.HasValue)
-                {
-                    record.SetDouble(9, provider.GeoLongitude.Value);
+                    record.SetDouble(9, provider.GeoLatitude.Value);
                 }
                 else
                 {
                     record.SetDBNull(9);
                 }
-                record.SetString(10, provider.ZipCode);
+                if (provider.GeoLongitude.HasValue)
+                {
+                    record.SetDouble(10, provider.GeoLongitude.Value);
+                }
+                else
+                {
+                    record.SetDBNull(10);
+                }
 
                 yield return record;
             }
@@ -158,10 +158,10 @@
             new SqlMetaData("City", SqlDbType.NVarChar, 50),
             new SqlMetaData("StateOrProvince", SqlDbType.NVarChar, 50),
             new SqlMetaData("Country", SqlDbType.NVarChar, 10),
+            new SqlMetaData("ZipCode", SqlDbType.NVarChar, 10),
             new SqlMetaData("ProviderStatus", SqlDbType.Int),
             new SqlMetaData("GeoLatitude", SqlDbType.Float),
             new SqlMetaData("GeoLongitude", SqlDbType.Float),
-            new SqlMetaData("ZipCode", SqlDbType.NVarChar, 10),
         };
     }
 }

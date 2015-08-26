@@ -85,7 +85,7 @@
         {
             dishesToUpdate = dishesToUpdate ?? Enumerable.Empty<DishEntity>();
 
-            return TableBinder.BindTable(parameterName, "typ_Dishs_v1", BindDishRows(dishesToUpdate));
+            return TableBinder.BindTable(parameterName, "typ_Dishes_v1", BindDishRows(dishesToUpdate));
         }
 
         private static IEnumerable<SqlDataRecord> BindDishRows(IEnumerable<DishEntity> dishesToUpdate)
@@ -102,7 +102,7 @@
                 record.SetString(5, dish.Ingredients);
                 record.SetDecimal(6, dish.Price);
                 record.SetInt32(7, dish.WaitingTimeInMins);
-                if (dish.ThumbNailPictureKey.HasValue)
+                if (!dish.ThumbNailPictureKey.HasValue)
                 {
                     record.SetDBNull(8);
                 }
@@ -120,14 +120,14 @@
         {
             new SqlMetaData("DishId", SqlDbType.BigInt),
             new SqlMetaData("ProviderId", SqlDbType.BigInt),
-            new SqlMetaData("DishType", SqlDbType.DateTime2),
-            new SqlMetaData("DishName", SqlDbType.Decimal),
-            new SqlMetaData("Description", SqlDbType.Decimal),
-            new SqlMetaData("Ingredients", SqlDbType.Decimal),
-            new SqlMetaData("Price", SqlDbType.NVarChar, 1000),
+            new SqlMetaData("DishType", SqlDbType.Int),
+            new SqlMetaData("DishName", SqlDbType.NVarChar, 200),
+            new SqlMetaData("Description", SqlDbType.NVarChar, 500),
+            new SqlMetaData("Ingredients", SqlDbType.NVarChar, 200),
+            new SqlMetaData("Price", SqlDbType.Decimal),
             new SqlMetaData("WaitingTimeInMins", SqlDbType.Int),
-            new SqlMetaData("ThumbNailPictureKey", SqlDbType.Int),
-            new SqlMetaData("Available", SqlDbType.Int),
+            new SqlMetaData("ThumbNailPictureKey", SqlDbType.UniqueIdentifier),
+            new SqlMetaData("Available", SqlDbType.Bit),
         };
     }
 }

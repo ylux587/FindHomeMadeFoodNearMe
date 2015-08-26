@@ -1,5 +1,5 @@
-﻿var baseAddress = "http://findhomemadefoodnearmeservices.azurewebsites.net/api";
-//var baseAddress = "http://localhost:53772/api";
+﻿//var baseAddress = "http://findhomemadefoodnearmeservices.azurewebsites.net/api";
+var baseAddress = "http://localhost:53772/api";
 
 function PostData(url, data, onSuccess, onError) {
     $.ajax({

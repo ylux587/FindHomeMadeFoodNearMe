@@ -37,12 +37,12 @@
         <label id="dishTypeLabel" for="dishTypeDropDown" class="required">Dish Type*</label>
         <span id="dishTypeError" class="required">required</span>
         <select id="dishTypeDropDown">
-            <option value="0" selected="selected">Chinese</option>
-            <option value="1">American</option>
-            <option value="2">Italian</option>
-            <option value="3">Asian</option>
-            <option value="4">Japanese</option>
-            <option value="5">Mexican</option>
+            <option value="Chinese" selected="selected">Chinese</option>
+            <option value="American">American</option>
+            <option value="Italian">Italian</option>
+            <option value="Asian">Asian</option>
+            <option value="Japanese">Japanese</option>
+            <option value="Mexican">Mexican</option>
         </select>
     </div>
     <div id="addDishButton" class="row userinput">
@@ -57,7 +57,7 @@
     var providerId = @Model.ProviderId;
     var currentDishes;
     function retrieveDish() {
-        GetData(baseAddress + "/SearchFood/SearchFood/GetDishes?providerId=" + providerId,
+        GetData(baseAddress + "/SearchFood/GetDishes?providerId=" + providerId,
             function(data) {
                 currentDishes = data;
                 renderDishes(data);
@@ -75,25 +75,37 @@
     }
 
     function renderDishes(dishes) {
+        console.log(dishes);
         if (dishes.length > 0) {
             var tableString = "<table id=\"allDishesTable\"> \
                             <thead> \
                                 <tr> \
-                                    <td>&nbsp;</td><td>Name</td><td>Description</td><td>Ingredients</td><td>Type</td><td>Price</td><td>Waiting Time</td><td>Action</td> \
+                                    <td>&nbsp;</td> \
+                                    <td>Name</td> \
+                                    <td>Description</td> \
+                                    <td>Ingredients</td> \
+                                    <td>Type</td> \
+                                    <td>Price</td> \
+                                    <td>Waiting Time</td> \
+                                    <td>Available</td> \
+                                    <td>Action</td> \
                                 </tr> \
                             </thead> \
                             <tbody>";
-            for (var index = 0; index < dish.length; index++) {
+            for (var index = 0; index < dishes.length; index++) {
                 var dish = dishes[index];
+                var disableValue = dish.Available ? "" : "disabled"; 
+                var availableValue = dish.Available ? "Yes" : "No";
                 tableString += "<tr> \
-                                    <td><input type=\"checkbox\"><td> \
+                                    <td><input type=\"checkbox\" ></td> \
                                     <td>" + dish.DishName + "</td> \
                                     <td>" + dish.Description + "</td> \
                                     <td>" + dish.Ingredients + "</td> \
-                                    <td>" + dish.DishType + "</td> \
+                                    <td>" + dish.Type + "</td> \
                                     <td>" + dish.Price + "</td> \
                                     <td>" + dish.WaitingTimeInMins + "</td> \
-                                    <td><button class=\"btn-warning\" onclick=\"javascript:deleteDishClicked("+dish.DishId+");\">Delete</button></td> \
+                                    <td>" + availableValue + "</td> \
+                                    <td><button class=\"btn btn-warining " + disableValue + "\" onclick=\"javascript:deleteDishClicked("+dish.DishId+");\">Delete</button></td> \
                                </tr>"
             }
             tableString += "</tbody></table>";
@@ -150,6 +162,7 @@
             "DishToAdd": {
                 "ProviderId": providerId,
                 "DishName": dishNameValue,
+                "Type": dishTypeValue,
                 "Description": dishDescriptionValue,
                 "Ingredients": dishIngredientValue,
                 "Price": dishPriceValue,
@@ -184,6 +197,6 @@
     }
 
     $(document).ready(function () {
-        
+        retrieveDish();
     });
 </script> 

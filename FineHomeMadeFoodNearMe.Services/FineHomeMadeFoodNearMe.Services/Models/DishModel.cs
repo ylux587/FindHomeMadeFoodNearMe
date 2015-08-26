@@ -14,8 +14,8 @@
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public long ProviderId { get; set; }
 
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public DishType DishType { get; set; }
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        public string Type { get; set; }
 
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string DishName { get; set; }
@@ -35,7 +35,7 @@
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public Guid? ThumbNailPictureKey { get; set; }
 
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public bool Available { get; set; }
 
         public DishEntity ToEntity()
@@ -49,7 +49,7 @@
                 Price = this.Price,
                 ThumbNailPictureKey = this.ThumbNailPictureKey,
                 ProviderId = this.ProviderId,
-                DishType = this.DishType,
+                DishType = (DishType) Enum.Parse(typeof(DishType), this.Type, true),
                 WaitingTimeInMins = this.WaitingTimeInMins,
                 Available = true
             };
@@ -70,7 +70,7 @@
                 Price = d.Price,
                 ThumbNailPictureKey = d.ThumbNailPictureKey,
                 ProviderId = d.ProviderId,
-                DishType = d.DishType,
+                Type = d.DishType.ToString(),
                 WaitingTimeInMins = d.WaitingTimeInMins,
                 Available = d.Available
             };
