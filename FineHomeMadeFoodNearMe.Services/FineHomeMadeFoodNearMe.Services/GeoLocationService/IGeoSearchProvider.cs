@@ -1,4 +1,4 @@
-﻿namespace FineHomeMadeFoodNearMe.Services.GeoLocationService
+﻿namespace FindHomeMadeFoodNearMe.Services.GeoLocationService
 {
     public interface IGeoSearchProvider
     {

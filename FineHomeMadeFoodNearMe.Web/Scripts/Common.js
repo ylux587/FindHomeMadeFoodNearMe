@@ -1,4 +1,7 @@
-﻿function PostData(url, data, onSuccess, onError) {
+﻿var baseAddress = "http://findhomemadefoodnearmeservices.azurewebsites.net/api";
+//var baseAddress = "http://localhost:53772/api";
+
+function PostData(url, data, onSuccess, onError) {
     $.ajax({
         url: url,
         data: data,
@@ -6,4 +9,21 @@
         success: onSuccess,
         error: onError
     });
+}
+
+function GetData(url, onSuccess, onError) {
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: onSuccess,
+        error: onError
+    });
+}
+
+function ValidateField(value, errorLabelId) {
+    if (!value || value == "") {
+        $(errorLabelId).show();
+        return false;
+    }
+    return true;
 }

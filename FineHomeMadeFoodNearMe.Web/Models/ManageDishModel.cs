@@ -5,8 +5,8 @@
     using System.Linq;
     using System.Web;
 
-    public sealed class RegisterLoginModel
+    public sealed class ManageDishModel
     {
-        public bool InRegister { get; set; }
+        public long ProviderId { get; set; }
     }
 }

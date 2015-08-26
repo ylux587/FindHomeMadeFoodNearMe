@@ -1,4 +1,4 @@
-﻿namespace FineHomeMadeFoodNearMe.Services.Controllers
+﻿namespace FindHomeMadeFoodNearMe.Services.Controllers
 {
     using System.Web.Mvc;
 

@@ -3,7 +3,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http.Description;
 
-namespace FineHomeMadeFoodNearMe.Services.Areas.HelpPage
+namespace FindHomeMadeFoodNearMe.Services.Areas.HelpPage
 {
     public static class ApiDescriptionExtensions
     {

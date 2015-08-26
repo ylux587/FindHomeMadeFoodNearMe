@@ -1,4 +1,4 @@
-﻿namespace FineHomeMadeFoodNearMe.Services.Models
+﻿namespace FindHomeMadeFoodNearMe.Services.Models
 {
     using System.Runtime.Serialization;
     using System.Collections.Generic;

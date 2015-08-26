@@ -1,4 +1,4 @@
-﻿namespace FineHomeMadeFoodNearMe.Services.DataAccess
+﻿namespace FindHomeMadeFoodNearMe.Services.DataAccess
 {
     using System;
     using System.Collections.Generic;

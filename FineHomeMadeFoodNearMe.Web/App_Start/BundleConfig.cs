@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace FineHomeMadeFoodNearMe.Web
+namespace FindHomeMadeFoodNearMe.Web
 {
     public class BundleConfig
     {

@@ -1,9 +1,9 @@
-﻿namespace FineHomeMadeFoodNearMe.Services.Models
+﻿namespace FindHomeMadeFoodNearMe.Services.Models
 {
     using System;
     using Enums;
     using System.Runtime.Serialization;
-    using FineHomeMadeFoodNearMe.Services.DataAccess.Entities;
+    using FindHomeMadeFoodNearMe.Services.DataAccess.Entities;
 
     [DataContract]
     public sealed class DishModel

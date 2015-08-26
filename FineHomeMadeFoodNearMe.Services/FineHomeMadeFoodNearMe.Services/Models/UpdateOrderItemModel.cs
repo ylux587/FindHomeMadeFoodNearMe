@@ -1,8 +1,8 @@
-﻿namespace FineHomeMadeFoodNearMe.Services.Models
+﻿namespace FindHomeMadeFoodNearMe.Services.Models
 {
     using System.Runtime.Serialization;
     using System.Collections.Generic;
-    using FineHomeMadeFoodNearMe.Services.Models.Enums;
+    using FindHomeMadeFoodNearMe.Services.Models.Enums;
 
     [DataContract]
     public sealed class UpdateOrderItemModel

@@ -1,10 +1,10 @@
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using FineHomeMadeFoodNearMe.Services.Areas.HelpPage.ModelDescriptions;
-using FineHomeMadeFoodNearMe.Services.Areas.HelpPage.Models;
+using FindHomeMadeFoodNearMe.Services.Areas.HelpPage.ModelDescriptions;
+using FindHomeMadeFoodNearMe.Services.Areas.HelpPage.Models;
 
-namespace FineHomeMadeFoodNearMe.Services.Areas.HelpPage.Controllers
+namespace FindHomeMadeFoodNearMe.Services.Areas.HelpPage.Controllers
 {
     /// <summary>
     /// The controller that will handle requests for the help page.

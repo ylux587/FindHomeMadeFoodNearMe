@@ -1,10 +1,10 @@
-﻿namespace FineHomeMadeFoodNearMe.Services.Controllers
+﻿namespace FindHomeMadeFoodNearMe.Services.Controllers
 {
     using System.Collections.Generic;
     using System.Web.Http;
-    using FineHomeMadeFoodNearMe.Services.Models;
-    using FineHomeMadeFoodNearMe.Services.Services;
-    using FineHomeMadeFoodNearMe.Services.Models.Enums;
+    using FindHomeMadeFoodNearMe.Services.Models;
+    using FindHomeMadeFoodNearMe.Services.Services;
+    using FindHomeMadeFoodNearMe.Services.Models.Enums;
 
     public class SearchFoodController : ApiController
     {

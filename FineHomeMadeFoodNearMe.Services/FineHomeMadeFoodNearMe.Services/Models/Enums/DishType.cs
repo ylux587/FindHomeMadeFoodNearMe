@@ -1,4 +1,4 @@
-﻿namespace FineHomeMadeFoodNearMe.Services.Models.Enums
+﻿namespace FindHomeMadeFoodNearMe.Services.Models.Enums
 {
     public enum DishType : int
     {

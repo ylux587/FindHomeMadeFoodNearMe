@@ -1,8 +1,8 @@
-﻿namespace FineHomeMadeFoodNearMe.Services.DataAccess
+﻿namespace FindHomeMadeFoodNearMe.Services.DataAccess
 {
-    using FineHomeMadeFoodNearMe.Services.DataAccess.Entities;
+    using FindHomeMadeFoodNearMe.Services.DataAccess.Entities;
     using System.Collections.Generic;
-    using FineHomeMadeFoodNearMe.Services.Models.Enums;
+    using FindHomeMadeFoodNearMe.Services.Models.Enums;
 
     public interface IDataComponent
     {

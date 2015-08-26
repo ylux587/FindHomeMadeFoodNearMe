@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace FineHomeMadeFoodNearMe.Services.GeoLocationService
+namespace FindHomeMadeFoodNearMe.Services.GeoLocationService
 {
     using System;
     using System.Globalization;

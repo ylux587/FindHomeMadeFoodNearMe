@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace FineHomeMadeFoodNearMe.Web.Controllers
+namespace FindHomeMadeFoodNearMe.Web.Controllers
 {
     using Models;
 

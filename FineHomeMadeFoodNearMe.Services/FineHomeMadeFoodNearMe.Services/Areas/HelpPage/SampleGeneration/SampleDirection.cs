@@ -1,4 +1,4 @@
-namespace FineHomeMadeFoodNearMe.Services.Areas.HelpPage
+namespace FindHomeMadeFoodNearMe.Services.Areas.HelpPage
 {
     /// <summary>
     /// Indicates whether the sample is used for request or response

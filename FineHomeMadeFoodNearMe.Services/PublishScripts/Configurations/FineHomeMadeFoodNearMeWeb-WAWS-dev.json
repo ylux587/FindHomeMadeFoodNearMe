@@ -1,7 +1,7 @@
 {
     "environmentSettings": {
         "webSite": {
-            "name": "FineHomeMadeFoodNearMeWeb",
+            "name": "FindHomeMadeFoodNearMeWeb",
             "location": "West US"
         },
         "databases": [

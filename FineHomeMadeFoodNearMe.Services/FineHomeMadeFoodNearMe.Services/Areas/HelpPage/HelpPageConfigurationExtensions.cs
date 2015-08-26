@@ -11,10 +11,10 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
-using FineHomeMadeFoodNearMe.Services.Areas.HelpPage.ModelDescriptions;
-using FineHomeMadeFoodNearMe.Services.Areas.HelpPage.Models;
+using FindHomeMadeFoodNearMe.Services.Areas.HelpPage.ModelDescriptions;
+using FindHomeMadeFoodNearMe.Services.Areas.HelpPage.Models;
 
-namespace FineHomeMadeFoodNearMe.Services.Areas.HelpPage
+namespace FindHomeMadeFoodNearMe.Services.Areas.HelpPage
 {
     public static class HelpPageConfigurationExtensions
     {

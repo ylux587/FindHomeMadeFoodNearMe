@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="FineHomeMadeFoodNearMe.Web.MvcApplication" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="FindHomeMadeFoodNearMe.Web.MvcApplication" Language="C#" %>

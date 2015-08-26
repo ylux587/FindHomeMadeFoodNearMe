@@ -11,7 +11,7 @@ using System.Web.Http.Description;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
-namespace FineHomeMadeFoodNearMe.Services.Areas.HelpPage.ModelDescriptions
+namespace FindHomeMadeFoodNearMe.Services.Areas.HelpPage.ModelDescriptions
 {
     /// <summary>
     /// Generates model descriptions for given types.

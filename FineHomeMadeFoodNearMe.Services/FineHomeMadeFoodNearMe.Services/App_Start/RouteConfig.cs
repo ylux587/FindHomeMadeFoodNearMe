@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace FineHomeMadeFoodNearMe.Services
+namespace FindHomeMadeFoodNearMe.Services
 {
     public class RouteConfig
     {

@@ -1,13 +1,13 @@
-﻿namespace FineHomeMadeFoodNearMe.Services.Services
+﻿namespace FindHomeMadeFoodNearMe.Services.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using FineHomeMadeFoodNearMe.Services.DataAccess;
-    using FineHomeMadeFoodNearMe.Services.DataAccess.Entities;
-    using FineHomeMadeFoodNearMe.Services.GeoLocationService;
-    using FineHomeMadeFoodNearMe.Services.Models;
-    using FineHomeMadeFoodNearMe.Services.Models.Enums;
+    using FindHomeMadeFoodNearMe.Services.DataAccess;
+    using FindHomeMadeFoodNearMe.Services.DataAccess.Entities;
+    using FindHomeMadeFoodNearMe.Services.GeoLocationService;
+    using FindHomeMadeFoodNearMe.Services.Models;
+    using FindHomeMadeFoodNearMe.Services.Models.Enums;
 
     public sealed class FindHomeMadeFoodNearMeService : IFindHomeMadeFoodNearMeService
     {
@@ -60,6 +60,7 @@
                 {
                     newProvider.GeoLatitude = coordinates[0];
                     newProvider.GeoLongitude = coordinates[1];
+                    newProvider.ProviderStatus = ProviderStatus.Verified;
                 }
             }
 
@@ -93,14 +94,14 @@
             var dish = model.DishToAdd;
             if (dish == null)
             {
-                errors.Messages.Add("No dish found to add");
+                errors.Messages.Add("No dish found to add.");
                 return errors;
             }
 
             var provider = DbContext.GetProviders().SingleOrDefault(p => p.ProviderId == model.ProviderId);
-            if (provider == null || provider.ProviderStatus == ProviderStatus.FailedOnVerifyAddress)
+            if (provider == null || provider.ProviderStatus != ProviderStatus.Verified)
             {
-                errors.Messages.Add("Cannot add dish for any address not verified user.");
+                errors.Messages.Add("Cannot add dish for any address not verified provider.");
                 return errors;
             }
 
@@ -116,7 +117,7 @@
             catch (Exception ex)
             {
                 errors.Messages.Add(ex.Message);
-                return new ErrorModel { Messages = new List<string> { ex.Message } };
+                return errors;
             }
         }
 

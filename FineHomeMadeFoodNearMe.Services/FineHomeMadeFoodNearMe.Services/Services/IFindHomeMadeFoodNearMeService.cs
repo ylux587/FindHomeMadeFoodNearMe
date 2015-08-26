@@ -1,8 +1,8 @@
-﻿namespace FineHomeMadeFoodNearMe.Services.Services
+﻿namespace FindHomeMadeFoodNearMe.Services.Services
 {
-    using FineHomeMadeFoodNearMe.Services.Models;
+    using FindHomeMadeFoodNearMe.Services.Models;
     using System.Collections.Generic;
-    using FineHomeMadeFoodNearMe.Services.Models.Enums;
+    using FindHomeMadeFoodNearMe.Services.Models.Enums;
 
     public interface IFindHomeMadeFoodNearMeService
     {

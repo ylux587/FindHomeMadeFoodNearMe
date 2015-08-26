@@ -1,6 +1,6 @@
 using System;
 
-namespace FineHomeMadeFoodNearMe.Services.Areas.HelpPage.ModelDescriptions
+namespace FindHomeMadeFoodNearMe.Services.Areas.HelpPage.ModelDescriptions
 {
     public class ParameterAnnotation
     {

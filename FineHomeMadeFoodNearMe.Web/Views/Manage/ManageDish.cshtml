@@ -1,0 +1,189 @@
+﻿@model FindHomeMadeFoodNearMe.Web.Models.ManageDishModel
+
+<style type="text/css">
+    #addDishbtn, #deleteDishbtn {
+        float: right;
+    }
+</style>
+
+<h2>Manage Your Dishes</h2>
+<div id="addDishSection">
+    <div class="row userinput">
+        <label id="dishNameLabel" for="dishName" class="required">Name*</label>
+        <span id="dishNameError" class="required">required</span>
+        <input id="dishName" type="text" maxlength="200" />
+    </div>
+    <div class="row userinput">
+        <label id="dishDescriptionLabel" for="dishDescription" class="required">Description*</label>
+        <span id="dishDescriptionError" class="required">required</span>
+        <input id="dishDescription" type="text" maxlength="500" />
+    </div>
+    <div class="row userinput">
+        <label id="dishIngredientLabel" for="dishIngredient" class="required">Ingredient*</label>
+        <span id="dishIngredientError" class="required">required</span>
+        <input id="dishIngredient" type="text" maxlength="200" />
+    </div>
+    <div class="row userinput">
+        <label id="dishPriceLabel" for="dishPrice" class="required">Price*</label>
+        <span id="dishPriceError" class="required">required</span>
+        <input id="dishPrice" type="text" maxlength="200" />
+    </div>
+    <div class="row userinput">
+        <label id="dishWaitingTimeLabel" for="dishWaitingTime" class="required">Waiting Time*</label>
+        <span id="dishWaitingTimeError" class="required">required</span>
+        <input id="dishWaitingTime" type="text" maxlength="2" />
+    </div>
+    <div class="row userinput">
+        <label id="dishTypeLabel" for="dishTypeDropDown" class="required">Dish Type*</label>
+        <span id="dishTypeError" class="required">required</span>
+        <select id="dishTypeDropDown">
+            <option value="0" selected="selected">Chinese</option>
+            <option value="1">American</option>
+            <option value="2">Italian</option>
+            <option value="3">Asian</option>
+            <option value="4">Japanese</option>
+            <option value="5">Mexican</option>
+        </select>
+    </div>
+    <div id="addDishButton" class="row userinput">
+        <button id="addDishbtn" class="btn-primary" onclick="javascript:addDishClicked();">Add</button>
+    </div>
+</div>
+<div id="manageDishSection">
+    <div id="allDishes">
+    </div>
+</div>
+<script type="text/javascript">
+    var providerId = @Model.ProviderId;
+    var currentDishes;
+    function retrieveDish() {
+        GetData(baseAddress + "/SearchFood/SearchFood/GetDishes?providerId=" + providerId,
+            function(data) {
+                currentDishes = data;
+                renderDishes(data);
+                if (data.length > 5) {
+                    $('#addDishSection').hide();
+                }
+                else {
+                    $('#addDishSection').show();
+                }
+            },
+            function(data) {
+                alert("Error");
+                console.log(data);
+            });
+    }
+
+    function renderDishes(dishes) {
+        if (dishes.length > 0) {
+            var tableString = "<table id=\"allDishesTable\"> \
+                            <thead> \
+                                <tr> \
+                                    <td>&nbsp;</td><td>Name</td><td>Description</td><td>Ingredients</td><td>Type</td><td>Price</td><td>Waiting Time</td><td>Action</td> \
+                                </tr> \
+                            </thead> \
+                            <tbody>";
+            for (var index = 0; index < dish.length; index++) {
+                var dish = dishes[index];
+                tableString += "<tr> \
+                                    <td><input type=\"checkbox\"><td> \
+                                    <td>" + dish.DishName + "</td> \
+                                    <td>" + dish.Description + "</td> \
+                                    <td>" + dish.Ingredients + "</td> \
+                                    <td>" + dish.DishType + "</td> \
+                                    <td>" + dish.Price + "</td> \
+                                    <td>" + dish.WaitingTimeInMins + "</td> \
+                                    <td><button class=\"btn-warning\" onclick=\"javascript:deleteDishClicked("+dish.DishId+");\">Delete</button></td> \
+                               </tr>"
+            }
+            tableString += "</tbody></table>";
+            $('#allDishes').html(tableString);
+        }
+    }
+
+    function addDishClicked() {
+        $('#addDishSection span.required').hide();
+
+        var postData = gatherDishInfo();
+        if (postData) {
+            PostData(baseAddress + "/SearchFood/AddDishToMenu",
+                postData,
+                function(data){
+                    if (data.Messages.length > 0) {
+                        alert("Add dish failed");
+                        console.log(data);
+                    }
+                    else {
+                        retrieveDish();
+                    }
+                },
+                function(data){
+                    alert("Error on adding new dish");
+                    console.log(data);
+                });
+        }
+        return false;
+    }
+
+    function gatherDishInfo() {
+        var isValid = true;
+
+        var dishNameValue = $('#dishName').val();
+        var dishDescriptionValue = $('#dishDescription').val();
+        var dishIngredientValue = $('#dishIngredient').val();
+        var dishPriceValue = $('#dishPrice').val();
+        var dishWiatingTimeValue = $('#dishWaitingTime').val();
+        var dishTypeValue = $('#dishTypeDropDown').val();
+
+        isValid &= ValidateField(dishNameValue, '#dishNameError');
+        isValid &= ValidateField(dishDescriptionValue, '#dishDescriptionError');
+        isValid &= ValidateField(dishIngredientValue, '#dishIngredientError');
+        isValid &= ValidateField(dishPriceValue, '#dishPriceError');
+        isValid &= ValidateField(dishWiatingTimeValue, '#dishWaitingTimeError');
+        isValid &= ValidateField(dishTypeValue, '#dishTypeError');
+
+        if (!isValid) {
+            return null;
+        }
+
+        return {
+            "DishToAdd": {
+                "ProviderId": providerId,
+                "DishName": dishNameValue,
+                "Description": dishDescriptionValue,
+                "Ingredients": dishIngredientValue,
+                "Price": dishPriceValue,
+                "WaitingTimeInMins": dishWiatingTimeValue,
+                "ThumbNailPictureKey": null,
+                "Available": true
+            },
+            "ProviderId": providerId
+        };
+    }
+
+    function deleteDishClicked(dishId) {
+        PostData(baseAddress + "/SearchFood/RemoveDishFromMenu", 
+            {"ProviderId": providerId, "DishId": dishId},
+            function(data) {
+                if (data.Messages.length > 0) {
+                    alert("Error when deleing dish with id " + dishId);
+                    console.log(data);
+                    return;
+                }
+                var index = currentDishes.indexOf(function(dish) { dish.DishId == dishId; });
+                if (index > 0) {
+                    currentDishes.slice(index, 1);
+                    renderDishes(currentDishes);
+                }
+            },
+            function(data) {
+                alert("Error on deleting dish with dish id " + dishId);
+                console.log(data);
+            });
+        return false;
+    }
+
+    $(document).ready(function () {
+        
+    });
+</script> 

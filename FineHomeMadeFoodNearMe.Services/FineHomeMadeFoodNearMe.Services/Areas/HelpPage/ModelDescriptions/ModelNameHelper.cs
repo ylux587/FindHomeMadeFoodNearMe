@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace FineHomeMadeFoodNearMe.Services.Areas.HelpPage.ModelDescriptions
+namespace FindHomeMadeFoodNearMe.Services.Areas.HelpPage.ModelDescriptions
 {
     internal static class ModelNameHelper
     {

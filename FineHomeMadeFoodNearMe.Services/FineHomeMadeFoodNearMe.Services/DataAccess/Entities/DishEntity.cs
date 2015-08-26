@@ -1,4 +1,4 @@
-﻿namespace FineHomeMadeFoodNearMe.Services.DataAccess.Entities
+﻿namespace FindHomeMadeFoodNearMe.Services.DataAccess.Entities
 {
     using Models.Enums;
     using DataAccess;

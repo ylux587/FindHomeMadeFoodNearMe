@@ -34,3 +34,12 @@ span.required {
 .clear {
     clear: both;
 }
+input[type="text"], 
+input[type="password"], 
+select {
+    float: right;
+}
+select {
+    width: 174px;
+    height: 26px;
+}

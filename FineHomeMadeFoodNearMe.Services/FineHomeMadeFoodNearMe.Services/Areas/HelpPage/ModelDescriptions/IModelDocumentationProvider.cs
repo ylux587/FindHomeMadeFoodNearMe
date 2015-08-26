@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace FineHomeMadeFoodNearMe.Services.Areas.HelpPage.ModelDescriptions
+namespace FindHomeMadeFoodNearMe.Services.Areas.HelpPage.ModelDescriptions
 {
     public interface IModelDocumentationProvider
     {

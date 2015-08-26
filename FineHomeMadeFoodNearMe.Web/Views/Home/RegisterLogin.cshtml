@@ -1,17 +1,10 @@
-﻿@model FineHomeMadeFoodNearMe.Web.Models.RegisterLoginModel
+﻿@model FindHomeMadeFoodNearMe.Web.Models.RegisterLoginModel
 
 @{
     ViewBag.Title = @Model.InRegister ? "Register" : "Login";
 }
 
 <style type="text/css">
-    input[type="text"], input[type="password"], select {
-        float: right;
-    }
-    select {
-        width: 174px;
-        height: 26px;
-    }
     #loginbtn, #registerbtn {
         float: right;
     }
@@ -72,8 +65,6 @@
 <script type="text/javascript">
     var model = @Html.Raw(Json.Encode(Model));
     var inRegister = model.InRegister;
-    //var baseAddress = "http://findhomemadefoodnearmeservices.azurewebsites.net/api";
-    var baseAddress = "http://localhost:53772/api";
 
     function loginClicked() {
         $('#loginSection span.required').hide();
@@ -143,14 +134,6 @@
                 console.log(data);
             });
         return false;
-    }
-
-    function ValidateField(value, errorLabelId){
-        if (!value || value == "") {
-            $(errorLabelId).show();
-            return false;
-        }
-        return true;
     }
 
     $(document).ready(function () {

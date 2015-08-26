@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
-namespace FineHomeMadeFoodNearMe.Web
+namespace FindHomeMadeFoodNearMe.Web
 {
     public static class WebApiConfig
     {

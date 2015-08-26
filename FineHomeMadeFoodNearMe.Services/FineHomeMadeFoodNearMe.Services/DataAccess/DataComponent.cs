@@ -1,4 +1,4 @@
-﻿namespace FineHomeMadeFoodNearMe.Services.DataAccess
+﻿namespace FindHomeMadeFoodNearMe.Services.DataAccess
 {
     using System.Collections.Generic;
     using Entities;
@@ -7,7 +7,7 @@
     using System.Data.SqlClient;
     using System.Linq;
     using FindHomeMadeFoodNearMe.DataAccessHelper;
-    using FineHomeMadeFoodNearMe.Services.Models.Enums;
+    using FindHomeMadeFoodNearMe.Services.Models.Enums;
 
     public sealed class DataComponent : IDataComponent
     {
