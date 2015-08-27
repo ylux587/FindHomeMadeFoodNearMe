@@ -48,8 +48,8 @@
             if (model.ProviderInfo != null)
             {
                 newProvider = model.ProviderInfo.ToEntity();
-                var coordinates = GeoServiceProvider.FindGeoLocationByAddress(model.ProviderInfo.StateOrProvince, model.ProviderInfo.ZipCode, model.ProviderInfo.City,
-                    model.ProviderInfo.AddressLine1);
+                var coordinates = GeoServiceProvider.FindGeoLocationByAddress(model.ProviderInfo.Address.StateOrProvince, model.ProviderInfo.Address.ZipCode, model.ProviderInfo.Address.City,
+                    model.ProviderInfo.Address.FullAddressLine);
 
                 if (coordinates == null || coordinates.Length != 2)
                 {
@@ -197,15 +197,33 @@
             }
         }
 
-        public List<UserModel> FindProvidersWithinRange(SearchFoodModel searchModel)
+        public SearchFoodResultModel FindProvidersWithinRange(SearchFoodModel searchModel)
         {
             if (searchModel == null)
             {
                 return null;
             }
-            return DbContext.GetProvidersInRange(searchModel.Latitude, searchModel.Longitude, searchModel.Range).Select(UserModel.CreateFromEntity).ToList();
+            var providers = DbContext.GetProvidersInRange(searchModel.Latitude, searchModel.Longitude, searchModel.Range).Select(ProviderModel.CreateFromEntity).ToList();
+            var users = DbContext.GetUsers();
+            return new SearchFoodResultModel { ProviderInfos = providers.Select(p => new SearchHitProviderModel { UserInfo = UserModel.CreateFromEntity(users.Single(u => u.UserId == p.ProviderId)), ProviderInfo = p }).ToList() };
         }
 
+        public AddressSearchFoodResultModel FindProvidersWithinRangeByAddress(AddressModel addressModel)
+        {
+            if (addressModel == null)
+            {
+                return null;
+            }
+            var coordinates = GeoServiceProvider.FindGeoLocationByAddress(addressModel.StateOrProvince, addressModel.ZipCode, addressModel.City, addressModel.FullAddressLine);
+            if (coordinates == null || coordinates.Length != 2)
+            {
+                return null;
+            }
+            else
+            {
+                return new AddressSearchFoodResultModel { AddressLatitude = coordinates[0], AddressLongitude = coordinates[1], ProviderInfos = FindProvidersWithinRange(new SearchFoodModel { Latitude = coordinates[0], Longitude = coordinates[1], Range = 25 }).ProviderInfos };
+            }
+        }
 
         public List<UserModel> GetRegisteredUsers()
         {

@@ -59,9 +59,15 @@
         }
 
         [HttpPost]
-        public List<UserModel> FindProvidersWithinRange(SearchFoodModel searchModel)
+        public SearchFoodResultModel FindProvidersWithinRange(SearchFoodModel searchModel)
         {
             return Service.FindProvidersWithinRange(searchModel);
+        }
+
+        [HttpPost]
+        public AddressSearchFoodResultModel FindProvidersWithinRangeByAddress(AddressModel addressModel)
+        {
+            return Service.FindProvidersWithinRangeByAddress(addressModel);
         }
 
         [HttpPost]

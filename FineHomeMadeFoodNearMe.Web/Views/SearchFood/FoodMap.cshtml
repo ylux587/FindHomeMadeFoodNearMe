@@ -3,16 +3,112 @@
 <head>
     <title>Food Map</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+        #foodMap {
+            position: relative; 
+            width: 800px; 
+            height: 800px;
+        }
+        #addressSection {
+            display: none;
+        }
+        #addressSearchbtn{
+            float: right;
+        }
+    </style>
     <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
     <script type="text/javascript">
         var map = null;
         var dataLayer = null;
         var infoboxLayer = null;
 
-        function loadMap() {
+        function initialize() {
+            if (Modernizr.geolocation) {
+                $('#addressSection').hide();
+                navigator.geolocation.getCurrentPosition(show_map,
+                    function () {
+                        $('#mapSection').hide();
+                        $('#addressSection').show();;
+                    },
+                    { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true });
+            } else {
+                // no native support; maybe try a fallback?
+                $('#mapSection').hide();
+                $('#addressSection').show();
+            }
+        }
+
+        function show_map(position) {
+            alert("showmap");
+            console.log(position);
+            var postData = { "Latitude" : position.coords.latitude, "Longitude" : position.coords.Longitude, "Range": 25};
+            PostData(baseAddress + "/SearchFood/FindProvidersWithinRange",
+                postData,
+                function (data) {
+                    alert("success");
+                    $('#mapSection').show();
+                    loadMap(position.coords.latitude, position.coords.Longitude, data.ProviderInfos);
+                },
+                function (data) {
+                    alert("Error");
+                    console.log(data);
+                });
+        }
+
+        /* providers: 
+        [
+          {
+            "UserInfo": {
+              "UserId": 1,
+              "FirstName": "sample string 2",
+              "LastName": "sample string 3",
+              "Email": "sample string 4",
+              "PhoneNumber": "sample string 5",
+              "UserStatus": 0,
+              "Password": "sample string 6"
+            },
+            "ProviderInfo": {
+              "ProviderId": 1,
+              "AddressLine1": "sample string 2",
+              "AddressLine2": "sample string 3",
+              "AddressLine3": "sample string 4",
+              "City": "sample string 5",
+              "StateOrProvince": "sample string 6",
+              "Country": "sample string 7",
+              "GeoLatitude": 1.1,
+              "GeoLongitude": 1.1,
+              "ZipCode": "sample string 8"
+            }
+          },
+          {
+            "UserInfo": {
+              "UserId": 1,
+              "FirstName": "sample string 2",
+              "LastName": "sample string 3",
+              "Email": "sample string 4",
+              "PhoneNumber": "sample string 5",
+              "UserStatus": 0,
+              "Password": "sample string 6"
+            },
+            "ProviderInfo": {
+              "ProviderId": 1,
+              "AddressLine1": "sample string 2",
+              "AddressLine2": "sample string 3",
+              "AddressLine3": "sample string 4",
+              "City": "sample string 5",
+              "StateOrProvince": "sample string 6",
+              "Country": "sample string 7",
+              "GeoLatitude": 1.1,
+              "GeoLongitude": 1.1,
+              "ZipCode": "sample string 8"
+            }
+          }
+        ]
+        */
+        function loadMap(currentLatitude, currentLongitude, providers) {
 
             //Prep default location
-            var defaultLocation = new Microsoft.Maps.Location(47.669444, -122.123889);
+            var defaultLocation = new Microsoft.Maps.Location(currentLatitude, currentLongitude);
 
             //Prep Map Options
             var mapOptions = {
@@ -25,7 +121,7 @@
             }
 
             //Initialise the primary map control
-            map = new Microsoft.Maps.Map(document.getElementById('myMap'), mapOptions);
+            map = new Microsoft.Maps.Map(document.getElementById('foodMap'), mapOptions);
 
             //Add data layer
             dataLayer = new Microsoft.Maps.EntityCollection();
@@ -48,16 +144,7 @@
             infoboxLayer.push(infobox);
 
             //Add Data to the map
-            DrawPins();
-
-
-            //setTimeout(function () {
-            //    //Initial zoom for testing zoomMap function
-            //    var pushpin = dataLayer.get(0);
-            //    var indx = dataLayer.indexOf(pushpin);
-            //    zoomMap(indx, pushpin.getLocation().latitude, pushpin.getLocation().longitude);
-            //}, 500);
-
+            DrawPins(providers);
         }
 
 
@@ -120,29 +207,20 @@
             }
         }
 
+        function DrawPins(providers) {
+            for (var index = 0; index < providers.length; index++) {
+                DrawIndividualPin(providers[index], index);
+            }
+        }
 
-        function DrawPins() {
-
-            var pin0 = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(47.669444, -122.123889));
-            pin0.id = "pin_0";
-            pin0.Title = "Michael's home made";
-            pin0.Description = "22420 NE 19th ST<br />Sammamish, WA,98074<br /><b>Tel:</b> 425.206.2000 <br/> <br/> Menu will be added soon!";
-            Microsoft.Maps.Events.addHandler(pin0, 'click', displayInfobox);
-            dataLayer.push(pin0);
-
-            var pin1 = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(47.6395831, -122.1283810));
-            pin1.id = "pin_1";
-            pin1.Title = "GregLu's Menu";
-            pin1.Description = "1 Microsft way, Redmond, 98074<br /><br /><b>Tel:</b>+1 (425) 4213175<br /> <br/> Mongolian Tofu <br/> Kung Pao Chicken <br/>";        
-            Microsoft.Maps.Events.addHandler(pin1, 'click', displayInfobox);
-            dataLayer.push(pin1);
-
-            var pin1 = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(47.6162730, -122.2009811));
-            pin1.id = "pin_2";
-            pin1.Title = "Ying's Kitchen";
-            pin1.Description = "575 Bellevue Sq, Bellevue, WA 98074<br /><br /><b>Tel:</b>425) 454-8096<br/> <br/> Tofu Pudding (Salty) <br/> Steamed Dumplings <br/>";
-            Microsoft.Maps.Events.addHandler(pin1, 'click', displayInfobox);
-            dataLayer.push(pin1);
+        function DrawIndividualPin(provider, index) {
+            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(47.669444, -122.123889));
+            pin.id = "pin_" + index;
+            pin.Title = provider.UserInfo.FirstName + " " + provider.UsrInfo.LastName;
+            //TODO: update description sectin with place order link
+            pin.Description = provider.UserInfo.PhoneNumber;
+            Microsoft.Maps.Events.addHandler(pin, 'click', displayInfobox);
+            dataLayer.push(pin);
         }
 
 
@@ -155,16 +233,45 @@
                 center: ZoomLocation
             });
 
-            //#### These are the lines that dont work, selectedPin remains undefined
-            //var selectedPin = dataLayer.entities.get(PinID);
-            //Microsoft.Maps.Events.invoke(selectedPin, 'click', '');
-
             var selectedPin = dataLayer.get(indx);
             Microsoft.Maps.Events.invoke(selectedPin, 'click');
         }
+
+        function addressSearchClicked() {
+            $('#addressSection span.required').hide();
+
+            var addressData = ValidateAddressInput();
+            if (addressData != null) {
+                PostData(baseAddress + "/SearchFood/FindProvidersWithinRangeByAddress",
+                    addressData,
+                    function (data) {
+                        loadMap(data.AddressLatitude, data.AddressLongitude, data.ProviderInfos);
+                        $('#mapSection').show();
+                    },
+                    function (data) {
+                        alert("Error while searching provider by address");
+                        console.log(data);
+                    });
+            }
+            return false;
+        }
+
+        $(document).ready(function () {
+            initialize();
+        });
     </script>
 </head>
-<body onload="loadMap();">
-    <div id='myMap' style="position:relative; width:400px; height:400px;"></div>
+<body>
+    <div id="addressSection">
+        <div>
+            @Html.Partial("AddressInput")
+        </div>
+        <div id="addressSearchButton" class="row userinput">
+            <button id="addressSearchbtn" class="btn-primary" onclick="javascript:addressSearchClicked();">Search</button>
+        </div>
+    </div>
+    <div id="mapSection">
+        <div id='foodMap' />
+    </div>
 </body>
 </html>

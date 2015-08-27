@@ -20,7 +20,9 @@
 
         ErrorModel PlaceOrder(PlaceOrderModel orderPlaceModel);
 
-        List<UserModel> FindProvidersWithinRange(SearchFoodModel searchModel);
+        SearchFoodResultModel FindProvidersWithinRange(SearchFoodModel searchModel);
+
+        AddressSearchFoodResultModel FindProvidersWithinRangeByAddress(AddressModel searchModel);
 
         List<UserModel> GetRegisteredUsers();
 

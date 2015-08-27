@@ -11,22 +11,7 @@
         public long ProviderId { get; set; }
 
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public string AddressLine1 { get; set; }
-
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public string AddressLine2 { get; set; }
-
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public string AddressLine3 { get; set; }
-
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public string City { get; set; }
-
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public string StateOrProvince { get; set; }
-
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public string Country { get; set; }
+        public AddressModel Address { get; set; }
 
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public ProviderStatus ProviderStatus { get; set; }
@@ -37,21 +22,18 @@
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public double? GeoLongitude { get; set; }
 
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public string ZipCode { get; set; }
-
         public ProviderEntity ToEntity()
         {
             return new ProviderEntity
             {
                 ProviderId = this.ProviderId,
-                AddressLine1 = this.AddressLine1,
-                AddressLine2 = this.AddressLine2,
-                AddressLine3 = this.AddressLine3,
-                City = this.City,
-                StateOrProvince = this.StateOrProvince,
-                Country = this.Country,
-                ZipCode = this.ZipCode,
+                AddressLine1 = this.Address.AddressLine1,
+                AddressLine2 = this.Address.AddressLine2,
+                AddressLine3 = this.Address.AddressLine3,
+                City = this.Address.City,
+                StateOrProvince = this.Address.StateOrProvince,
+                Country = this.Address.Country,
+                ZipCode = this.Address.ZipCode,
                 ProviderStatus = this.ProviderStatus,
                 GeoLatitude = this.GeoLatitude,
                 GeoLongitude = this.GeoLongitude
@@ -63,13 +45,16 @@
             return new ProviderModel
             {
                 ProviderId = p.ProviderId,
-                AddressLine1 = p.AddressLine1,
-                AddressLine2 = p.AddressLine2,
-                AddressLine3 = p.AddressLine3,
-                City = p.City,
-                StateOrProvince = p.StateOrProvince,
-                Country = p.Country,
-                ZipCode = p.ZipCode,
+                Address = new AddressModel
+                    {
+                        AddressLine1 = p.AddressLine1,
+                            AddressLine2 = p.AddressLine2,
+                            AddressLine3 = p.AddressLine3,
+                            City = p.City,
+                            StateOrProvince = p.StateOrProvince,
+                            Country = p.Country,
+                            ZipCode = p.ZipCode,
+                    },
                 ProviderStatus = p.ProviderStatus,
                 GeoLatitude = p.GeoLatitude,
                 GeoLongitude = p.GeoLongitude

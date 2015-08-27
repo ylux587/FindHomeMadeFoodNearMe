@@ -166,6 +166,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AddDishModel.cs" />
+    <Compile Include="Models\SearchHitProviderModel.cs" />
+    <Compile Include="Models\AddressModel.cs" />
     <Compile Include="Models\DishModel.cs" />
     <Compile Include="Models\Enums\DishType.cs" />
     <Compile Include="Models\Enums\ItemStatus.cs" />
@@ -182,6 +184,10 @@
     <Compile Include="Models\OrderItemModel.cs" />
     <Compile Include="Models\PlaceOrderModel.cs" />
     <Compile Include="Models\RemoveDishModel.cs" />
+    <Compile Include="Models\AddressSearchFoodResultModel.cs" />
+    <Compile Include="Models\SearchFoodResultModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\UpdateOrderItemModel.cs" />
     <Compile Include="Models\UserErrorModel.cs" />
     <Compile Include="Models\ProvidreModel.cs" />

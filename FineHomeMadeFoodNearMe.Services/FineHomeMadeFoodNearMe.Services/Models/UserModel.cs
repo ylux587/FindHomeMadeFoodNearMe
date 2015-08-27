@@ -22,7 +22,7 @@
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string PhoneNumber { get; set; }
        
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public UserStatus UserStatus { get; set; }
 
         [DataMember(IsRequired = false, EmitDefaultValue = false)]

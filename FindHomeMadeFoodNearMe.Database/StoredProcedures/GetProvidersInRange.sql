@@ -7,13 +7,7 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT DISTINCT 
-        u.[UserId],
-        u.[Password],
-        u.[FirstName], 
-        u.[LastName], 
-        u.[Email], 
-        u.[PhoneNumber], 
-        u.[UserStatus],
+        p.[ProviderId],
         p.[AddressLine1], 
         p.[AddressLine2], 
         p.[AddressLine3], 
@@ -27,7 +21,7 @@ BEGIN
     FROM Users u
     INNER JOIN Providers p ON u.UserId = p.ProviderId
     INNER JOIN Dishes d ON p.ProviderId = d.ProviderId
-    WHERE u.[UserStatus] = 1 AND p.[ProviderStatus] = 1 AND p.GeoLatitude <> 0 AND p.GeoLongitude <> 0
+    WHERE u.[UserStatus] = 1 AND p.[ProviderStatus] = 1 AND p.GeoLatitude IS NOT NULL AND p.GeoLongitude IS NOT NULL
     AND [dbo].[CalculateDistance](@sourceLatitude, @sourceLongtitude, p.GeoLatitude, p.GeoLongitude) <= @range
 
 END

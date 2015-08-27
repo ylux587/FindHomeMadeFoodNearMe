@@ -26,7 +26,7 @@
 
         void SaveOrderItems(long orderId, IList<OrderItemEntity> orderItemsToSave);
 
-        IList<UserEntity> GetProvidersInRange(double latitude, double longitude, int range);
+        IList<ProviderEntity> GetProvidersInRange(double latitude, double longitude, int range);
 
         void CancelOrder(long orderId);
 

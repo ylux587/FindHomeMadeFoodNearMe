@@ -110,7 +110,7 @@
             dbContext.ExecuteNonQuery("SaveOrderItems", Timeout, sqlParams);
         }
 
-        public IList<UserEntity> GetProvidersInRange(double latitude, double longitude, int range)
+        public IList<ProviderEntity> GetProvidersInRange(double latitude, double longitude, int range)
         {
             var sqlParams = new[]
             {
@@ -118,7 +118,7 @@
                 new SqlParameter("@sourceLongtitude", SqlDbType.Float) {Value = longitude}, 
                 new SqlParameter("@range", SqlDbType.Int) {Value = range} 
             };
-            return dbContext.ExecuteReader("GetProvidersInRange", UserEntity.UserEntityColumns.Instance, null, Timeout, sqlParams);
+            return dbContext.ExecuteReader("GetProvidersInRange", ProviderEntity.ProviderEntityColumns.Instance, null, Timeout, sqlParams);
         }
 
         public void CancelOrder(long orderId)
