@@ -160,9 +160,9 @@
             return user == null ? null : UserModel.CreateFromEntity(user);
         }
 
-        public ErrorModel PlaceOrder(PlaceOrderModel orderPlaceModel)
+        public OrderErrorModel PlaceOrder(PlaceOrderModel orderPlaceModel)
         {
-            var errors = new ErrorModel();
+            var errors = new OrderErrorModel();
             if (orderPlaceModel == null)
             {
                 errors.Messages.Add("Invalid data.");
@@ -205,7 +205,7 @@
             }
             var providers = DbContext.GetProvidersInRange(searchModel.Latitude, searchModel.Longitude, searchModel.Range).Select(ProviderModel.CreateFromEntity).ToList();
             var users = DbContext.GetUsers();
-            return new SearchFoodResultModel { ProviderInfos = providers.Select(p => new SearchHitProviderModel { UserInfo = UserModel.CreateFromEntity(users.Single(u => u.UserId == p.ProviderId)), ProviderInfo = p }).ToList() };
+            return new SearchFoodResultModel { ProviderInfos = providers.Select(p => new UserProviderModel { UserInfo = UserModel.CreateFromEntity(users.Single(u => u.UserId == p.ProviderId)), ProviderInfo = p }).ToList() };
         }
 
         public AddressSearchFoodResultModel FindProvidersWithinRangeByAddress(AddressModel addressModel)

@@ -21,9 +21,9 @@
 
         public decimal SubTotal { get; set; }
 
-        public decimal Tax { get; set; }
+        public decimal? Tax { get; set; }
 
-        public decimal OtherCharges { get; set; }
+        public decimal? OtherCharges { get; set; }
 
         public string Notes { get; set; }
 
@@ -63,9 +63,9 @@
                         UserId = userIdColumn.GetInt64(reader),
                         OrderDate = orderDateColumn.GetDateTime(reader),
                         SubTotal = subTotalColumn.GetDecimal(reader),
-                        Tax = taxColumn.GetDecimal(reader, 0m),
-                        OtherCharges = otherChargesColumn.GetDecimal(reader, 0m),
-                        Notes = notesColumn.GetString(reader, false),
+                        Tax = taxColumn.IsNull(reader) ? null : (decimal?) taxColumn.GetDecimal(reader),
+                        OtherCharges = otherChargesColumn.IsNull(reader) ? null : (decimal?) otherChargesColumn.GetDecimal(reader, 0m),
+                        Notes = notesColumn.GetString(reader, true),
                         Status = (OrderStatus) statusColumn.GetInt32(reader)
                     };
 
@@ -90,9 +90,30 @@
                 record.SetInt64(1, order.UserId);
                 record.SetDateTime(2, order.OrderDate);
                 record.SetDecimal(3, order.SubTotal);
-                record.SetDecimal(4, order.Tax);
-                record.SetDecimal(5, order.OtherCharges);
-                record.SetString(6, order.Notes);
+                if (order.Tax.HasValue)
+                {
+                    record.SetDecimal(4, order.Tax.Value);
+                }
+                else
+                {
+                    record.SetDBNull(4);
+                }
+                if (order.OtherCharges.HasValue)
+                {
+                    record.SetDecimal(5, order.OtherCharges.Value);
+                }
+                else
+                {
+                    record.SetDBNull(5);
+                }
+                if (!string.IsNullOrWhiteSpace(order.Notes))
+                {
+                    record.SetString(6, order.Notes);
+                }
+                else
+                {
+                    record.SetDBNull(6);
+                }
                 record.SetInt32(7, (int)order.Status);
 
                 yield return record;

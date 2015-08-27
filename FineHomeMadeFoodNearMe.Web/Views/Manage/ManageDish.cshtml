@@ -1,12 +1,17 @@
 ﻿@model FindHomeMadeFoodNearMe.Web.Models.ManageDishModel
 
+@{
+    ViewBag.Title = "Manage Your Dishes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 <style type="text/css">
     #addDishbtn, #deleteDishbtn {
         float: right;
     }
 </style>
 
-<h2>Manage Your Dishes</h2>
+<h2>@ViewBag.Title</h2>
 <div id="addDishSection">
     <div class="row userinput">
         <label id="dishNameLabel" for="dishName" class="required">Name*</label>

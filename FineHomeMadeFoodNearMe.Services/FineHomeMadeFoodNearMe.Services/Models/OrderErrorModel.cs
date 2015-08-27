@@ -4,10 +4,9 @@
     using System.Collections.Generic;
 
     [DataContract]
-    public class SearchFoodResultModel : ErrorModel
+    public sealed class OrderErrorModel : ErrorModel
     {
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public List<UserProviderModel> ProviderInfos { get; set; }
-
+        public OrderModel Order { get; set; }
     }
 }

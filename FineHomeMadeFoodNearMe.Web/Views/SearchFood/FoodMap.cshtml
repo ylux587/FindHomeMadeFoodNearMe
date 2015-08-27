@@ -39,8 +39,6 @@
         }
 
         function show_map(position) {
-            alert("showmap");
-            console.log(position);
             var postData = { "Latitude" : position.coords.latitude, "Longitude" : position.coords.Longitude, "Range": 25};
             PostData(baseAddress + "/SearchFood/FindProvidersWithinRange",
                 postData,

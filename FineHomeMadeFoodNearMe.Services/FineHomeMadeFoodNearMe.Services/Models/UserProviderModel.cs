@@ -7,7 +7,7 @@
     using System.Globalization;
 
     [DataContract]
-    public sealed class SearchHitProviderModel
+    public sealed class UserProviderModel
     {
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public UserModel UserInfo { get; set; }

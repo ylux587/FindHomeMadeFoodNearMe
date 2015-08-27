@@ -37,6 +37,8 @@ BEGIN
 
      EXEC SaveOrderItems @orderId, @orderItems
 
+     SELECT @orderId
+
      COMMIT TRAN
 
 END

@@ -125,6 +125,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\SearchFoodController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -189,6 +190,8 @@
     <Content Include="Views\SearchFood\FoodMap.cshtml" />
     <Content Include="Views\Shared\AddressInput.cshtml" />
     <Content Include="Views\Manage\ManageDish.cshtml" />
+    <Content Include="Views\Order\PlaceOrder.cshtml" />
+    <Content Include="Views\Order\OrderSummary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
