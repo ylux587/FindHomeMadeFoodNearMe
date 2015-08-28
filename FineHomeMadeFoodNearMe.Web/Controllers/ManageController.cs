@@ -5,14 +5,13 @@
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
-    using FindHomeMadeFoodNearMe.Web.Models;
 
     public class ManageController : Controller
     {
         // GET: Manage
-        public ActionResult ManageDish(long providerId)
+        public ActionResult ManageDish()
         {
-            return View(new ManageDishModel { ProviderId = providerId });
+            return View();
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿@model FindHomeMadeFoodNearMe.Web.Models.ManageDishModel
-
-@{
+﻿@{
     ViewBag.Title = "Manage Your Dishes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -59,9 +57,8 @@
     </div>
 </div>
 <script type="text/javascript">
-    var providerId = @Model.ProviderId;
     var currentDishes;
-    function retrieveDish() {
+    function retrieveDish(providerId) {
         GetData(baseAddress + "/SearchFood/GetDishes?providerId=" + providerId,
             function(data) {
                 currentDishes = data;
@@ -202,6 +199,13 @@
     }
 
     $(document).ready(function () {
-        retrieveDish();
+        var providerId = GetUserIdFromCookie();
+        alert(providerId);
+        if (providerId) {
+            retrieveDish(providerId);
+        }
+        else {
+            RedirectToLogin();
+        }
     });
 </script> 

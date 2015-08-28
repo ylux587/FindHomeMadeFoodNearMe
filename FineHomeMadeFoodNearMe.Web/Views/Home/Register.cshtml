@@ -1,17 +1,9 @@
-﻿@model FindHomeMadeFoodNearMe.Web.Models.RegisterLoginModel
-
-@{
-    ViewBag.Title = @Model.InRegister ? "Register" : "Login";
+﻿@{
+    ViewBag.Title = "Register";
 }
 
-<style type="text/css">
-    #loginbtn, #registerbtn {
-        float: right;
-    }
-</style>
-
 <h2>@ViewBag.Title</h2>
-<div id="registerSection" style="display: none;">
+<div id="registerSection">
     <div class="row userinput">
         <label id="emailLabel" for="email" class="required">Email*</label>
         <span id="emailError" class="required">required</span>
@@ -44,50 +36,10 @@
         @Html.Partial("AddressInput")
     </div>
     <div id="registerButton" class="row userinput">
-        <button id="registerbtn" class="btn-primary" onclick="javascript:registerClicked();">Register</button>
-    </div>
-</div>
-<div id="loginSection" style="display: none;">
-    <div id="userNameInput" class="row userinput">
-        <label id="usernameLabel" for="username" class="required">Email*</label>
-        <span id="usernameError" class="required">required</span>
-        <input id="username" type="text" maxlength="200" />
-    </div>
-    <div id="passwordInput" class="row userinput">
-        <label id="passwordLabel" for="password" class="required">Password*</label>
-        <span id="passwordError" class="required">required</span>
-        <input id="password" type="password" maxlength="20" />
-    </div>
-    <div id="loginButton" class="row userinput">
-        <button id="loginbtn" class="btn-primary" onclick="javascript:loginClicked();">Login</button>
+        <button id="registerbtn" class="btn btn-primary" onclick="javascript:registerClicked();">Register</button>
     </div>
 </div>
 <script type="text/javascript">
-    var model = @Html.Raw(Json.Encode(Model));
-    var inRegister = model.InRegister;
-
-    function loginClicked() {
-        $('#loginSection span.required').hide();
-
-        var usernameValue = $('#username').val();
-        var passwordValue = $('#password').val();
-        var isValid = ValidateField(usernameValue, '#usernameError');
-        isValid &= ValidateField(usernameValue, '#passwordError');
-        if (!isValid) {
-            return false;
-        }
-        var postData = { "Username": usernameValue, "Password": passwordValue };
-        PostData(baseAddress + "/SearchFood/LoginUser", postData,
-            function(data) {
-                console.log(data);
-            },
-            function(data) {
-                alert('Error');
-                console.log(data);
-            });
-        return false;
-    }
-
     function registerClicked(){
         $('#registerSection span.required').hide();
 
@@ -128,6 +80,14 @@
         PostData(baseAddress + "/SearchFood/RegisterUser", postData,
             function(data){
                 console.log(data);
+                if (data && data.Messages.length > 0) {
+                    alert("Failed to register user.");
+                }
+                else if (data) {
+                    var userId = data.UserId;
+                    $.cookie("userId", userId, { expires: 7 });
+                    RedirectTo("/SearchFood/FoodMap");
+                }
             },
             function(data) {
                 alert('Error');
@@ -137,14 +97,6 @@
     }
 
     $(document).ready(function () {
-        if (inRegister) {
-            $('div#registerSection').show();
-            $('div#loginSection').hide();
-        }
-        else {
-            $('div#registerSection').hide();
-            $('div#loginSection').show();
-        }
         $('#regsiterProviderChk').change(function() {
             if ($(this).is(":checked")) {
                 $('#providerInfoSection').show();

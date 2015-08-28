@@ -43,3 +43,6 @@ select {
     width: 174px;
     height: 26px;
 }
+.btn {
+    float: right;
+}

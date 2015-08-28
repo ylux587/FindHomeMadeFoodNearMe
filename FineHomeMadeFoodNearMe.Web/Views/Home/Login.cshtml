@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<h2>@ViewBag.Title</h2>
+<div id="loginSection">
+    <div id="userNameInput" class="row userinput">
+        <label id="usernameLabel" for="username" class="required">Email*</label>
+        <span id="usernameError" class="required">required</span>
+        <input id="username" type="text" maxlength="200" />
+    </div>
+    <div id="passwordInput" class="row userinput">
+        <label id="passwordLabel" for="password" class="required">Password*</label>
+        <span id="passwordError" class="required">required</span>
+        <input id="password" type="password" maxlength="20" />
+    </div>
+    <div id="loginButton" class="row userinput">
+        <button id="loginbtn" class="btn btn-primary" onclick="javascript:loginClicked();">Login</button>
+    </div>
+</div>
+<script type="text/javascript">
+    function loginClicked() {
+        $('#loginSection span.required').hide();
+
+        var usernameValue = $('#username').val();
+        var passwordValue = $('#password').val();
+        var isValid = ValidateField(usernameValue, '#usernameError');
+        isValid &= ValidateField(usernameValue, '#passwordError');
+        if (!isValid) {
+            return false;
+        }
+        var postData = { "Username": usernameValue, "Password": passwordValue };
+        PostData(baseAddress + "/SearchFood/LoginUser", postData,
+            function (data) {
+                console.log(data);
+                if (data && data.Messages.length > 0) {
+                    alert("log in failed");
+                }
+                else {
+                    var userId = data.UserId;
+                    $.cookie("userId", userId, { expires: 7 });
+                    RedirectTo("/SearchFood/FoodMap");
+                }
+            },
+            function(data) {
+                alert('Error');
+                console.log(data);
+            });
+        return false;
+    }
+</script>

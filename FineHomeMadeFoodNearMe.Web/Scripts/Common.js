@@ -27,3 +27,15 @@ function ValidateField(value, errorLabelId) {
     }
     return true;
 }
+
+function GetUserIdFromCookie() {
+    return $.cookie("userId");
+}
+
+function RedirectTo(url) {
+    window.location.href = base + url;
+}
+
+function RedirectToLogin() {
+    RedirectTo("/Home/Login");
+}

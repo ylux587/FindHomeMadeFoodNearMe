@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace FindHomeMadeFoodNearMe.Web.Controllers
+﻿namespace FindHomeMadeFoodNearMe.Web.Controllers
 {
-    using Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
 
     public class HomeController : Controller
     {
@@ -31,12 +29,12 @@ namespace FindHomeMadeFoodNearMe.Web.Controllers
 
         public ActionResult Register()
         {
-            return View("RegisterLogin", new RegisterLoginModel { InRegister = true });
+            return View();
         }
 
         public ActionResult Login()
         {
-            return View("RegisterLogin", new RegisterLoginModel { InRegister = false });
+            return View();
         }
     }
 }
