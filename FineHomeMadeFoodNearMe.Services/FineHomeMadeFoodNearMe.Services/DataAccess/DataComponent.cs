@@ -96,8 +96,7 @@
             var notesParam = new SqlParameter("@notes", SqlDbType.NVarChar) { Value = orderToSave.Notes };
             var statusParam = new SqlParameter("@status", SqlDbType.Int) { Value = (int) orderToSave.Status };
             var orderItemParam = OrderItemEntity.BindOrderItemTable("@orderItems", itemsToSave);
-            var orderId = (long) dbContext.ExecuteScalar("SaveOrders", Timeout, userIdParam, orderDateParam, subTotalParam, taxParam, otherChargesParam, notesParam, statusParam, orderItemParam);
-            orderToSave.OrderId = orderId;
+            dbContext.ExecuteNonQuery("SaveOrders", Timeout, userIdParam, orderDateParam, subTotalParam, taxParam, otherChargesParam, notesParam, statusParam, orderItemParam);
         }
 
         public void SaveOrderItems(long orderId, IList<OrderItemEntity> orderItemsToSave)

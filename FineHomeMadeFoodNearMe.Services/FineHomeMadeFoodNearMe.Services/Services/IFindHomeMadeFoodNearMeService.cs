@@ -18,7 +18,7 @@
 
         UserModel GetUser(long userId);
 
-        OrderErrorModel PlaceOrder(PlaceOrderModel orderPlaceModel);
+        ErrorModel PlaceOrder(PlaceOrderModel orderPlaceModel);
 
         SearchFoodResultModel FindProvidersWithinRange(SearchFoodModel searchModel);
 
@@ -27,5 +27,7 @@
         List<UserModel> GetRegisteredUsers();
 
         ErrorModel UpdateOrderItemStatus(UpdateOrderItemModel updateModel);
+
+        List<OrderModel> GetOrders(long uerId);
     }
 }

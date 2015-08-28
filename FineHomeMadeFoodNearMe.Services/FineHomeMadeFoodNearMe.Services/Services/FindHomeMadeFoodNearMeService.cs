@@ -160,9 +160,9 @@
             return user == null ? null : UserModel.CreateFromEntity(user);
         }
 
-        public OrderErrorModel PlaceOrder(PlaceOrderModel orderPlaceModel)
+        public ErrorModel PlaceOrder(PlaceOrderModel orderPlaceModel)
         {
-            var errors = new OrderErrorModel();
+            var errors = new ErrorModel();
             if (orderPlaceModel == null)
             {
                 errors.Messages.Add("Invalid data.");
@@ -279,6 +279,14 @@
                 errors.Messages.Add("Invalid username/password.");
             }
             return errors;
+        }
+
+        public List<OrderModel> GetOrders(long userId)
+        {
+            var orders = DbContext.GetOrders().Where(o => o.UserId == userId).Select(o => OrderModel.CreateFromEntity(o)).ToList();
+            var orderItems = DbContext.GetOrderItems();
+            orders.ForEach(o => { o.Items = orderItems.Where(item => item.OrderId == o.OrderId).Select(item => OrderItemModel.CreateFromEntity(item)).ToList(); });
+            return orders;
         }
     }
 }

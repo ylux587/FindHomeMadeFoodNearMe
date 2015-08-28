@@ -75,5 +75,11 @@
         {
             return Service.UpdateOrderItemStatus(updateModel);
         }
+
+        [HttpGet]
+        public List<OrderModel> GetOrders(long userId)
+        {
+            return Service.GetOrders(userId);
+        }
     }
 }

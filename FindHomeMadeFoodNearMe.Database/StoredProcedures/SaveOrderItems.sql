@@ -9,7 +9,8 @@ BEGIN
     USING
     (
         SELECT
-            [DishId], 
+            [DishId],
+            [Quantity], 
             [ItemStatus]
         FROM @orderItems
     ) AS SOURCE
@@ -17,19 +18,22 @@ BEGIN
     WHEN MATCHED THEN
         UPDATE SET
             TARGET.[OrderId] = @orderId, 
-            TARGET.[DishId] = SOURCE.[DishId], 
+            TARGET.[DishId] = SOURCE.[DishId],
+            TARGET.[Quantity] = SOURCE.[Quantity], 
             TARGET.[ItemStatus] = SOURCE.[ItemStatus]
     WHEN NOT MATCHED BY TARGET THEN
         INSERT
         (
             [OrderId],
             [DishId],
+            [Quantity],
             [ItemStatus]
         )
         VALUES
         (
             @orderId,
             SOURCE.[DishId],
+            SOURCE.[Quantity],
             SOURCE.[ItemStatus]
         )
     WHEN NOT MATCHED BY SOURCE AND TARGET.[OrderId] = @orderId THEN

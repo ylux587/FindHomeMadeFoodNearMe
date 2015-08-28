@@ -38,6 +38,9 @@
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public OrderStatus Status { get; set; }
 
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        public List<OrderItemModel> Items { get; set; }
+
         public OrderEntity ToEntity()
         {
             return new OrderEntity

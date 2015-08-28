@@ -166,7 +166,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AddDishModel.cs" />
-    <Compile Include="Models\OrderErrorModel.cs" />
     <Compile Include="Models\UserProviderModel.cs" />
     <Compile Include="Models\AddressModel.cs" />
     <Compile Include="Models\DishModel.cs" />

@@ -6,6 +6,7 @@ BEGIN
     SELECT 
         [OrderId],
         [DishId],
+        [Quantity],
         [ItemStatus]
     FROM [dbo].[OrderItems]
 

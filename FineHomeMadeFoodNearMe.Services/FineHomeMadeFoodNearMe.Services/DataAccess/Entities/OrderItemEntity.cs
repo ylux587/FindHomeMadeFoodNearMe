@@ -17,12 +17,15 @@
 
         public long DishId { get; set; }
 
+        public int Quantity { get; set; }
+
         public ItemStatus ItemStatus { get; set; }
 
         public class OrderItemEntityColumns : IEntityBinder<OrderItemEntity>
         {
             private SqlColumnBinder orderIdColumn = new SqlColumnBinder("OrderId");
             private SqlColumnBinder dishIdColumn = new SqlColumnBinder("DishId");
+            private SqlColumnBinder quantityColumn = new SqlColumnBinder("Quantity");
             private SqlColumnBinder itemStatusColumn = new SqlColumnBinder("ItemStatus");
 
             private static IEntityBinder<OrderItemEntity> instance;
@@ -46,6 +49,7 @@
                 {
                     OrderId = orderIdColumn.GetInt64(reader),
                     DishId = dishIdColumn.GetInt64(reader),
+                    Quantity = quantityColumn.GetInt32(reader),
                     ItemStatus = (ItemStatus)itemStatusColumn.GetInt32(reader)
                 };
 
@@ -68,6 +72,7 @@
 
                 record.SetInt64(0, orderItem.OrderId);
                 record.SetInt64(1, orderItem.DishId);
+                record.SetInt32(2, orderItem.Quantity);
                 record.SetInt32(3, (int)orderItem.ItemStatus);
 
                 yield return record;
@@ -78,6 +83,7 @@
         {
             new SqlMetaData("OrderId", SqlDbType.BigInt),
             new SqlMetaData("DishId", SqlDbType.BigInt),
+            new SqlMetaData("Quantity", SqlDbType.Int),
             new SqlMetaData("ItemStatus", SqlDbType.Int),
         };
     }
