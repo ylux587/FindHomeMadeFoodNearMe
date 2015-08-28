@@ -12,10 +12,5 @@ namespace FindHomeMadeFoodNearMe.Web.Controllers
         {
             return View();
         }
-
-        public ActionResult OrderSummary()
-        {
-            return View();
-        }
     }
 }

@@ -39,7 +39,12 @@
                 else {
                     var userId = data.UserId;
                     $.cookie("userId", userId, { expires: 7 });
-                    RedirectTo("/SearchFood/FoodMap");
+                    if (data.IsProvider) {
+                        RedirectTo("/Manage/ManageDish");
+                    }
+                    else {
+                        RedirectTo("/SearchFood/FoodMap");
+                    }
                 }
             },
             function(data) {

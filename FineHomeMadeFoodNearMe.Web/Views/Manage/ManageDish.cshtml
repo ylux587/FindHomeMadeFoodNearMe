@@ -60,14 +60,18 @@
     var currentDishes;
     function retrieveDish(providerId) {
         GetData(baseAddress + "/SearchFood/GetDishes?providerId=" + providerId,
-            function(data) {
-                currentDishes = data;
-                renderDishes(data);
-                if (data.length > 5) {
-                    $('#addDishSection').hide();
-                }
-                else {
-                    $('#addDishSection').show();
+            function (data) {
+                if (data && data.Messages.length > 0) {
+
+                } else if (data) {
+                    currentDishes = data;
+                    renderDishes(data);
+                    if (data.length > 5) {
+                        $('#addDishSection').hide();
+                    }
+                    else {
+                        $('#addDishSection').show();
+                    }
                 }
             },
             function(data) {
@@ -200,9 +204,21 @@
 
     $(document).ready(function () {
         var providerId = GetUserIdFromCookie();
-        alert(providerId);
         if (providerId) {
-            retrieveDish(providerId);
+
+            GetData(baseAddress + "/SearchFood/GetUser?userId=" + providerId,
+                function (data) {
+                    if (data && data.IsProvider) {
+                        retrieveDish(providerId);
+                    }
+                    else {
+                        RedirectTo("/SearchFood/FoodMap");
+                    }
+                },
+                function (data) {
+                    alert("Error while getting provider info");
+                    RedirectToLogin();
+                });
         }
         else {
             RedirectToLogin();

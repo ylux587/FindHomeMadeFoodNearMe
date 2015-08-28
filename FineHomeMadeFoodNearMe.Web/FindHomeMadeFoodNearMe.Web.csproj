@@ -195,7 +195,6 @@
     <Content Include="Views\Shared\AddressInput.cshtml" />
     <Content Include="Views\Manage\ManageDish.cshtml" />
     <Content Include="Views\Order\PlaceOrder.cshtml" />
-    <Content Include="Views\Order\OrderSummary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

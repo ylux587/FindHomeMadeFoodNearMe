@@ -28,6 +28,9 @@
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string Password { get; set; }
 
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        public bool IsProvider { get; set; }
+
         public UserEntity ToEntity()
         {
             return new UserEntity

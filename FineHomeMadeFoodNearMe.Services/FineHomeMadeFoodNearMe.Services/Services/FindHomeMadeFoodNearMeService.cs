@@ -72,6 +72,7 @@
                 {
                     newProvider.ProviderId = errors.UserId;
                     DbContext.SaveProviders(new List<ProviderEntity> { newProvider });
+                    errors.IsProvider = true;
                 }
 
                 return errors;
@@ -157,7 +158,12 @@
         public UserModel GetUser(long userId)
         {
             var user = DbContext.GetUsers().SingleOrDefault(u => u.UserId == userId);
-            return user == null ? null : UserModel.CreateFromEntity(user);
+            var userModel = user == null ? null : UserModel.CreateFromEntity(user);
+            if (userModel != null)
+            {
+                userModel.IsProvider = DbContext.GetDishes().Any(d => d.ProviderId == userId);
+            }
+            return userModel;
         }
 
         public ErrorModel PlaceOrder(PlaceOrderModel orderPlaceModel)
@@ -168,26 +174,20 @@
                 errors.Messages.Add("Invalid data.");
                 return errors;
             }
-            var dishIds = orderPlaceModel.DishIds;
+            var orderItems = orderPlaceModel.OrderItems;
             var userId = orderPlaceModel.UserId;
 
-            if (dishIds == null || dishIds.Count == 0)
+            if (orderItems == null || orderItems.Count == 0)
             {
                 errors.Messages.Add("No items found to order");
                 return errors;
             }
-            var dishes = DbContext.GetDishes().Where(d => dishIds.Contains(d.DishId)).ToList();
-            var newOrder = new OrderEntity {OrderDate = DateTime.Now, UserId = userId, SubTotal = dishes.Sum(d => d.Price)};
-
-            var dishesToOrder = dishIds.Select(dishId => new OrderItemEntity
-            {
-                DishId = dishId,
-                ItemStatus = ItemStatus.Confirmed,
-            }).ToList();
+            var dishPrices = DbContext.GetDishes().Where(d => orderItems.Any(item => item.DishId == d.DishId && item.Quantity > 0)).ToDictionary(d => d.DishId, d => d.Price);
+            var newOrder = new OrderEntity { OrderDate = DateTime.Now, UserId = userId, SubTotal = orderItems.Where(item => item.Quantity > 0).Sum(item => item.Quantity * dishPrices[item.DishId]) };
 
             try
             {
-                DbContext.SaveOrder(newOrder, dishesToOrder);
+                DbContext.SaveOrder(newOrder, orderItems.Select(item => item.ToEntity()).ToList());
                 return errors;
             }
             catch(Exception ex)
@@ -273,6 +273,7 @@
             if (user != null && string.Equals(user.Password, password, StringComparison.Ordinal))
             {
                 errors.UserId = user.UserId;
+                errors.IsProvider = DbContext.GetProviders().Any(p => p.ProviderId == user.UserId);
             }
             else
             {

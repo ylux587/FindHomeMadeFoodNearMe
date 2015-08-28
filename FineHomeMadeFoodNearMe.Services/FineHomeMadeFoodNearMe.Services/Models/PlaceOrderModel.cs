@@ -12,6 +12,6 @@
         public long UserId { get; set; }
 
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public List<long> DishIds { get; set; }
+        public List<OrderItemModel> OrderItems { get; set; }
     }
 }

@@ -1,275 +1,272 @@
-﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-<head>
-    <title>Food Map</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <style type="text/css">
-        #foodMap {
-            position: relative; 
-            width: 800px; 
-            height: 800px;
-        }
-        #addressSection {
-            display: none;
-        }
-        #addressSearchbtn{
-            float: right;
-        }
-    </style>
-    <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
-    <script type="text/javascript">
-        var map = null;
-        var dataLayer = null;
-        var infoboxLayer = null;
+﻿@{
+    ViewBag.Title = "Manage Your Dishes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-        function initialize() {
-            if (Modernizr.geolocation) {
-                $('#addressSection').hide();
-                navigator.geolocation.getCurrentPosition(show_map,
-                    function () {
-                        $('#mapSection').hide();
-                        $('#addressSection').show();;
-                    },
-                    { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true });
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<h2>@ViewBag.Title</h2>
+<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+<script type="text/javascript">
+    var map = null;
+    var dataLayer = null;
+    var infoboxLayer = null;
+
+    function initialize() {
+        if (Modernizr.geolocation) {
+            $('#addressSection').hide();
+            navigator.geolocation.getCurrentPosition(show_map,
+                function () {
+                    $('#mapSection').hide();
+                    $('#addressSection').show();;
+                },
+                { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true });
+        } else {
+            // no native support; maybe try a fallback?
+            $('#mapSection').hide();
+            $('#addressSection').show();
+        }
+    }
+
+    function show_map(position) {
+        var postData = { "Latitude" : position.coords.latitude, "Longitude" : position.coords.Longitude, "Range": 25};
+        PostData(baseAddress + "/SearchFood/FindProvidersWithinRange",
+            postData,
+            function (data) {
+                alert("success");
+                $('#mapSection').show();
+                loadMap(position.coords.latitude, position.coords.Longitude, data.ProviderInfos);
+            },
+            function (data) {
+                alert("Error");
+                console.log(data);
+            });
+    }
+
+    /* providers: 
+    [
+        {
+        "UserInfo": {
+            "UserId": 1,
+            "FirstName": "sample string 2",
+            "LastName": "sample string 3",
+            "Email": "sample string 4",
+            "PhoneNumber": "sample string 5",
+            "UserStatus": 0,
+            "Password": "sample string 6"
+        },
+        "ProviderInfo": {
+            "ProviderId": 1,
+            "AddressLine1": "sample string 2",
+            "AddressLine2": "sample string 3",
+            "AddressLine3": "sample string 4",
+            "City": "sample string 5",
+            "StateOrProvince": "sample string 6",
+            "Country": "sample string 7",
+            "GeoLatitude": 1.1,
+            "GeoLongitude": 1.1,
+            "ZipCode": "sample string 8"
+        }
+        },
+        {
+        "UserInfo": {
+            "UserId": 1,
+            "FirstName": "sample string 2",
+            "LastName": "sample string 3",
+            "Email": "sample string 4",
+            "PhoneNumber": "sample string 5",
+            "UserStatus": 0,
+            "Password": "sample string 6"
+        },
+        "ProviderInfo": {
+            "ProviderId": 1,
+            "AddressLine1": "sample string 2",
+            "AddressLine2": "sample string 3",
+            "AddressLine3": "sample string 4",
+            "City": "sample string 5",
+            "StateOrProvince": "sample string 6",
+            "Country": "sample string 7",
+            "GeoLatitude": 1.1,
+            "GeoLongitude": 1.1,
+            "ZipCode": "sample string 8"
+        }
+        }
+    ]
+    */
+    function loadMap(currentLatitude, currentLongitude, providers) {
+
+        //Prep default location
+        var defaultLocation = new Microsoft.Maps.Location(currentLatitude, currentLongitude);
+
+        //Prep Map Options
+        var mapOptions = {
+            credentials: 'AiEDanDjO45pfFBiTUD7_bAhjTnvXr-3-OoM0hmzx8_wNMe-Qt6AW-BLwxDIJuFR',
+            center: defaultLocation,
+            mapTypeId: Microsoft.Maps.MapTypeId.road,
+            zoom: 11,
+            enableClickableLogo: false,
+            enableSearchLogo: false
+        }
+
+        //Initialise the primary map control
+        map = new Microsoft.Maps.Map(document.getElementById('foodMap'), mapOptions);
+
+        //Add data layer
+        dataLayer = new Microsoft.Maps.EntityCollection();
+        map.entities.push(dataLayer);
+
+        // Add infobox layer
+        infoboxLayer = new Microsoft.Maps.EntityCollection();
+        map.entities.push(infoboxLayer);
+
+        //Prep InfoBox & add to infobox layer
+        var infoboxOptions = {
+            width: 300,
+            height: 200,
+            visible: false,
+            offset: new Microsoft.Maps.Point(0, 20)
+        };
+
+        infobox = new Microsoft.Maps.Infobox(new Microsoft.Maps.Location(0, 0), infoboxOptions);
+
+        infoboxLayer.push(infobox);
+
+        //Add Data to the map
+        DrawPins(providers);
+    }
+
+
+    function displayInfobox(e) {
+
+        if (this.target.id && this.target.id.indexOf("pin") != -1) {
+            //alert("click event fired on pushpin");
+
+            infobox.setOptions({
+                title: this.target.Title,
+                description: this.target.Description,
+                visible: true,
+                offset: new Microsoft.Maps.Point(0, 25)
+            });
+
+            infobox.setLocation(this.target.getLocation());
+
+            //A buffer limit to use to specify the infobox must be away from the edges of the map.
+
+            var buffer = 30;
+            var infoboxOffset = infobox.getOffset();
+            var infoboxAnchor = infobox.getAnchor();
+            var infoboxLocation = map.tryLocationToPixel(this.target.getLocation(), Microsoft.Maps.PixelReference.control);
+            var dx = infoboxLocation.x + infoboxOffset.x - infoboxAnchor.x;
+            var dy = infoboxLocation.y - 25 - infoboxAnchor.y;
+
+            if (dy < buffer) { //Infobox overlaps with top of map.
+                //#### Offset in opposite direction.
+                dy *= -1;
+                //#### add buffer from the top edge of the map.
+                dy += buffer;
             } else {
-                // no native support; maybe try a fallback?
-                $('#mapSection').hide();
-                $('#addressSection').show();
+                //#### If dy is greater than zero than it does not overlap.
+                dy = 0;
+            }
+
+            if (dx < buffer) { //Check to see if overlapping with left side of map.
+                //#### Offset in opposite direction.
+                dx *= -1;
+                //#### add a buffer from the left edge of the map.
+                dx += buffer;
+            } else { //Check to see if overlapping with right side of map.
+                dx = map.getWidth() - infoboxLocation.x + infoboxAnchor.x - infobox.getWidth();
+                //#### If dx is greater than zero then it does not overlap.
+                if (dx > buffer) {
+                    dx = 0;
+                } else {
+                    //#### add a buffer from the right edge of the map.
+                    dx -= buffer;
+                }
+            }
+
+            //#### Adjust the map so infobox is in view
+            if (dx != 0 || dy != 0) {
+                map.setView({
+                    centerOffset: new Microsoft.Maps.Point(dx, dy),
+                    center: map.getCenter()
+                });
             }
         }
+    }
 
-        function show_map(position) {
-            var postData = { "Latitude" : position.coords.latitude, "Longitude" : position.coords.Longitude, "Range": 25};
-            PostData(baseAddress + "/SearchFood/FindProvidersWithinRange",
-                postData,
+    function DrawPins(providers) {
+        for (var index = 0; index < providers.length; index++) {
+            DrawIndividualPin(providers[index], index);
+        }
+    }
+
+    function DrawIndividualPin(provider, index) {
+        var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(47.669444, -122.123889));
+        pin.id = "pin_" + index;
+        pin.Title = provider.UserInfo.FirstName + " " + provider.UsrInfo.LastName;
+        pin.Description = generatePinDescription(provider);
+        Microsoft.Maps.Events.addHandler(pin, 'click', displayInfobox);
+        dataLayer.push(pin);
+    }
+
+    function generatePinDescription(provider) {
+        if (provider) {
+            var html = "<label>Contact phone:</label><span style=\"font-weight:bolder;\">" + provider.UserInfo.PhoneNumber + "</span>";
+            html+= "<a href=\"/Order/PlaceOrder?providerId=" + provider.UserInfo.UserId + "\">View dishes</a>";
+            return html;
+        }
+        return null;
+    }
+
+    function zoomMap(indx, Lat, Long) {
+        var zoomLocation = new Microsoft.Maps.Location(Lat, Long);
+
+        map.setView({
+            zoom: 13,
+            center: zoomLocation
+        });
+
+        var selectedPin = dataLayer.get(indx);
+        Microsoft.Maps.Events.invoke(selectedPin, 'click');
+    }
+
+    function addressSearchClicked() {
+        $('#addressSection span.required').hide();
+
+        var addressData = ValidateAddressInput();
+        if (addressData != null) {
+            PostData(baseAddress + "/SearchFood/FindProvidersWithinRangeByAddress",
+                addressData,
                 function (data) {
-                    alert("success");
+                    loadMap(data.AddressLatitude, data.AddressLongitude, data.ProviderInfos);
                     $('#mapSection').show();
-                    loadMap(position.coords.latitude, position.coords.Longitude, data.ProviderInfos);
                 },
                 function (data) {
-                    alert("Error");
+                    alert("Error while searching provider by address");
                     console.log(data);
                 });
         }
+        return false;
+    }
 
-        /* providers: 
-        [
-          {
-            "UserInfo": {
-              "UserId": 1,
-              "FirstName": "sample string 2",
-              "LastName": "sample string 3",
-              "Email": "sample string 4",
-              "PhoneNumber": "sample string 5",
-              "UserStatus": 0,
-              "Password": "sample string 6"
-            },
-            "ProviderInfo": {
-              "ProviderId": 1,
-              "AddressLine1": "sample string 2",
-              "AddressLine2": "sample string 3",
-              "AddressLine3": "sample string 4",
-              "City": "sample string 5",
-              "StateOrProvince": "sample string 6",
-              "Country": "sample string 7",
-              "GeoLatitude": 1.1,
-              "GeoLongitude": 1.1,
-              "ZipCode": "sample string 8"
-            }
-          },
-          {
-            "UserInfo": {
-              "UserId": 1,
-              "FirstName": "sample string 2",
-              "LastName": "sample string 3",
-              "Email": "sample string 4",
-              "PhoneNumber": "sample string 5",
-              "UserStatus": 0,
-              "Password": "sample string 6"
-            },
-            "ProviderInfo": {
-              "ProviderId": 1,
-              "AddressLine1": "sample string 2",
-              "AddressLine2": "sample string 3",
-              "AddressLine3": "sample string 4",
-              "City": "sample string 5",
-              "StateOrProvince": "sample string 6",
-              "Country": "sample string 7",
-              "GeoLatitude": 1.1,
-              "GeoLongitude": 1.1,
-              "ZipCode": "sample string 8"
-            }
-          }
-        ]
-        */
-        function loadMap(currentLatitude, currentLongitude, providers) {
-
-            //Prep default location
-            var defaultLocation = new Microsoft.Maps.Location(currentLatitude, currentLongitude);
-
-            //Prep Map Options
-            var mapOptions = {
-                credentials: 'AiEDanDjO45pfFBiTUD7_bAhjTnvXr-3-OoM0hmzx8_wNMe-Qt6AW-BLwxDIJuFR',
-                center: defaultLocation,
-                mapTypeId: Microsoft.Maps.MapTypeId.road,
-                zoom: 11,
-                enableClickableLogo: false,
-                enableSearchLogo: false
-            }
-
-            //Initialise the primary map control
-            map = new Microsoft.Maps.Map(document.getElementById('foodMap'), mapOptions);
-
-            //Add data layer
-            dataLayer = new Microsoft.Maps.EntityCollection();
-            map.entities.push(dataLayer);
-
-            // Add infobox layer
-            infoboxLayer = new Microsoft.Maps.EntityCollection();
-            map.entities.push(infoboxLayer);
-
-            //Prep InfoBox & add to infobox layer
-            var infoboxOptions = {
-                width: 300,
-                height: 200,
-                visible: false,
-                offset: new Microsoft.Maps.Point(0, 20)
-            };
-
-            infobox = new Microsoft.Maps.Infobox(new Microsoft.Maps.Location(0, 0), infoboxOptions);
-
-            infoboxLayer.push(infobox);
-
-            //Add Data to the map
-            DrawPins(providers);
-        }
-
-
-        function displayInfobox(e) {
-
-            if (this.target.id && this.target.id.indexOf("pin") != -1) {
-                //alert("click event fired on pushpin");
-
-                infobox.setOptions({
-                    title: this.target.Title,
-                    description: this.target.Description,
-                    visible: true,
-                    offset: new Microsoft.Maps.Point(0, 25)
-                });
-
-                infobox.setLocation(this.target.getLocation());
-
-                //A buffer limit to use to specify the infobox must be away from the edges of the map.
-
-                var buffer = 30;
-                var infoboxOffset = infobox.getOffset();
-                var infoboxAnchor = infobox.getAnchor();
-                var infoboxLocation = map.tryLocationToPixel(this.target.getLocation(), Microsoft.Maps.PixelReference.control);
-                var dx = infoboxLocation.x + infoboxOffset.x - infoboxAnchor.x;
-                var dy = infoboxLocation.y - 25 - infoboxAnchor.y;
-
-                if (dy < buffer) { //Infobox overlaps with top of map.
-                    //#### Offset in opposite direction.
-                    dy *= -1;
-                    //#### add buffer from the top edge of the map.
-                    dy += buffer;
-                } else {
-                    //#### If dy is greater than zero than it does not overlap.
-                    dy = 0;
-                }
-
-                if (dx < buffer) { //Check to see if overlapping with left side of map.
-                    //#### Offset in opposite direction.
-                    dx *= -1;
-                    //#### add a buffer from the left edge of the map.
-                    dx += buffer;
-                } else { //Check to see if overlapping with right side of map.
-                    dx = map.getWidth() - infoboxLocation.x + infoboxAnchor.x - infobox.getWidth();
-                    //#### If dx is greater than zero then it does not overlap.
-                    if (dx > buffer) {
-                        dx = 0;
-                    } else {
-                        //#### add a buffer from the right edge of the map.
-                        dx -= buffer;
-                    }
-                }
-
-                //#### Adjust the map so infobox is in view
-                if (dx != 0 || dy != 0) {
-                    map.setView({
-                        centerOffset: new Microsoft.Maps.Point(dx, dy),
-                        center: map.getCenter()
-                    });
-                }
-            }
-        }
-
-        function DrawPins(providers) {
-            for (var index = 0; index < providers.length; index++) {
-                DrawIndividualPin(providers[index], index);
-            }
-        }
-
-        function DrawIndividualPin(provider, index) {
-            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(47.669444, -122.123889));
-            pin.id = "pin_" + index;
-            pin.Title = provider.UserInfo.FirstName + " " + provider.UsrInfo.LastName;
-            //TODO: update description sectin with place order link
-            pin.Description = provider.UserInfo.PhoneNumber;
-            Microsoft.Maps.Events.addHandler(pin, 'click', displayInfobox);
-            dataLayer.push(pin);
-        }
-
-
-        function zoomMap(indx, Lat, Long) {
-
-            var ZoomLocation = new Microsoft.Maps.Location(Lat, Long);
-
-            map.setView({
-                zoom: 13,
-                center: ZoomLocation
-            });
-
-            var selectedPin = dataLayer.get(indx);
-            Microsoft.Maps.Events.invoke(selectedPin, 'click');
-        }
-
-        function addressSearchClicked() {
-            $('#addressSection span.required').hide();
-
-            var addressData = ValidateAddressInput();
-            if (addressData != null) {
-                PostData(baseAddress + "/SearchFood/FindProvidersWithinRangeByAddress",
-                    addressData,
-                    function (data) {
-                        loadMap(data.AddressLatitude, data.AddressLongitude, data.ProviderInfos);
-                        $('#mapSection').show();
-                    },
-                    function (data) {
-                        alert("Error while searching provider by address");
-                        console.log(data);
-                    });
-            }
-            return false;
-        }
-
-        $(document).ready(function () {
+    $(document).ready(function () {
+        var userId = GetUserIdFromCookie();
+        if (userId) {
             initialize();
-        });
-    </script>
-</head>
-<body>
-    <div id="addressSection">
-        <div>
-            @Html.Partial("AddressInput")
-        </div>
-        <div id="addressSearchButton" class="row userinput">
-            <button id="addressSearchbtn" class="btn-primary" onclick="javascript:addressSearchClicked();">Search</button>
-        </div>
+        }
+        else {
+            RedirectToLogin();
+        }
+    });
+</script>
+<div id="addressSection" style="display: none;">
+    <div>
+        @Html.Partial("AddressInput")
     </div>
-    <div id="mapSection">
-        <div id='foodMap' />
+    <div id="addressSearchButton" class="row userinput">
+        <button id="addressSearchbtn" class="btn btn-primary" onclick="javascript:addressSearchClicked();">Search</button>
     </div>
-</body>
-</html>
+</div>
+<div id="mapSection">
+    <div id="foodMap" style="position: relative; width: 800px; height: 800px;" />
+</div>
