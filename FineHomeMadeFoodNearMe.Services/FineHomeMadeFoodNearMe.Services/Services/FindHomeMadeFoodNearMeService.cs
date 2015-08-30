@@ -203,7 +203,7 @@
             {
                 return null;
             }
-            var providers = DbContext.GetProvidersInRange(searchModel.Latitude, searchModel.Longitude, searchModel.Range).Select(ProviderModel.CreateFromEntity).ToList();
+            var providers = DbContext.GetProvidersInRange(searchModel.Latitude, searchModel.Longitude, searchModel.Range, searchModel.ConvertToMile).Select(ProviderModel.CreateFromEntity).ToList();
             var users = DbContext.GetUsers();
             return new SearchFoodResultModel { ProviderInfos = providers.Select(p => new UserProviderModel { UserInfo = UserModel.CreateFromEntity(users.Single(u => u.UserId == p.ProviderId)), ProviderInfo = p }).ToList() };
         }

@@ -110,13 +110,14 @@
             dbContext.ExecuteNonQuery("SaveOrderItems", Timeout, sqlParams);
         }
 
-        public IList<ProviderEntity> GetProvidersInRange(double latitude, double longitude, int range)
+        public IList<ProviderEntity> GetProvidersInRange(double latitude, double longitude, int range, bool converToMile)
         {
             var sqlParams = new[]
             {
                 new SqlParameter("@sourceLatitude", SqlDbType.Float) {Value = latitude}, 
                 new SqlParameter("@sourceLongitude", SqlDbType.Float) {Value = longitude}, 
-                new SqlParameter("@range", SqlDbType.Int) {Value = range} 
+                new SqlParameter("@range", SqlDbType.Int) {Value = range},
+                new SqlParameter("@convertToMile", SqlDbType.Bit) { Value = converToMile }, 
             };
 
             return dbContext.ExecuteReader("GetProvidersInRange", ProviderEntity.ProviderEntityColumns.Instance, null, Timeout, sqlParams);
