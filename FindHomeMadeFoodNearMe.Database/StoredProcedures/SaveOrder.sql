@@ -2,9 +2,9 @@
     @userId BIGINT,
     @orderDate DATETIME2(7),
     @subTotal DECIMAL(7,2),
-    @tax DECIMAL(7,2),
-    @otherCharges DECIMAL(7,2),
-    @notes NVARCHAR(1000),
+    @tax DECIMAL(7,2) = NULL,
+    @otherCharges DECIMAL(7,2) = NULL,
+    @notes NVARCHAR(1000) = NULL,
     @status INT,
     @orderItems typ_OrderItems_v1 READONLY
 AS

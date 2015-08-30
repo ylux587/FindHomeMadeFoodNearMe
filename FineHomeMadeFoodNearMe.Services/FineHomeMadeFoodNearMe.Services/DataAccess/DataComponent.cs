@@ -96,7 +96,7 @@
             var notesParam = new SqlParameter("@notes", SqlDbType.NVarChar) { Value = orderToSave.Notes };
             var statusParam = new SqlParameter("@status", SqlDbType.Int) { Value = (int) orderToSave.Status };
             var orderItemParam = OrderItemEntity.BindOrderItemTable("@orderItems", itemsToSave);
-            dbContext.ExecuteNonQuery("SaveOrders", Timeout, userIdParam, orderDateParam, subTotalParam, taxParam, otherChargesParam, notesParam, statusParam, orderItemParam);
+            dbContext.ExecuteNonQuery("SaveOrder", Timeout, userIdParam, orderDateParam, subTotalParam, taxParam, otherChargesParam, notesParam, statusParam, orderItemParam);
         }
 
         public void SaveOrderItems(long orderId, IList<OrderItemEntity> orderItemsToSave)
@@ -115,9 +115,10 @@
             var sqlParams = new[]
             {
                 new SqlParameter("@sourceLatitude", SqlDbType.Float) {Value = latitude}, 
-                new SqlParameter("@sourceLongtitude", SqlDbType.Float) {Value = longitude}, 
+                new SqlParameter("@sourceLongitude", SqlDbType.Float) {Value = longitude}, 
                 new SqlParameter("@range", SqlDbType.Int) {Value = range} 
             };
+
             return dbContext.ExecuteReader("GetProvidersInRange", ProviderEntity.ProviderEntityColumns.Instance, null, Timeout, sqlParams);
         }
 

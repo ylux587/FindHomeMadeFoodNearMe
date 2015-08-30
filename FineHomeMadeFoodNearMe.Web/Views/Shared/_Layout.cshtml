@@ -26,8 +26,9 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Register", "Register", "Home", new { area = "" }, new { @class = "", style = "margin-left: 10px;" })</li>
-                    <li>@Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "", style = "margin-left: 10px;" })</li>
+                    <li>@Html.ActionLink("Register", "Register", "Home", new { area = "" }, new { @class = "registerlogin", style = "margin-left: 10px;" })</li>
+                    <li>@Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "registerlogin", style = "margin-left: 10px;" })</li>
+                    <li>@Html.ActionLink("Search Food", "FoodMap", "SearchFood", new { area = "" }, new { @class = "searchfood", style = "margin-left: 10px; display: none;" })</li>
                 </ul>
             </div>
         </div>

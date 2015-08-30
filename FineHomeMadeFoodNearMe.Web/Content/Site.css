@@ -46,3 +46,8 @@ select {
 .btn {
     float: right;
 }
+.errorMessage {
+    font-weight: bold; 
+    color: red; 
+    display: none;
+}

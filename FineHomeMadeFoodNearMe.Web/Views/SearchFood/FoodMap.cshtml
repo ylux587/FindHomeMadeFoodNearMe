@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Manage Your Dishes";
+    ViewBag.Title = "Search home made food";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -93,7 +93,7 @@
     ]
     */
     function loadMap(currentLatitude, currentLongitude, providers) {
-
+        $('#addressSection').hide();
         //Prep default location
         var defaultLocation = new Microsoft.Maps.Location(currentLatitude, currentLongitude);
 
@@ -130,16 +130,23 @@
 
         infoboxLayer.push(infobox);
 
+        DrawCurrentLocation(currentLatitude, currentLongitude);
+
         //Add Data to the map
         DrawPins(providers);
     }
 
+    function DrawCurrentLocation(currentLatitude, currentLongitude) {
+        var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(currentLatitude, currentLongitude));
+        pin.id = "pin_current";
+        pin.Title = "Your current location";
+        Microsoft.Maps.Events.addHandler(pin, 'click', displayInfobox);
+        dataLayer.push(pin);
+    }
 
     function displayInfobox(e) {
 
         if (this.target.id && this.target.id.indexOf("pin") != -1) {
-            //alert("click event fired on pushpin");
-
             infobox.setOptions({
                 title: this.target.Title,
                 description: this.target.Description,
@@ -201,9 +208,9 @@
     }
 
     function DrawIndividualPin(provider, index) {
-        var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(47.669444, -122.123889));
+        var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(provider.ProviderInfo.GeoLatitude, provider.ProviderInfo.GeoLongitude));
         pin.id = "pin_" + index;
-        pin.Title = provider.UserInfo.FirstName + " " + provider.UsrInfo.LastName;
+        pin.Title = provider.UserInfo.FirstName + " " + provider.UserInfo.LastName;
         pin.Description = generatePinDescription(provider);
         Microsoft.Maps.Events.addHandler(pin, 'click', displayInfobox);
         dataLayer.push(pin);
@@ -250,6 +257,9 @@
     }
 
     $(document).ready(function () {
+        $('.registerlogin').hide();
+        $('.searchfood').show();
+
         var userId = GetUserIdFromCookie();
         if (userId) {
             initialize();

@@ -10,6 +10,7 @@
 </style>
 
 <h2>@ViewBag.Title</h2>
+<div class="errorMessage"></div>
 <div id="addDishSection">
     <div class="row userinput">
         <label id="dishNameLabel" for="dishName" class="required">Name*</label>
@@ -61,9 +62,7 @@
     function retrieveDish(providerId) {
         GetData(baseAddress + "/SearchFood/GetDishes?providerId=" + providerId,
             function (data) {
-                if (data && data.Messages.length > 0) {
-
-                } else if (data) {
+                if (data) {
                     currentDishes = data;
                     renderDishes(data);
                     if (data.length > 5) {
@@ -81,7 +80,6 @@
     }
 
     function renderDishes(dishes) {
-        console.log(dishes);
         if (dishes.length > 0) {
             var tableString = "<table id=\"allDishesTable\"> \
                             <thead> \
@@ -121,15 +119,16 @@
 
     function addDishClicked() {
         $('#addDishSection span.required').hide();
+        $('.errorMessage').hide();
 
         var postData = gatherDishInfo();
         if (postData) {
             PostData(baseAddress + "/SearchFood/AddDishToMenu",
                 postData,
                 function(data){
-                    if (data.Messages.length > 0) {
-                        alert("Add dish failed");
-                        console.log(data);
+                    if (data && data.Messages.length > 0) {
+                        $('.errorMessage').html(data.Messages[0]);
+                        $('.errorMessage').show();
                     }
                     else {
                         retrieveDish();
@@ -185,8 +184,8 @@
             {"ProviderId": providerId, "DishId": dishId},
             function(data) {
                 if (data.Messages.length > 0) {
-                    alert("Error when deleing dish with id " + dishId);
-                    console.log(data);
+                    $('.errorMessage').html(data.Messages[0]);
+                    $('.errorMessage').show();
                     return;
                 }
                 var index = currentDishes.indexOf(function(dish) { dish.DishId == dishId; });
@@ -203,9 +202,11 @@
     }
 
     $(document).ready(function () {
+        $('.registerlogin').hide();
+        $('.searchfood').show();
+
         var providerId = GetUserIdFromCookie();
         if (providerId) {
-
             GetData(baseAddress + "/SearchFood/GetUser?userId=" + providerId,
                 function (data) {
                     if (data && data.IsProvider) {

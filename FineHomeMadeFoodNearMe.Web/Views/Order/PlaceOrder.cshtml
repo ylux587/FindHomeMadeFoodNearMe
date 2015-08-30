@@ -5,14 +5,14 @@
 
 <h2>@ViewBag.Title</h2>
 <div id="placeOrderSection">
-    <div id="dishList" />
+    <div id="dishList"></div>
     <div id="placeOrderButton" class="row userinput">
-        <button id="placeOrderbtn" class="btn btn-primary" onclick="javascript:placeOrder();">Place Order</button>
+        <button id="placeOrderbtn" class="btn btn-primary" onclick="javascript:placeOrder();" disabled="disabled">Place Order</button>
     </div>
 </div>
-<div id="OrderSummarySection">
+<div id="orderSummarySection" style="display:none;">
     <h2>Thank you for your order. Below is your order summary</h2>
-    <div id="itemList" />
+    <div id="itemList"></div>
     <div style="float:right; font-size:larger; font-weight: bolder;">
         <label id="totalLabel" for="total">Total:</label>
         <span id="orderTotal" style="margin-left: 10px;" />
@@ -32,7 +32,6 @@
     }
 
     function renderDishes(dishes) {
-        console.log(dishes);
         if (dishes.length > 0) {
             var tableString = "<table id=\"selectDish\"> \
                             <thead> \
@@ -54,8 +53,8 @@
                     continue;
                 }
                 tableString += "<tr> \
-                                    <td><input type=\"checkbox\" class=\"dishChecker\" /><input type=\"hidden\" class=\"dishId\" value=\""+ dish.dishId +"\"/></td> \
-                                    <td>" + dish.DishName + "</td> \
+                                    <td><input type=\"checkbox\" class=\"dishChecker\" value=\""+ dish.DishId +"\"/></td> \
+                                    <td class=\"dishName\">" + dish.DishName + "</td> \
                                     <td>" + dish.Description + "</td> \
                                     <td>" + dish.Ingredients + "</td> \
                                     <td>" + dish.Type + "</td> \
@@ -83,12 +82,12 @@
         var detailedOrderItems = [];
         var subtotal = 0;
         $('#selectDish tbody tr').each(function () {
-            var selected = $(this).children('input.dishChecker').is(':checked');
+            var selected = $(this).find('input.dishChecker').is(':checked');
             if (selected) {
                 var quantity = parseInt($(this).find('select option:selected').first().val());
                 if (quantity > 0) {
-                    var dishId = $(this).find('input.dihId').first().val();
-                    var dishName = $(this).children('.dishName').first().val();
+                    var dishId = $(this).find('input.dishChecker').attr('value');
+                    var dishName = $(this).children('.dishName').text();
                     var price = parseFloat($(this).children('.price').text());
                     subtotal += quantity * price;
                     orderItems.push({ "DishId": dishId, "Quantity": quantity });
@@ -96,8 +95,9 @@
                 }
             }
         });
+
         var postData = { "UserId": userId, "OrderItems": orderItems };
-        PostData(baseAddress + "SearchFood/PlaceOrder", postData,
+        PostData(baseAddress + "/SearchFood/PlaceOrder", postData,
             function (data) {
                 if (data && data.Messages.length > 0) {
                     alert("Place order failed.");
@@ -105,7 +105,7 @@
                 }
                 else if(data) {
                     $('#placeOrderSection').hide();
-                    ShowOrderSummary(orderItems, subtotal);
+                    ShowOrderSummary(detailedOrderItems, subtotal);
                     $('#orderSummarySection').show();
                 }
             },
@@ -124,6 +124,7 @@
                                 </tr> \
                             </thead> \
                             <tbody>";
+        console.log(orderItems);
         for (var index = 0; index < orderItems.length; index++) {
             tableString += "<tr> \
                                 <td>" + orderItems[index].DishName + "</td> \
@@ -137,20 +138,21 @@
 
     function quantitySelector() {
         var selectorString = "<select class=\"quantitySelector\"> \
-                                <option value=\"0\">0</option> \
                                 <option value=\"1\">1</option> \
                                 <option value=\"2\">2</option> \
                                 <option value=\"3\">3</option> \
                                 <option value=\"4\">4</option> \
+                                <option value=\"5\">5</option> \
                              </selector>";
         return selectorString;
     }
 
     $(document).ready(function () {
         $('#orderSummarySection').hide();
+        $('.registerlogin').hide();
+        $('.searchfood').show();
 
         var providerId = $.getUrlVar('providerId');
-        alert(providerId);
         if (providerId) {
             retrieveDish(providerId);
         }

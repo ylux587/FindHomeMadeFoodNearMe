@@ -3,6 +3,7 @@
 }
 
 <h2>@ViewBag.Title</h2>
+<div class="errorMessage"></div>
 <div id="loginSection">
     <div id="userNameInput" class="row userinput">
         <label id="usernameLabel" for="username" class="required">Email*</label>
@@ -21,6 +22,7 @@
 <script type="text/javascript">
     function loginClicked() {
         $('#loginSection span.required').hide();
+        $('.errorMessage').hide();
 
         var usernameValue = $('#username').val();
         var passwordValue = $('#password').val();
@@ -34,11 +36,12 @@
             function (data) {
                 console.log(data);
                 if (data && data.Messages.length > 0) {
-                    alert("log in failed");
+                    $('.errorMessage').html(data.Messages[0]);
+                    $('.errorMessage').show();
                 }
                 else {
                     var userId = data.UserId;
-                    $.cookie("userId", userId, { expires: 7 });
+                    $.cookie("userId", userId, { path: "/", expires: 7 });
                     if (data.IsProvider) {
                         RedirectTo("/Manage/ManageDish");
                     }

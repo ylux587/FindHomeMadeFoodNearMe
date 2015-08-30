@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[GetProvidersInRange]
     @sourceLatitude float, 
-    @sourceLongtitude float,
+    @sourceLongitude float,
     @range INT
 AS
 BEGIN
@@ -22,6 +22,6 @@ BEGIN
     INNER JOIN Providers p ON u.UserId = p.ProviderId
     INNER JOIN Dishes d ON p.ProviderId = d.ProviderId
     WHERE u.[UserStatus] = 1 AND p.[ProviderStatus] = 1 AND p.GeoLatitude IS NOT NULL AND p.GeoLongitude IS NOT NULL
-    AND [dbo].[CalculateDistance](@sourceLatitude, @sourceLongtitude, p.GeoLatitude, p.GeoLongitude) <= @range
+    AND [dbo].[CalculateDistance](@sourceLatitude, @sourceLongitude, p.GeoLatitude, p.GeoLongitude) <= @range
 
 END
