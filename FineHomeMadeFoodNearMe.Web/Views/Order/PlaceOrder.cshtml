@@ -4,6 +4,7 @@
 }
 
 <h2>@ViewBag.Title</h2>
+<div class="errorMessage"></div>
 <div id="placeOrderSection">
     <div id="dishList"></div>
     <div id="placeOrderButton" class="row userinput">
@@ -21,9 +22,11 @@
 <script type="text/javascript">
 
     function retrieveDish(providerId) {
+        $('.errorMessage').hide();
         GetData(baseAddress + "/SearchFood/GetDishes?providerId=" + providerId,
             function (data) {
-                renderDishes(data);
+                var availableDishes = data.filter(d => d.Available);
+                renderDishes(availableDishes);
             },
             function (data) {
                 alert("Error");
@@ -73,6 +76,10 @@
                     $('#placeOrderbtn').prop('disabled', true);
                 }
             });
+        }
+        else{
+            $('.errorMessage').html("Cannot find any aviable foods in the ragne.")
+            $('.errorMessage').show();
         }
     }
 

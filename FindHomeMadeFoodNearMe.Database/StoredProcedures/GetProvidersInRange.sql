@@ -21,8 +21,9 @@ BEGIN
         p.[GeoLongitude]
     FROM Users u
     INNER JOIN Providers p ON u.UserId = p.ProviderId
-    INNER JOIN Dishes d ON p.ProviderId = d.ProviderId
+    INNER JOIN Dishes d ON d.[ProviderId] = p.ProviderId
     WHERE u.[UserStatus] = 1 AND p.[ProviderStatus] = 1 AND p.GeoLatitude IS NOT NULL AND p.GeoLongitude IS NOT NULL
     AND [dbo].[CalculateDistance](@sourceLatitude, @sourceLongitude, p.GeoLatitude, p.GeoLongitude, @convertToMile) <= @range
+    AND d.[Available] = 1
 
 END
