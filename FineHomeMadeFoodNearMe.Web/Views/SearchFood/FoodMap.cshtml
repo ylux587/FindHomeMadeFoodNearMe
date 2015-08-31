@@ -102,7 +102,7 @@
             credentials: 'AiEDanDjO45pfFBiTUD7_bAhjTnvXr-3-OoM0hmzx8_wNMe-Qt6AW-BLwxDIJuFR',
             center: defaultLocation,
             mapTypeId: Microsoft.Maps.MapTypeId.road,
-            zoom: 11,
+            zoom: 10,
             enableClickableLogo: false,
             enableSearchLogo: false
         }
@@ -137,7 +137,14 @@
     }
 
     function DrawCurrentLocation(currentLatitude, currentLongitude) {
-        var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(currentLatitude, currentLongitude));
+        var pin = new Microsoft.Maps.Pushpin(
+            new Microsoft.Maps.Location(currentLatitude, currentLongitude),
+            {
+                icon: "/Content/Images/BluePushpin.png",
+                height: 50,
+                width: 50,
+                anchor: new Microsoft.Maps.Point(0, 50)
+            });
         pin.id = "pin_current";
         pin.Title = "Your current location";
         Microsoft.Maps.Events.addHandler(pin, 'click', displayInfobox);

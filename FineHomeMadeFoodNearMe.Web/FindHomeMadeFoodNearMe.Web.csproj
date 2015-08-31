@@ -127,6 +127,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\SearchFoodController.cs" />
+    <Compile Include="Filters\BaseAddressFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -136,6 +137,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\accent.png" />
+    <Content Include="Content\Images\bluePushpin.png" />
     <Content Include="Content\Images\bullet.png" />
     <Content Include="Content\Images\heroAccent.png" />
     <Content Include="Content\Images\home_soul.jpg" />

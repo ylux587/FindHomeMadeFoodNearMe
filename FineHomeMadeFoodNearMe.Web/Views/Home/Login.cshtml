@@ -34,7 +34,6 @@
         var postData = { "Username": usernameValue, "Password": passwordValue };
         PostData(baseAddress + "/SearchFood/LoginUser", postData,
             function (data) {
-                console.log(data);
                 if (data && data.Messages.length > 0) {
                     $('.errorMessage').html(data.Messages[0]);
                     $('.errorMessage').show();

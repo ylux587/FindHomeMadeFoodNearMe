@@ -1,10 +1,4 @@
-﻿//var baseAddress = "http://findhomemadefoodnearmeservices.azurewebsites.net/api";
-//var webBaseAddress = "http://findhomemadefoodnearmeweb.azurewebsites.net";
-
-var baseAddress = "http://localhost:53772/api";
-var webBaseAddress = "http://localhost:6422";
-
-function PostData(url, data, onSuccess, onError) {
+﻿function PostData(url, data, onSuccess, onError) {
     $.ajax({
         url: url,
         data: data,

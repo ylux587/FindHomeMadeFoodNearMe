@@ -98,7 +98,7 @@
                     var price = parseFloat($(this).children('.price').text());
                     subtotal += quantity * price;
                     orderItems.push({ "DishId": dishId, "Quantity": quantity });
-                    detailedOrderItems.push({ "DishName": dishName, "Quantity": quantity });
+                    detailedOrderItems.push({ "DishName": dishName, "Quantity": quantity, "Price": price });
                 }
             }
         });
@@ -128,6 +128,7 @@
                                 <tr> \
                                     <td>Item</td>\
                                     <td>Quantity</td>\
+                                    <td>Price</td>\
                                 </tr> \
                             </thead> \
                             <tbody>";
@@ -136,6 +137,7 @@
             tableString += "<tr> \
                                 <td>" + orderItems[index].DishName + "</td> \
                                 <td>" + orderItems[index].Quantity + "</td> \
+                                <td>" + orderItems[index].Price + "</td> \
                             </tr>";
         }
         tableString += "</tbody></table>";
