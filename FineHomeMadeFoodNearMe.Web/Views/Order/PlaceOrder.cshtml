@@ -25,7 +25,7 @@
         $('.errorMessage').hide();
         GetData(baseAddress + "/SearchFood/GetDishes?providerId=" + providerId,
             function (data) {
-                var availableDishes = data.filter(d => d.Available);
+                var availableDishes = data.filter(function (dish, i, array) { return dish.Available });
                 renderDishes(availableDishes);
             },
             function (data) {
@@ -78,7 +78,7 @@
             });
         }
         else{
-            $('.errorMessage').html("Cannot find any aviable foods in the ragne.")
+            $('.errorMessage').html("Sorry but no available food provided at this moment. Please try again later or choose another provider.")
             $('.errorMessage').show();
         }
     }
