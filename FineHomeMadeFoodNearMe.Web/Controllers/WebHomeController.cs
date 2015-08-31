@@ -6,7 +6,7 @@
     using System.Web;
     using System.Web.Mvc;
 
-    public class HomeController : Controller
+    public class WebHomeController : Controller
     {
         public ActionResult Index()
         {
@@ -15,14 +15,14 @@
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Find your faviorate home made food near you!";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Contact information not avaiable at this moment.";
 
             return View();
         }
