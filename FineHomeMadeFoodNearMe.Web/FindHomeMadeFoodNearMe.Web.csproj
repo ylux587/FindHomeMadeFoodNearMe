@@ -123,7 +123,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\WebHomeController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\SearchFoodController.cs" />
@@ -172,13 +172,13 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\WebHome\About.cshtml" />
-    <Content Include="Views\WebHome\Contact.cshtml" />
-    <Content Include="Views\WebHome\Index.cshtml" />
-    <Content Include="Views\WebHome\Login.cshtml">
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Login.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Views\WebHome\Register.cshtml">
+    <Content Include="Views\Home\Register.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Web.config" />

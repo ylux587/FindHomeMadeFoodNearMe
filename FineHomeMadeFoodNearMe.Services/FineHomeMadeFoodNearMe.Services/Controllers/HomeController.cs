@@ -2,7 +2,7 @@
 {
     using System.Web.Mvc;
 
-    public class ServiceHomeController : Controller
+    public class HomeController : Controller
     {
         public ActionResult Index()
         {
