@@ -32,7 +32,6 @@
         PostData(baseAddress + "/SearchFood/FindProvidersWithinRange",
             postData,
             function (data) {
-                alert("success");
                 $('#mapSection').show();
                 loadMap(position.coords.latitude, position.coords.Longitude, data.ProviderInfos);
             },
